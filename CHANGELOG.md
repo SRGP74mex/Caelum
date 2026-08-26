@@ -3,6 +3,22 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.1.0/).
 Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.3.0] - 2026-08-26
+
+### Añadido
+- Pantalla de ajustes (⚙️) para elegir unidades de temperatura (°C/°F) y
+  viento (km/h, m/s, mph), y comportamiento de la bandeja del sistema.
+- `cerrar_a_bandeja` ahora tiene efecto real: la ventana se minimiza a la
+  bandeja al cerrarla en vez de terminar la aplicación (antes la
+  preferencia existía en el modelo de configuración pero no hacía nada).
+
+### Corregido
+- Sufijos de unidad ("km/h", "°C") que estaban hardcodeados en varios
+  widgets ahora reflejan la unidad realmente seleccionada.
+- El cálculo del punto de rocío horario en `bento_grid.py` (fórmula válida
+  solo en Celsius) ahora opera siempre en Celsius internamente antes de
+  convertir el resultado a la unidad de visualización.
+
 ## [1.2.0] - 2026-08-26
 
 ### Añadido
