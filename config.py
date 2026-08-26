@@ -16,7 +16,7 @@ except OSError:
 
 # Configuración de Aplicación
 APP_NAME = "WeatherApp Linux"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.2.0"
 APP_ID = "com.weatherlinux.app"
 
 # Configuración de Clima por Defecto
