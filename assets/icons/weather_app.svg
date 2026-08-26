@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Fondo con Degradado Cielo Apple -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1c75bc"/>
+      <stop offset="50%" stop-color="#29abe2"/>
+      <stop offset="100%" stop-color="#0071bc"/>
+    </linearGradient>
+
+    <!-- Sol Brillante -->
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff200"/>
+      <stop offset="100%" stop-color="#f7931e"/>
+    </linearGradient>
+
+    <!-- Nube Glassmorphism -->
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#e6e6e6" stop-opacity="0.60"/>
+    </linearGradient>
+
+    <!-- Sombra Suave -->
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Forma Redondeada de la Aplicación -->
+  <rect x="32" y="32" width="448" height="448" rx="100" fill="url(#skyGrad)" filter="url(#softShadow)"/>
+  <rect x="32" y="32" width="448" height="448" rx="100" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.3"/>
+
+  <!-- Sol -->
+  <circle cx="340" cy="180" r="75" fill="url(#sunGrad)"/>
+  <circle cx="340" cy="180" r="90" fill="#ffdd00" fill-opacity="0.2"/>
+
+  <!-- Nube Glassmorphism Principal -->
+  <g filter="url(#softShadow)">
+    <path d="M 170 360 L 350 360 C 394 360 430 324 430 280 C 430 238 398 204 356 200 C 348 144 300 100 240 100 C 190 100 148 130 130 174 C 90 182 60 218 60 260 C 60 315 105 360 170 360 Z"
+          fill="url(#cloudGrad)"/>
+    <path d="M 170 360 L 350 360 C 394 360 430 324 430 280 C 430 238 398 204 356 200 C 348 144 300 100 240 100 C 190 100 148 130 130 174 C 90 182 60 218 60 260 C 60 315 105 360 170 360 Z"
+          fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.6"/>
+  </g>
+</svg>
+

@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+get-pip.py
+*.log
+dist/
+build/
+*.egg-info/
+weather-linux.desktop
