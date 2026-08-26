@@ -1,9 +1,12 @@
-import requests
+import logging
 from datetime import datetime
 from typing import Dict, Any, List
 from dateutil import parser
 
 from config import OPEN_METEO_BASE_URL, REQUEST_TIMEOUT
+from src.servicios.http_session import sesion_http
+
+logger = logging.getLogger(__name__)
 from src.modelos.clima_datos import (
     Ubicacion,
     ClimaActual,
@@ -64,7 +67,8 @@ class OpenMeteoService(IWeatherProvider):
             "timezone": ubicacion.timezone or "auto"
         }
 
-        response = requests.get(OPEN_METEO_BASE_URL, params=params, timeout=self.timeout)
+        logger.debug("Consultando Open-Meteo para %s (%.4f, %.4f)", ubicacion.ciudad, ubicacion.latitud, ubicacion.longitud)
+        response = sesion_http.get(OPEN_METEO_BASE_URL, params=params, timeout=self.timeout)
         response.raise_for_status()
         data = response.json()
 

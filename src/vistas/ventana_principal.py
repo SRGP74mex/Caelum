@@ -9,6 +9,7 @@ from PySide6.QtGui import (
     QIcon, QPixmap
 )
 
+import logging
 from typing import Optional, List, Dict
 from pathlib import Path
 from config import (
@@ -30,6 +31,8 @@ from src.componentes.fondo_particulas import FondoParticulasWidget
 from src.componentes.pronostico_semanal import PronosticoSemanalWidget
 from src.componentes.bento_grid import BentoGridWidget
 from src.componentes.bandeja_sistema import BandejaSistema
+
+logger = logging.getLogger(__name__)
 
 PALETAS_CIELO = {
     "clear_day": [QColor(24, 76, 120), QColor(48, 122, 178), QColor(95, 170, 222)],
@@ -379,7 +382,9 @@ class VentanaPrincipal(QMainWindow):
             self._aplicar_reporte(reporte)
 
         def _on_error(err: str):
-            self.cabecera.lbl_condicion.setText(f"⚠️ Error al actualizar: {err}")
+            logger.warning("Error al consultar clima para %s: %s", ubicacion.ciudad, err)
+            self.cabecera.lbl_condicion.setText("⚠️ Error al actualizar")
+            self.lbl_detalle_hora.setText(f"{err} — pulsa 🔄 para reintentar")
 
         ejecutar_en_segundo_plano(_fetch, on_result=_on_result, on_error=_on_error)
 

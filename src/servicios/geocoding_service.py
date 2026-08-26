@@ -1,5 +1,5 @@
 import re
-import requests
+import logging
 from typing import List, Optional
 from config import (
     OPEN_METEO_GEOCODING_URL,
@@ -12,6 +12,9 @@ from config import (
     LANGUAGE
 )
 from src.modelos.clima_datos import Ubicacion
+from src.servicios.http_session import sesion_http
+
+logger = logging.getLogger(__name__)
 
 # Alias populares de ciudades y abreviaturas
 ALIAS_CIUDADES = {
@@ -95,7 +98,7 @@ class GeocodingService:
             "format": "json"
         }
         try:
-            response = requests.get(OPEN_METEO_GEOCODING_URL, params=params, timeout=self.timeout)
+            response = sesion_http.get(OPEN_METEO_GEOCODING_URL, params=params, timeout=self.timeout)
             response.raise_for_status()
             data = response.json()
 
@@ -120,6 +123,7 @@ class GeocodingService:
                 ))
             return resultados
         except Exception:
+            logger.warning("Fallo en búsqueda Open-Meteo para %r", nombre, exc_info=True)
             return []
 
     def _buscar_nominatim(self, query: str, limite: int) -> List[Ubicacion]:
@@ -135,7 +139,7 @@ class GeocodingService:
         headers = {"User-Agent": "WeatherApp-Linux/1.0 (https://github.com/weatherapp-linux)"}
 
         try:
-            response = requests.get(url, params=params, headers=headers, timeout=self.timeout)
+            response = sesion_http.get(url, params=params, headers=headers, timeout=self.timeout)
             response.raise_for_status()
             items = response.json()
 
@@ -162,6 +166,7 @@ class GeocodingService:
                 ))
             return resultados
         except Exception:
+            logger.warning("Fallo en búsqueda Nominatim para %r", query, exc_info=True)
             return []
 
     def obtener_ciudades_cercanas(self, lat: float, lon: float, limite: int = 6) -> List[Ubicacion]:
@@ -179,7 +184,7 @@ class GeocodingService:
         headers = {"User-Agent": "WeatherApp-Linux/1.0 (https://github.com/weatherapp-linux)"}
 
         try:
-            response = requests.get(url, params=params, headers=headers, timeout=self.timeout)
+            response = sesion_http.get(url, params=params, headers=headers, timeout=self.timeout)
             response.raise_for_status()
             items = response.json()
 
@@ -210,6 +215,7 @@ class GeocodingService:
                 ))
             return resultados
         except Exception:
+            logger.warning("Fallo al obtener ciudades cercanas (%.4f, %.4f)", lat, lon, exc_info=True)
             return []
 
     def detectar_ubicacion_ip(self) -> Ubicacion:
@@ -218,7 +224,7 @@ class GeocodingService:
 
         # Proveedor 1: ipapi.co
         try:
-            response = requests.get("https://ipapi.co/json/", headers=headers, timeout=4)
+            response = sesion_http.get("https://ipapi.co/json/", headers=headers, timeout=4)
             if response.status_code == 200:
                 data = response.json()
                 ciudad = data.get("city") or data.get("region") or DEFAULT_CITY
@@ -237,11 +243,11 @@ class GeocodingService:
                     admin1=region
                 )
         except Exception:
-            pass
+            logger.warning("Fallo en proveedor de GeoIP ipapi.co", exc_info=True)
 
         # Proveedor 2: ipwho.is (ip-api.com no soporta HTTPS en su nivel gratuito)
         try:
-            response = requests.get("https://ipwho.is/", headers=headers, timeout=4)
+            response = sesion_http.get("https://ipwho.is/", headers=headers, timeout=4)
             if response.status_code == 200:
                 data = response.json()
                 if data.get("success"):
@@ -254,7 +260,7 @@ class GeocodingService:
                         admin1=data.get("region")
                     )
         except Exception:
-            pass
+            logger.warning("Fallo en proveedor de GeoIP ipwho.is", exc_info=True)
 
         # Fallback genérico neutral
         return Ubicacion(

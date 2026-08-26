@@ -1,9 +1,12 @@
 import json
+import logging
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 from dataclasses import asdict
 
 from src.modelos.clima_datos import Ubicacion
+
+logger = logging.getLogger(__name__)
 
 CONFIG_DIR = Path.home() / ".config" / "weather_linux"
 CONFIG_FILE = CONFIG_DIR / "config.json"
@@ -43,6 +46,7 @@ class ConfigManager:
                 with open(self.ruta_archivo, "r", encoding="utf-8") as f:
                     self.datos = json.load(f)
             except Exception:
+                logger.warning("Config corrupta en %s, usando valores por defecto", self.ruta_archivo, exc_info=True)
                 self.datos = dict(DEFAULT_CONFIG)
 
     def _guardar_dict(self, datos: Dict[str, Any]) -> None:
@@ -50,7 +54,7 @@ class ConfigManager:
             with open(self.ruta_archivo, "w", encoding="utf-8") as f:
                 json.dump(datos, f, ensure_ascii=False, indent=2)
         except Exception:
-            pass
+            logger.warning("No se pudo guardar configuración en %s", self.ruta_archivo, exc_info=True)
 
     def guardar_ultima_ciudad(self, ubicacion: Ubicacion) -> None:
         """Guarda la última ciudad y la añade al historial de recientes."""
@@ -73,7 +77,7 @@ class ConfigManager:
             try:
                 return Ubicacion(**ub_data)
             except Exception:
-                pass
+                logger.debug("Entrada de 'ultima_ciudad' inválida en config", exc_info=True)
         return None
 
     def obtener_ciudades_recientes(self) -> List[Ubicacion]:
@@ -83,7 +87,7 @@ class ConfigManager:
             try:
                 res.append(Ubicacion(**d))
             except Exception:
-                pass
+                logger.debug("Entrada de 'ciudades_recientes' inválida en config", exc_info=True)
         return res
 
     def agregar_favorito(self, ubicacion: Ubicacion) -> None:
@@ -100,5 +104,5 @@ class ConfigManager:
             try:
                 res.append(Ubicacion(**d))
             except Exception:
-                pass
+                logger.debug("Entrada de 'ciudades_favoritas' inválida en config", exc_info=True)
         return res

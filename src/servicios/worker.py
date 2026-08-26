@@ -1,5 +1,8 @@
+import logging
 from typing import Callable, Any, Optional, Set
 from PySide6.QtCore import QRunnable, QObject, Signal, Slot, QThreadPool
+
+logger = logging.getLogger(__name__)
 
 # Conjunto global para mantener referencias vivas a los workers activos
 # Esto previene que el Garbage Collector de Python destruya los objetos QRunnable/QObject
@@ -39,6 +42,7 @@ class AsyncWorker(QRunnable):
             except Exception:
                 pass
         except Exception as e:
+            logger.exception("Error en tarea en segundo plano (%s)", getattr(self.fn, "__qualname__", self.fn))
             try:
                 self.signals.error.emit(str(e))
             except Exception:

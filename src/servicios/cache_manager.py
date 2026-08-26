@@ -1,10 +1,13 @@
 import json
+import logging
 import time
 from pathlib import Path
 from typing import Optional, Dict, Any
 from dataclasses import asdict
 
 from config import CACHE_DIR, CACHE_TTL_SECONDS
+
+logger = logging.getLogger(__name__)
 from src.modelos.clima_datos import (
     Ubicacion,
     CondicionClimatica,
@@ -37,7 +40,7 @@ class CacheManager:
             with open(archivo, "w", encoding="utf-8") as f:
                 json.dump(payload, f, ensure_ascii=False, indent=2)
         except Exception:
-            pass
+            logger.warning("No se pudo guardar caché en %s", archivo, exc_info=True)
 
     def obtener_reporte(self, lat: float, lon: float, ignorar_ttl: bool = False) -> Optional[ReporteClimaCompleto]:
         """Recupera el reporte cacheado si no ha expirado el TTL."""
@@ -58,6 +61,7 @@ class CacheManager:
             data = payload.get("reporte", {})
             return self._reconstruir_reporte(data)
         except Exception:
+            logger.warning("Caché corrupto o ilegible en %s", archivo, exc_info=True)
             return None
 
     def _reconstruir_reporte(self, data: Dict[str, Any]) -> ReporteClimaCompleto:
