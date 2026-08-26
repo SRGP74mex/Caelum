@@ -2,7 +2,7 @@ import logging
 from typing import Dict, List, Optional
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor, QIcon, QLinearGradient, QPainter, QPaintEvent, QPixmap, QResizeEvent
+from PySide6.QtGui import QCloseEvent, QColor, QIcon, QLinearGradient, QPainter, QPaintEvent, QPixmap, QResizeEvent
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
@@ -35,6 +35,8 @@ from src.servicios.geocoding_service import GeocodingService
 from src.servicios.open_meteo_service import OpenMeteoService
 from src.servicios.worker import ejecutar_en_segundo_plano
 from src.utils.fecha_utils import FechaHelper
+from src.utils.unidades import aplicar_preferencias_unidades, establecer_preferencias_unidades, sufijo_temperatura
+from src.vistas.vista_ajustes import VistaAjustes
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +72,7 @@ class VentanaPrincipal(QMainWindow):
         self.geocoding_service = GeocodingService()
         self.cache_manager = CacheManager()
         self.config_manager = ConfigManager()
+        establecer_preferencias_unidades(self.config_manager.datos.get("unidades", {}))
 
         # Fondos fotográficos en memoria
         self.fondos_pixmap: Dict[str, QPixmap] = {}
@@ -150,6 +153,13 @@ class VentanaPrincipal(QMainWindow):
         self.btn_refrescar.clicked.connect(self.refrescar_clima)
         top_bar_layout.addWidget(self.btn_refrescar)
 
+        self.btn_ajustes = QPushButton("⚙️", self)
+        self.btn_ajustes.setFixedSize(38, 38)
+        self.btn_ajustes.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.btn_ajustes.setStyleSheet(self.btn_refrescar.styleSheet())
+        self.btn_ajustes.clicked.connect(self._abrir_ajustes)
+        top_bar_layout.addWidget(self.btn_ajustes)
+
         root_layout.addLayout(top_bar_layout)
 
         # 2. Área de desplazamiento
@@ -205,6 +215,35 @@ class VentanaPrincipal(QMainWindow):
         else:
             self.showNormal()
             self.activateWindow()
+
+    def _abrir_ajustes(self) -> None:
+        dialogo = VistaAjustes(self.config_manager, parent=self)
+        dialogo.ajustes_guardados.connect(self._aplicar_ajustes_actuales)
+        dialogo.exec()
+
+    def _aplicar_ajustes_actuales(self) -> None:
+        """Se ejecuta al guardar la pantalla de ajustes: aplica unidades y
+        visibilidad de bandeja sin necesidad de volver a pedir datos por red."""
+        establecer_preferencias_unidades(self.config_manager.datos.get("unidades", {}))
+
+        if self.config_manager.datos.get("mostrar_bandeja", True) and QSystemTrayIcon.isSystemTrayAvailable():
+            self.bandeja.show()
+        else:
+            self.bandeja.hide()
+
+        if self.ubicacion_actual:
+            reporte_crudo = self.cache_manager.obtener_reporte(
+                self.ubicacion_actual.latitud, self.ubicacion_actual.longitud, ignorar_ttl=True
+            )
+            if reporte_crudo:
+                self._aplicar_reporte(reporte_crudo)
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.config_manager.datos.get("cerrar_a_bandeja") and self.bandeja.isVisible():
+            event.ignore()
+            self.hide()
+        else:
+            event.accept()
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         super().resizeEvent(event)
@@ -311,7 +350,7 @@ class VentanaPrincipal(QMainWindow):
             prob_str = f" • 🌧️ {hora_obj.probabilidad_lluvia}% lluvia" if hora_obj.probabilidad_lluvia > 0 else ""
             uv_str = f" • UV: {hora_obj.indice_uv:.0f}" if hora_obj.indice_uv > 0 else ""
             self.lbl_detalle_hora.setText(
-                f"🕒 {hora_obj.hora_etiqueta}: {hora_obj.condicion.descripcion} • Sensación: {hora_obj.sensacion:.1f}°C{prob_str}{uv_str}"
+                f"🕒 {hora_obj.hora_etiqueta}: {hora_obj.condicion.descripcion} • Sensación: {hora_obj.sensacion:.1f}{sufijo_temperatura()}{prob_str}{uv_str}"
             )
 
             # Actualizar temperatura y condición en la cabecera en tiempo real
@@ -394,6 +433,10 @@ class VentanaPrincipal(QMainWindow):
 
     def _aplicar_reporte(self, reporte: ReporteClimaCompleto) -> None:
         try:
+            # El caché en disco siempre guarda unidades base (Celsius/km-h, ver
+            # cache_manager.guardar_reporte); la conversión a la unidad preferida
+            # del usuario se aplica solo aquí, justo antes de mostrar los datos.
+            reporte = aplicar_preferencias_unidades(reporte)
             self.reporte_actual = reporte
             self.dia_activo = reporte.dias_7d[0] if reporte.dias_7d else None
 

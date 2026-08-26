@@ -9,6 +9,7 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 from src.componentes.tarjeta_bento import TarjetaBento
 from src.modelos.clima_datos import ClimaActual
 from src.utils.fecha_utils import FechaHelper
+from src.utils.unidades import sufijo_temperatura, sufijo_viento
 
 # -------------------------------------------------------------------------
 # WIDGETS VISUALES ESPECIALIZADOS
@@ -171,7 +172,7 @@ class TarjetaViento(TarjetaBento):
         info_v.setContentsMargins(0, 0, 0, 0)
         info_v.setSpacing(2)
 
-        self.lbl_velocidad = QLabel("-- km/h", self)
+        self.lbl_velocidad = QLabel(f"-- {sufijo_viento()}", self)
         self.lbl_velocidad.setStyleSheet("font-size: 24px; font-weight: 600; color: #ffffff;")
         info_v.addWidget(self.lbl_velocidad)
 
@@ -191,9 +192,9 @@ class TarjetaViento(TarjetaBento):
         self.contenido_layout.addLayout(h_layout)
 
     def actualizar(self, actual: ClimaActual) -> None:
-        self.lbl_velocidad.setText(f"{round(actual.viento_velocidad)} km/h")
+        self.lbl_velocidad.setText(f"{round(actual.viento_velocidad)} {sufijo_viento()}")
         self.lbl_direccion.setText(f"{actual.viento_direccion_cardinal} ({actual.viento_direccion}°)")
-        raf_str = f"Ráfagas: {round(actual.viento_rafagas)} km/h" if actual.viento_rafagas else "Viento constante"
+        raf_str = f"Ráfagas: {round(actual.viento_rafagas)} {sufijo_viento()}" if actual.viento_rafagas else "Viento constante"
         self.lbl_rafagas.setText(raf_str)
         self.brujula.set_direccion(actual.viento_direccion)
 
@@ -233,14 +234,14 @@ class TarjetaHumedad(TarjetaBento):
         self.lbl_valor.setStyleSheet("font-size: 28px; font-weight: 600; color: #ffffff;")
         self.agregar_contenido(self.lbl_valor)
 
-        self.lbl_punto_rocio = QLabel("Punto de rocío: --°C", self)
+        self.lbl_punto_rocio = QLabel(f"Punto de rocío: --{sufijo_temperatura()}", self)
         self.lbl_punto_rocio.setWordWrap(True)
         self.lbl_punto_rocio.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.75);")
         self.agregar_contenido(self.lbl_punto_rocio)
 
     def actualizar(self, actual: ClimaActual) -> None:
         self.lbl_valor.setText(f"{actual.humedad_relativa}%")
-        rocio_str = f"{actual.punto_rocio:.1f}°C" if actual.punto_rocio is not None else "--"
+        rocio_str = f"{actual.punto_rocio:.1f}{sufijo_temperatura()}" if actual.punto_rocio is not None else "--"
         self.lbl_punto_rocio.setText(f"El punto de rocío es de {rocio_str} en este momento.")
 
 

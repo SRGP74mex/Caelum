@@ -56,6 +56,13 @@ class ConfigManager:
         except Exception:
             logger.warning("No se pudo guardar configuración en %s", self.ruta_archivo, exc_info=True)
 
+    def guardar_preferencias(self, unidades: Dict[str, str], mostrar_bandeja: bool, cerrar_a_bandeja: bool) -> None:
+        """Persiste las preferencias editables desde la pantalla de ajustes."""
+        self.datos["unidades"] = unidades
+        self.datos["mostrar_bandeja"] = mostrar_bandeja
+        self.datos["cerrar_a_bandeja"] = cerrar_a_bandeja
+        self._guardar_dict(self.datos)
+
     def guardar_ultima_ciudad(self, ubicacion: Ubicacion) -> None:
         """Guarda la última ciudad y la añade al historial de recientes."""
         ub_dict = asdict(ubicacion)

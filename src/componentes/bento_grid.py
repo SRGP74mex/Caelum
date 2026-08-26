@@ -12,6 +12,7 @@ from src.componentes.tarjetas_metricas import (
 )
 from src.modelos.clima_datos import ClimaActual, PronosticoDia, PronosticoHora
 from src.utils.fecha_utils import FechaHelper
+from src.utils.unidades import celsius_desde, convertir_temperatura, sufijo_temperatura, sufijo_viento
 
 
 class BentoGridWidget(QWidget):
@@ -77,7 +78,7 @@ class BentoGridWidget(QWidget):
         self.card_uv.lbl_desc.setText(desc)
 
         # 2. Viento
-        self.card_viento.lbl_velocidad.setText(f"{round(hora.viento_velocidad)} km/h")
+        self.card_viento.lbl_velocidad.setText(f"{round(hora.viento_velocidad)} {sufijo_viento()}")
         direcciones = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
                        "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
         idx = int((hora.viento_direccion + 11.25) / 22.5) % 16
@@ -92,8 +93,9 @@ class BentoGridWidget(QWidget):
 
         # 4. Humedad y Punto de Rocío
         self.card_humedad.lbl_valor.setText(f"{hora.humedad_relativa}%")
-        rocio = round(hora.temperatura - ((100 - hora.humedad_relativa) / 5.0), 1)
-        self.card_humedad.lbl_punto_rocio.setText(f"Punto de rocío: {rocio}°C a las {hora.hora_etiqueta}.")
+        rocio_c = celsius_desde(hora.temperatura) - ((100 - hora.humedad_relativa) / 5.0)
+        rocio = round(convertir_temperatura(rocio_c), 1)
+        self.card_humedad.lbl_punto_rocio.setText(f"Punto de rocío: {rocio}{sufijo_temperatura()} a las {hora.hora_etiqueta}.")
 
         # 5. Presión y Visibilidad
         self.card_presion.lbl_valor.setText(f"{hora.presion_hpa:.0f} hPa")

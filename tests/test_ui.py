@@ -26,6 +26,7 @@ from src.modelos.clima_datos import (
 )
 from src.servicios.config_manager import ConfigManager
 from src.vistas.ventana_principal import VentanaPrincipal
+from src.vistas.vista_ajustes import VistaAjustes
 
 
 class TestUIComponents(unittest.TestCase):
@@ -237,6 +238,38 @@ class TestUIComponents(unittest.TestCase):
         self.assertIsNotNone(bandeja.contextMenu())
         bandeja.actualizar_clima_tray(self.reporte)
         self.assertIn("Sevilla", bandeja.toolTip())
+
+    def test_vista_ajustes_guarda_preferencias(self):
+        import shutil
+        import tempfile
+        from pathlib import Path
+
+        temp_dir = Path(tempfile.mkdtemp())
+        cfg = ConfigManager(ruta_archivo=temp_dir / "config.json")
+
+        dialogo = VistaAjustes(cfg)
+        dialogo.combo_temperatura.setCurrentIndex(dialogo.combo_temperatura.findData("fahrenheit"))
+        dialogo.chk_cerrar_a_bandeja.setChecked(True)
+
+        guardados = []
+        dialogo.ajustes_guardados.connect(lambda: guardados.append(True))
+        dialogo._guardar()
+
+        self.assertEqual(cfg.datos["unidades"]["temperatura"], "fahrenheit")
+        self.assertTrue(cfg.datos["cerrar_a_bandeja"])
+        self.assertEqual(len(guardados), 1)
+
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def test_ventana_principal_close_event_sin_bandeja_acepta_cierre(self):
+        from PySide6.QtGui import QCloseEvent
+
+        ventana = VentanaPrincipal()
+        evento = QCloseEvent()
+        ventana.closeEvent(evento)
+        # Sin servidor gráfico (offscreen) la bandeja del sistema no está disponible,
+        # así que el cierre debe aceptarse siempre sin importar la preferencia.
+        self.assertTrue(evento.isAccepted())
 
 if __name__ == "__main__":
     unittest.main()
