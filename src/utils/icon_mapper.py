@@ -1,4 +1,3 @@
-from typing import Tuple
 from src.modelos.clima_datos import CondicionClimatica
 
 # Mapeo WMO -> (Descripción Español, Icono Día, Icono Noche, Tipo Animación)

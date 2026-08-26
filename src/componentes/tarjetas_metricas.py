@@ -1,15 +1,13 @@
 import math
 from datetime import datetime
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel
-from PySide6.QtCore import Qt, QPointF, QRectF
-from PySide6.QtGui import (
-    QPainter, QPen, QBrush, QLinearGradient,
-    QColor, QPainterPath, QFont, QPaintEvent
-)
 from typing import Optional
 
-from src.modelos.clima_datos import ClimaActual
+from PySide6.QtCore import QPointF, QRectF, Qt
+from PySide6.QtGui import QColor, QFont, QPainter, QPainterPath, QPaintEvent, QPen
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
+
 from src.componentes.tarjeta_bento import TarjetaBento
+from src.modelos.clima_datos import ClimaActual
 from src.utils.fecha_utils import FechaHelper
 
 # -------------------------------------------------------------------------

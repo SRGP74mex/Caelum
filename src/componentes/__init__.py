@@ -1,20 +1,20 @@
-from .tarjeta_bento import TarjetaBento
-from .cabecera_clima import CabeceraClima
+from .bandeja_sistema import BandejaSistema
 from .barra_busqueda import BarraBusqueda
+from .bento_grid import BentoGridWidget
+from .cabecera_clima import CabeceraClima
 from .curva_horaria import CurvaHorariaWidget, LienzoCurvaHoraria
 from .fondo_particulas import FondoParticulasWidget
-from .pronostico_semanal import PronosticoSemanalWidget, BarraRangoTermico, FilaDiaSemanal
-from .bento_grid import BentoGridWidget
-from .bandeja_sistema import BandejaSistema
+from .pronostico_semanal import BarraRangoTermico, FilaDiaSemanal, PronosticoSemanalWidget
+from .tarjeta_bento import TarjetaBento
 from .tarjetas_metricas import (
-    TarjetaIndiceUV,
-    TarjetaViento,
-    TarjetaSol,
-    TarjetaHumedad,
-    TarjetaPresion,
-    TarjetaVisibilidad,
-    BrujulaWidget,
     ArcoSolarWidget,
+    BrujulaWidget,
+    TarjetaHumedad,
+    TarjetaIndiceUV,
+    TarjetaPresion,
+    TarjetaSol,
+    TarjetaViento,
+    TarjetaVisibilidad,
 )
 
 __all__ = [

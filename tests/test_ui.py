@@ -1,31 +1,32 @@
-import unittest
 import os
 import sys
+import unittest
+
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import Qt
 
 # Configurar QPA headless para pruebas
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
 
-from src.modelos.clima_datos import (
-    Ubicacion,
-    CondicionClimatica,
-    ClimaActual,
-    PronosticoHora,
-    PronosticoDia,
-    ReporteClimaCompleto,
-)
-from src.componentes.tarjeta_bento import TarjetaBento
-from src.componentes.cabecera_clima import CabeceraClima
-from src.componentes.barra_busqueda import BarraBusqueda
-from src.componentes.curva_horaria import CurvaHorariaWidget, LienzoCurvaHoraria
-from src.componentes.fondo_particulas import FondoParticulasWidget
-from src.componentes.pronostico_semanal import PronosticoSemanalWidget, BarraRangoTermico
-from src.componentes.bento_grid import BentoGridWidget
-from src.componentes.tarjetas_metricas import BrujulaWidget, ArcoSolarWidget
 from src.componentes.bandeja_sistema import BandejaSistema
+from src.componentes.barra_busqueda import BarraBusqueda
+from src.componentes.bento_grid import BentoGridWidget
+from src.componentes.cabecera_clima import CabeceraClima
+from src.componentes.curva_horaria import CurvaHorariaWidget
+from src.componentes.fondo_particulas import FondoParticulasWidget
+from src.componentes.pronostico_semanal import PronosticoSemanalWidget
+from src.componentes.tarjeta_bento import TarjetaBento
+from src.componentes.tarjetas_metricas import ArcoSolarWidget, BrujulaWidget
+from src.modelos.clima_datos import (
+    ClimaActual,
+    CondicionClimatica,
+    PronosticoDia,
+    PronosticoHora,
+    ReporteClimaCompleto,
+    Ubicacion,
+)
 from src.servicios.config_manager import ConfigManager
 from src.vistas.ventana_principal import VentanaPrincipal
+
 
 class TestUIComponents(unittest.TestCase):
     @classmethod

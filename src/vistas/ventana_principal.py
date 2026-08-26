@@ -1,36 +1,40 @@
+import logging
+from typing import Dict, List, Optional
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QIcon, QLinearGradient, QPainter, QPaintEvent, QPixmap, QResizeEvent
 from PySide6.QtWidgets import (
-    QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QScrollArea, QPushButton, QLabel, QFrame, QSizePolicy,
-    QApplication, QSystemTrayIcon
-)
-from PySide6.QtCore import Qt, QSize, QRect
-from PySide6.QtGui import (
-    QPainter, QLinearGradient, QColor, QPaintEvent, QResizeEvent,
-    QIcon, QPixmap
+    QApplication,
+    QHBoxLayout,
+    QLabel,
+    QMainWindow,
+    QPushButton,
+    QScrollArea,
+    QSystemTrayIcon,
+    QVBoxLayout,
+    QWidget,
 )
 
-import logging
-from typing import Optional, List, Dict
-from pathlib import Path
 from config import (
-    APP_NAME, ASSETS_DIR, BACKGROUNDS_DIR, DEFAULT_CITY, DEFAULT_LATITUDE,
-    DEFAULT_LONGITUDE, DEFAULT_TIMEZONE
+    APP_NAME,
+    ASSETS_DIR,
+    BACKGROUNDS_DIR,
 )
-from src.modelos.clima_datos import Ubicacion, ReporteClimaCompleto, PronosticoHora, PronosticoDia
-from src.servicios.open_meteo_service import OpenMeteoService
-from src.servicios.geocoding_service import GeocodingService
-from src.servicios.cache_manager import CacheManager
-from src.servicios.config_manager import ConfigManager
-from src.servicios.worker import ejecutar_en_segundo_plano
-from src.utils.fecha_utils import FechaHelper
-from src.componentes.cabecera_clima import CabeceraClima
+from src.componentes.bandeja_sistema import BandejaSistema
 from src.componentes.barra_busqueda import BarraBusqueda
-from src.componentes.tarjeta_bento import TarjetaBento
+from src.componentes.bento_grid import BentoGridWidget
+from src.componentes.cabecera_clima import CabeceraClima
 from src.componentes.curva_horaria import CurvaHorariaWidget
 from src.componentes.fondo_particulas import FondoParticulasWidget
 from src.componentes.pronostico_semanal import PronosticoSemanalWidget
-from src.componentes.bento_grid import BentoGridWidget
-from src.componentes.bandeja_sistema import BandejaSistema
+from src.componentes.tarjeta_bento import TarjetaBento
+from src.modelos.clima_datos import PronosticoDia, PronosticoHora, ReporteClimaCompleto, Ubicacion
+from src.servicios.cache_manager import CacheManager
+from src.servicios.config_manager import ConfigManager
+from src.servicios.geocoding_service import GeocodingService
+from src.servicios.open_meteo_service import OpenMeteoService
+from src.servicios.worker import ejecutar_en_segundo_plano
+from src.utils.fecha_utils import FechaHelper
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
-from src.modelos.clima_datos import Ubicacion, ReporteClimaCompleto
+
+from src.modelos.clima_datos import ReporteClimaCompleto, Ubicacion
+
 
 class IWeatherProvider(ABC):
     """Interfaz abstracta para proveedores de datos meteorológicos."""

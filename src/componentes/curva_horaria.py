@@ -1,10 +1,9 @@
-from PySide6.QtWidgets import QWidget, QScrollArea, QHBoxLayout, QVBoxLayout, QLabel
-from PySide6.QtCore import Qt, QPointF, QRectF, Signal
-from PySide6.QtGui import (
-    QPainter, QPen, QBrush, QLinearGradient,
-    QColor, QPainterPath, QFont, QPaintEvent, QMouseEvent
-)
 from typing import List, Optional
+
+from PySide6.QtCore import QPointF, QRectF, Qt, Signal
+from PySide6.QtGui import QBrush, QColor, QFont, QLinearGradient, QMouseEvent, QPainter, QPainterPath, QPaintEvent, QPen
+from PySide6.QtWidgets import QScrollArea, QWidget
+
 from src.modelos.clima_datos import PronosticoHora
 
 # Mapeo de animación/icono a emoji ilustrativo
@@ -79,9 +78,7 @@ class LienzoCurvaHoraria(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setRenderHint(QPainter.RenderHint.TextAntialiasing)
 
-        w = self.width()
         h = self.height()
-        n = len(self.horas)
 
         temps = [h_obj.temperatura for h_obj in self.horas]
         min_temp, max_temp = min(temps), max(temps)

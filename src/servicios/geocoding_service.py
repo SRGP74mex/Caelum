@@ -1,15 +1,15 @@
-import re
 import logging
-from typing import List, Optional
+import re
+from typing import List
+
 from config import (
-    OPEN_METEO_GEOCODING_URL,
-    GEOLOCATION_IP_API,
     DEFAULT_CITY,
     DEFAULT_LATITUDE,
     DEFAULT_LONGITUDE,
     DEFAULT_TIMEZONE,
+    LANGUAGE,
+    OPEN_METEO_GEOCODING_URL,
     REQUEST_TIMEOUT,
-    LANGUAGE
 )
 from src.modelos.clima_datos import Ubicacion
 from src.servicios.http_session import sesion_http

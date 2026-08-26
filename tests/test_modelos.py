@@ -1,13 +1,12 @@
 import unittest
+
 from src.modelos.clima_datos import (
-    Ubicacion,
-    CondicionClimatica,
     ClimaActual,
-    PronosticoHora,
-    PronosticoDia,
     ReporteClimaCompleto,
+    Ubicacion,
 )
 from src.utils.icon_mapper import IconMapper
+
 
 class TestModelosClima(unittest.TestCase):
     def setUp(self):

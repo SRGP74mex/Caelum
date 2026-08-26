@@ -1,14 +1,13 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame
-from PySide6.QtCore import Qt, QPointF, QRectF, Signal
-from PySide6.QtGui import (
-    QPainter, QPen, QBrush, QLinearGradient, QColor, QFont,
-    QPaintEvent, QMouseEvent
-)
 from typing import List, Optional
 
-from src.modelos.clima_datos import PronosticoDia
-from src.componentes.tarjeta_bento import TarjetaBento
+from PySide6.QtCore import QPointF, QRectF, Qt, Signal
+from PySide6.QtGui import QBrush, QColor, QLinearGradient, QMouseEvent, QPainter, QPaintEvent, QPen
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
+
 from src.componentes.curva_horaria import EMOJIS_CLIMA
+from src.componentes.tarjeta_bento import TarjetaBento
+from src.modelos.clima_datos import PronosticoDia
+
 
 class BarraRangoTermico(QWidget):
     """

@@ -1,14 +1,24 @@
+from typing import List, Optional
+
+from PySide6.QtCore import Qt, QTimer, Signal
+from PySide6.QtGui import QFocusEvent, QKeyEvent
 from PySide6.QtWidgets import (
-    QWidget, QFrame, QHBoxLayout, QVBoxLayout, QLineEdit,
-    QPushButton, QLabel, QListWidget, QListWidgetItem
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
 )
-from PySide6.QtCore import Qt, Signal, QTimer
-from PySide6.QtGui import QKeyEvent, QFocusEvent
-from typing import Optional, List
+
 from src.modelos.clima_datos import Ubicacion
-from src.servicios.geocoding_service import GeocodingService
 from src.servicios.config_manager import ConfigManager
+from src.servicios.geocoding_service import GeocodingService
 from src.servicios.worker import ejecutar_en_segundo_plano
+
 
 class InputBusqueda(QLineEdit):
     """QLineEdit con soporte para capturar teclas y foco."""

@@ -1,7 +1,8 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QHBoxLayout, QLabel, QWidget, QGraphicsDropShadowEffect
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
 from typing import Optional
+
+from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QFrame, QGraphicsDropShadowEffect, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+
 
 class TarjetaBento(QFrame):
     """

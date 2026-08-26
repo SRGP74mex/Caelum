@@ -1,11 +1,13 @@
-from PySide6.QtWidgets import QSystemTrayIcon, QMenu, QWidget
-from PySide6.QtCore import Qt, Signal, QRectF
-from PySide6.QtGui import QIcon, QPixmap, QPainter, QColor, QFont, QAction
 from typing import Optional
 
+from PySide6.QtCore import QRectF, Qt, Signal
+from PySide6.QtGui import QAction, QColor, QFont, QIcon, QPainter, QPixmap
+from PySide6.QtWidgets import QMenu, QSystemTrayIcon, QWidget
+
 from config import APP_NAME
-from src.modelos.clima_datos import ReporteClimaCompleto
 from src.componentes.curva_horaria import EMOJIS_CLIMA
+from src.modelos.clima_datos import ReporteClimaCompleto
+
 
 class BandejaSistema(QSystemTrayIcon):
     """

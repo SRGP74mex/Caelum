@@ -1,17 +1,18 @@
-from PySide6.QtWidgets import QWidget, QGridLayout
-from PySide6.QtCore import Qt
 from typing import Optional
 
-from src.modelos.clima_datos import ClimaActual, PronosticoHora, PronosticoDia
-from src.utils.fecha_utils import FechaHelper
+from PySide6.QtWidgets import QGridLayout, QWidget
+
 from src.componentes.tarjetas_metricas import (
-    TarjetaIndiceUV,
-    TarjetaViento,
-    TarjetaSol,
     TarjetaHumedad,
+    TarjetaIndiceUV,
     TarjetaPresion,
+    TarjetaSol,
+    TarjetaViento,
     TarjetaVisibilidad,
 )
+from src.modelos.clima_datos import ClimaActual, PronosticoDia, PronosticoHora
+from src.utils.fecha_utils import FechaHelper
+
 
 class BentoGridWidget(QWidget):
     """

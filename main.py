@@ -1,20 +1,21 @@
-import sys
-import os
-import logging
 import faulthandler
-from pathlib import Path
+import logging
+import os
+import sys
+
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import Qt
 
 # Habilitar faulthandler para capturar trazas de diagnóstico
 faulthandler.enable()
 
-from src.utils.logging_config import configurar_logging
-configurar_logging()
+from src.utils.logging_config import configurar_logging  # noqa: E402
+
+configurar_logging()  # Debe ejecutarse antes de importar el resto para capturar sus logs
 logger = logging.getLogger(__name__)
 
-from config import STYLES_DIR, APP_NAME, APP_ID
-from src.vistas.ventana_principal import VentanaPrincipal
+from config import APP_NAME, STYLES_DIR  # noqa: E402
+from src.vistas.ventana_principal import VentanaPrincipal  # noqa: E402
+
 
 def excepthook(exc_type, exc_value, exc_tb):
     logger.critical("Excepción no controlada interceptada", exc_info=(exc_type, exc_value, exc_tb))

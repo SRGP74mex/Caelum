@@ -1,5 +1,6 @@
-from datetime import datetime, date
+from datetime import datetime
 from typing import Optional, Tuple
+
 from dateutil import parser
 from hijri_converter import Gregorian
 

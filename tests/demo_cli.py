@@ -4,17 +4,18 @@ from pathlib import Path
 # Agregar directorio raíz al path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from src.modelos.clima_datos import Ubicacion
+from src.servicios.cache_manager import CacheManager
 from src.servicios.geocoding_service import GeocodingService
 from src.servicios.open_meteo_service import OpenMeteoService
-from src.servicios.cache_manager import CacheManager
 from src.utils.fecha_utils import FechaHelper
-from src.modelos.clima_datos import Ubicacion
+
 
 def main():
     ciudad_busqueda = sys.argv[1] if len(sys.argv) > 1 else "Bogotá"
-    print(f"\n🌤️  =======================================================")
-    print(f"   WEATHERAPP LINUX - DEMOSTRACIÓN DEL MOTOR (SPRINT 1)")
-    print(f"=======================================================\n")
+    print("\n🌤️  =======================================================")
+    print("   WEATHERAPP LINUX - DEMOSTRACIÓN DEL MOTOR (SPRINT 1)")
+    print("=======================================================\n")
 
     geo = GeocodingService()
     print(f"🔍 Buscando ubicación: '{ciudad_busqueda}'...")
@@ -34,12 +35,12 @@ def main():
     # Verificar caché
     reporte = cache.obtener_reporte(ubicacion.latitud, ubicacion.longitud)
     if reporte:
-        print(f"⚡ Datos cargados desde CACHÉ local (0 ms de latencia)")
+        print("⚡ Datos cargados desde CACHÉ local (0 ms de latencia)")
     else:
-        print(f"🌐 Consultando Open-Meteo API en vivo...")
+        print("🌐 Consultando Open-Meteo API en vivo...")
         reporte = service.obtener_reporte_completo(ubicacion)
         cache.guardar_reporte(reporte)
-        print(f"💾 Respuesta guardada en caché local")
+        print("💾 Respuesta guardada en caché local")
 
     greg, hijri = FechaHelper.fecha_dual_completa()
     act = reporte.actual

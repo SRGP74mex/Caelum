@@ -1,22 +1,23 @@
 import logging
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+
 from dateutil import parser
 
 from config import OPEN_METEO_BASE_URL, REQUEST_TIMEOUT
-from src.servicios.http_session import sesion_http
-
-logger = logging.getLogger(__name__)
 from src.modelos.clima_datos import (
-    Ubicacion,
     ClimaActual,
-    PronosticoHora,
     PronosticoDia,
+    PronosticoHora,
     ReporteClimaCompleto,
+    Ubicacion,
 )
 from src.servicios.base_provider import IWeatherProvider
-from src.utils.icon_mapper import IconMapper
+from src.servicios.http_session import sesion_http
 from src.utils.fecha_utils import FechaHelper
+from src.utils.icon_mapper import IconMapper
+
+logger = logging.getLogger(__name__)
 
 class OpenMeteoService(IWeatherProvider):
     def __init__(self, timeout: int = REQUEST_TIMEOUT):
