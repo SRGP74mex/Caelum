@@ -1,0 +1,213 @@
+{
+  "app": {
+    "nombre": "Weather Linux",
+    "subtitulo": "Wettervorhersage"
+  },
+  "comun": {
+    "hoy": "Heute",
+    "ayer": "Gestern",
+    "manana": "Morgen",
+    "ahora": "Jetzt",
+    "cargando": "Daten werden geladen...",
+    "error_red": "Keine Internetverbindung",
+    "actualizado": "Aktualisiert"
+  },
+  "dias": {
+    "hoy": "Heute",
+    "lun": "Montag",
+    "mar": "Dienstag",
+    "mie": "Mittwoch",
+    "jue": "Donnerstag",
+    "vie": "Freitag",
+    "sab": "Samstag",
+    "dom": "Sonntag"
+  },
+  "dias_cortos": {
+    "hoy": "Heute",
+    "lun": "Mo",
+    "mar": "Di",
+    "mie": "Mi",
+    "jue": "Do",
+    "vie": "Fr",
+    "sab": "Sa",
+    "dom": "So"
+  },
+  "meses": {
+    "1": "Januar", "2": "Februar", "3": "März", "4": "April",
+    "5": "Mai", "6": "Juni", "7": "Juli", "8": "August",
+    "9": "September", "10": "Oktober", "11": "November", "12": "Dezember"
+  },
+  "meses_cortos": {
+    "1": "Jan", "2": "Feb", "3": "März", "4": "Apr",
+    "5": "Mai", "6": "Juni", "7": "Juli", "8": "Aug",
+    "9": "Sept", "10": "Okt", "11": "Nov", "12": "Dez"
+  },
+  "hijri": {
+    "1": "Muharram", "2": "Safar", "3": "Rabi' al-Awwal", "4": "Rabi' al-Thani",
+    "5": "Dschumada al-Ula", "6": "Dschumada al-Achira", "7": "Radschab", "8": "Scha'ban",
+    "9": "Ramadan", "10": "Schawwal", "11": "Dhu al-Qa'da", "12": "Dhu al-Hiddscha",
+    "sufijo": "AH"
+  },
+  "condiciones": {
+    "0": "Klarer Himmel",
+    "1": "Überwiegend klar",
+    "2": "Teilweise bewölkt",
+    "3": "Bedeckt",
+    "45": "Nebel",
+    "48": "Reifnebel",
+    "51": "Leichter Nieselregen",
+    "53": "Mäßiger Nieselregen",
+    "55": "Dichter Nieselregen",
+    "56": "Leichter gefrierender Nieselregen",
+    "57": "Dichter gefrierender Nieselregen",
+    "61": "Leichter Regen",
+    "63": "Mäßiger Regen",
+    "65": "Starker Regen",
+    "66": "Leichter gefrierender Regen",
+    "67": "Starker gefrierender Regen",
+    "71": "Leichter Schneefall",
+    "73": "Mäßiger Schneefall",
+    "75": "Starker Schneefall",
+    "77": "Schneegriesel",
+    "80": "Leichte Regenschauer",
+    "81": "Mäßige Regenschauer",
+    "82": "Heftige Regenschauer",
+    "85": "Leichte Schneeschauer",
+    "86": "Starke Schneeschauer",
+    "95": "Gewitter",
+    "96": "Gewitter mit leichtem Hagel",
+    "99": "Gewitter mit schwerem Hagel"
+  },
+  "cabecera": {
+    "sensacion": "Gefühlt",
+    "max": "Max",
+    "min": "Min",
+    "hoy_rango": "Max: {max}° • Min: {min}°",
+    "esperados": "{mm} mm erwartet"
+  },
+  "pronostico": {
+    "titulo_horas": "STUNDENVORHERSAGE",
+    "titulo_semanal": "7-TAGE-VORHERSAGE"
+  },
+  "bento": {
+    "indice_uv": "UV-INDEX",
+    "viento": "WIND",
+    "sol": "SONNENAUFGANG / UNTERGANG",
+    "luna": "MONDFORM",
+    "calidad_aire": "LUFTQUALITÄT",
+    "humedad": "LUFTFEUCHTIGKEIT",
+    "visibilidad": "SICHTWEITE",
+    "presion": "LUFTDRUCK"
+  },
+  "uv": {
+    "bajo": "Niedrig",
+    "moderado": "Mäßig",
+    "alto": "Hoch",
+    "muy_alto": "Sehr Hoch",
+    "extremo": "Extrem",
+    "desc_bajo": "Sicheres Niveau. Genieße die Zeit im Freien.",
+    "desc_moderado": "Sonnenbrille und Sonnenschutz verwenden.",
+    "desc_alto": "Sonnenschutz zwischen 10:00 und 16:00 erforderlich.",
+    "desc_muy_alto": "Zusätzlicher Schutz nötig. Schatten suchen.",
+    "desc_extremo": "Höchste Vorsicht. Direkte Sonne meiden."
+  },
+  "viento": {
+    "direccion": "Richtung: {dir}",
+    "rafagas": "Böen: {vel}",
+    "constante": "Gleichmäßiger Wind"
+  },
+  "sol": {
+    "ocaso_hoy": "Untergang: {hora}",
+    "amanecer_fue": "Sonnenaufgang heute war um {hora}",
+    "amanecer_hoy": "Aufgang: {hora}",
+    "ocaso_fue": "Sonnenuntergang war um {hora}",
+    "puesta": "Sonnenuntergang: {hora}"
+  },
+  "luna": {
+    "nueva": "Neumond",
+    "creciente_fertil": "Zunehmende Sichel",
+    "cuarto_creciente": "Erstes Viertel",
+    "gibosa_creciente": "Zunehmender Mond",
+    "llena": "Vollmond",
+    "gibosa_menguante": "Abnehmender Mond",
+    "cuarto_menguante": "Letztes Viertel",
+    "menguante": "Abnehmende Sichel",
+    "iluminacion": "Beleuchtung: {pct}% ({dias}T)",
+    "salida_puesta": "Aufgang: {salida} • Untergang: {puesta}",
+    "prox_llena": "Nächster Vollmond: {fecha}"
+  },
+  "calidad_aire": {
+    "buena": "Hervorragend",
+    "moderada": "Akzeptabel",
+    "sensible": "Sensibel",
+    "insalubre": "Ungesund",
+    "muy_insalubre": "Sehr Ungesund",
+    "peligrosa": "Gefährlich",
+    "desc_buena": "Optimale Luftqualität für Aktivitäten im Freien.",
+    "desc_moderada": "Akzeptabel. Sehr empfindliche Personen sollten vorsichtig sein.",
+    "desc_sensible": "Empfindliche Gruppen können Atembeschwerden spüren.",
+    "desc_insalubre": "Mögliche gesundheitliche Auswirkungen für alle.",
+    "desc_muy_insalubre": "Gesundheitswarnung: Anstrengung im Freien meiden.",
+    "desc_peligrosa": "Gesundheitsnotstand: Im Innenbereich bleiben.",
+    "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
+  },
+  "humedad": {
+    "rocio_desc": "Der Taupunkt liegt derzeit bei {rocio}."
+  },
+  "visibilidad": {
+    "excelente": "Hervorragende, glasklare Sicht.",
+    "moderada": "Leichter Dunst am Horizont.",
+    "reducida": "Eingeschränkte Sicht durch Nebel/Niederschlag."
+  },
+  "presion": {
+    "baja": "Tiefdruck • Mögliche Bewölkung/Regen",
+    "alta": "Hochdruck • Stabiles, klares Wetter",
+    "normal": "Normaler Luftdruck"
+  },
+  "alertas": {
+    "inundacion_titulo": "🌊 Sturmregen- / Überschwemmungswarnung",
+    "inundacion_desc": "Extremer Niederschlag von {mm} mm erwartet. Hohe Gefahr von lokalen Überflutungen.",
+    "calor_titulo": "🔥 Extreme Hitzewarnung",
+    "calor_desc": "Gefährliche Temperaturen bis zu {temp}°C (Gefühlt: {sens}°C). Viel trinken und Schatten suchen.",
+    "tormenta_titulo": "⛈️ Schwere Gewitter- und Hagelwarnung",
+    "tormenta_desc": "Starke Blitzaktivität und Hagel möglich. Unverzüglich Schutz suchen.",
+    "viento_titulo": "💨 Sturmwarnung / Orkanartige Böen",
+    "viento_desc": "Sturmböen bis zu {vel}. Lose Gegenstände im Freien sichern.",
+    "uv_titulo": "☀️ Extreme UV-Strahlungswarnung",
+    "uv_desc": "UV-Index von {uv} (Extrem). Direkte Sonnenexposition meiden."
+  },
+  "busqueda": {
+    "placeholder": "Stadt, Gemeinde oder Ort suchen...",
+    "reciente": "🕒 Zuletzt",
+    "mi_ubicacion": "📍 Mein Standort (GeoIP)",
+    "cercana": "🏙️ In der Nähe",
+    "no_encontrado": "⚠️ Keine Ergebnisse für '{query}'"
+  },
+  "ajustes": {
+    "titulo": "Einstellungen",
+    "pestana_general": "Allgemein",
+    "pestana_unidades": "Einheiten",
+    "pestana_notificaciones": "Benachrichtigungen",
+    "idioma": "Oberflächensprache",
+    "temperatura": "Temperatur",
+    "viento": "Windgeschwindigkeit",
+    "presion": "Luftdruck",
+    "bandeja": "Benachrichtigungsfeld (Tray)",
+    "mostrar_bandeja": "Symbol in der Taskleiste anzeigen",
+    "cerrar_a_bandeja": "Beim Schließen in die Taskleiste minimieren",
+    "activar_notificaciones": "Desktop-Wetterwarnungen aktivieren",
+    "alerta_lluvia": "Meldung bei Regenbeginn / -ende",
+    "alerta_tormenta": "Schwere Unwetterwarnungen",
+    "alerta_atardecer": "Erinnerung zum Sonnenuntergang",
+    "guardar": "Speichern",
+    "cancelar": "Abbrechen"
+  },
+  "bandeja": {
+    "mostrar": "Weather Linux anzeigen",
+    "ocultar": "Ausblenden",
+    "refrescar": "Jetzt aktualisieren",
+    "ajustes": "Einstellungen...",
+    "salir": "Beenden"
+  }
+}
+

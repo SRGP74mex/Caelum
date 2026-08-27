@@ -1,0 +1,213 @@
+{
+  "app": {
+    "nombre": "Weather Linux",
+    "subtitulo": "Weather forecast"
+  },
+  "comun": {
+    "hoy": "Today",
+    "ayer": "Yesterday",
+    "manana": "Tomorrow",
+    "ahora": "Now",
+    "cargando": "Loading data...",
+    "error_red": "No internet connection",
+    "actualizado": "Updated"
+  },
+  "dias": {
+    "hoy": "Today",
+    "lun": "Monday",
+    "mar": "Tuesday",
+    "mie": "Wednesday",
+    "jue": "Thursday",
+    "vie": "Friday",
+    "sab": "Saturday",
+    "dom": "Sunday"
+  },
+  "dias_cortos": {
+    "hoy": "Today",
+    "lun": "Mon",
+    "mar": "Tue",
+    "mie": "Wed",
+    "jue": "Thu",
+    "vie": "Fri",
+    "sab": "Sat",
+    "dom": "Sun"
+  },
+  "meses": {
+    "1": "January", "2": "February", "3": "March", "4": "April",
+    "5": "May", "6": "June", "7": "July", "8": "August",
+    "9": "September", "10": "October", "11": "November", "12": "December"
+  },
+  "meses_cortos": {
+    "1": "Jan", "2": "Feb", "3": "Mar", "4": "Apr",
+    "5": "May", "6": "Jun", "7": "Jul", "8": "Aug",
+    "9": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
+  },
+  "hijri": {
+    "1": "Muharram", "2": "Safar", "3": "Rabi' al-Awwal", "4": "Rabi' al-Thani",
+    "5": "Jumada al-Awwal", "6": "Jumada al-Thani", "7": "Rajab", "8": "Sha'ban",
+    "9": "Ramadan", "10": "Shawwal", "11": "Dhu al-Qi'dah", "12": "Dhu al-Hijjah",
+    "sufijo": "AH"
+  },
+  "condiciones": {
+    "0": "Clear sky",
+    "1": "Mainly clear",
+    "2": "Partly cloudy",
+    "3": "Overcast",
+    "45": "Fog",
+    "48": "Depositing rime fog",
+    "51": "Light drizzle",
+    "53": "Moderate drizzle",
+    "55": "Dense drizzle",
+    "56": "Light freezing drizzle",
+    "57": "Dense freezing drizzle",
+    "61": "Slight rain",
+    "63": "Moderate rain",
+    "65": "Heavy rain",
+    "66": "Light freezing rain",
+    "67": "Heavy freezing rain",
+    "71": "Slight snow fall",
+    "73": "Moderate snow fall",
+    "75": "Heavy snow fall",
+    "77": "Snow grains",
+    "80": "Slight rain showers",
+    "81": "Moderate rain showers",
+    "82": "Violent rain showers",
+    "85": "Slight snow showers",
+    "86": "Heavy snow showers",
+    "95": "Thunderstorm",
+    "96": "Thunderstorm with slight hail",
+    "99": "Thunderstorm with heavy hail"
+  },
+  "cabecera": {
+    "sensacion": "Feels like",
+    "max": "High",
+    "min": "Low",
+    "hoy_rango": "H: {max}° • L: {min}°",
+    "esperados": "{mm} mm expected"
+  },
+  "pronostico": {
+    "titulo_horas": "HOURLY FORECAST",
+    "titulo_semanal": "7-DAY FORECAST"
+  },
+  "bento": {
+    "indice_uv": "UV INDEX",
+    "viento": "WIND",
+    "sol": "SUNRISE / SUNSET",
+    "luna": "MOON PHASE",
+    "calidad_aire": "AIR QUALITY",
+    "humedad": "HUMIDITY",
+    "visibilidad": "VISIBILITY",
+    "presion": "PRESSURE"
+  },
+  "uv": {
+    "bajo": "Low",
+    "moderado": "Moderate",
+    "alto": "High",
+    "muy_alto": "Very High",
+    "extremo": "Extreme",
+    "desc_bajo": "Safe level. Enjoy the outdoors.",
+    "desc_moderado": "Wear sunglasses and sunscreen.",
+    "desc_alto": "Sun protection needed between 10:00 and 16:00.",
+    "desc_muy_alto": "Extra protection needed. Seek shade.",
+    "desc_extremo": "Take full precautions. Avoid midday sun."
+  },
+  "viento": {
+    "direccion": "Direction: {dir}",
+    "rafagas": "Gusts: {vel}",
+    "constante": "Steady wind"
+  },
+  "sol": {
+    "ocaso_hoy": "Sunset: {hora}",
+    "amanecer_fue": "Sunrise today was at {hora}",
+    "amanecer_hoy": "Sunrise: {hora}",
+    "ocaso_fue": "Sunset was at {hora}",
+    "puesta": "Sunset: {hora}"
+  },
+  "luna": {
+    "nueva": "New Moon",
+    "creciente_fertil": "Waxing Crescent",
+    "cuarto_creciente": "First Quarter",
+    "gibosa_creciente": "Waxing Gibbous",
+    "llena": "Full Moon",
+    "gibosa_menguante": "Waning Gibbous",
+    "cuarto_menguante": "Last Quarter",
+    "menguante": "Waning Crescent",
+    "iluminacion": "Illumination: {pct}% ({dias}d)",
+    "salida_puesta": "Moonrise: {salida} • Moonset: {puesta}",
+    "prox_llena": "Next full moon: {fecha}"
+  },
+  "calidad_aire": {
+    "buena": "Good",
+    "moderada": "Moderate",
+    "sensible": "Sensitive Groups",
+    "insalubre": "Unhealthy",
+    "muy_insalubre": "Very Unhealthy",
+    "peligrosa": "Hazardous",
+    "desc_buena": "Air quality is satisfactory. Ideal for outdoor activities.",
+    "desc_moderada": "Air quality is acceptable. Very sensitive people should take care.",
+    "desc_sensible": "Sensitive groups may experience respiratory symptoms.",
+    "desc_insalubre": "General public may experience adverse health effects.",
+    "desc_muy_insalubre": "Health alert: Avoid strenuous outdoor exertion.",
+    "desc_peligrosa": "Health warning of emergency conditions. Stay indoors.",
+    "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
+  },
+  "humedad": {
+    "rocio_desc": "The dew point is {rocio} right now."
+  },
+  "visibilidad": {
+    "excelente": "Perfect, crystal-clear visibility.",
+    "moderada": "Slight haze on the horizon.",
+    "reducida": "Visibility reduced by mist or precipitation."
+  },
+  "presion": {
+    "baja": "Low pressure • Possible clouds/rain",
+    "alta": "High pressure • Stable clear weather",
+    "normal": "Standard atmospheric pressure"
+  },
+  "alertas": {
+    "inundacion_titulo": "🌊 Flash Flood / Torrential Rain Alert",
+    "inundacion_desc": "Extreme rainfall expected: {mm} mm. High risk of local flooding and hazardous roads.",
+    "calor_titulo": "🔥 Extreme Heatwave Alert",
+    "calor_desc": "Dangerous temperatures up to {temp}°C (Feels like: {sens}°C). Stay hydrated and in shade.",
+    "tormenta_titulo": "⛈️ Severe Thunderstorm & Hail Alert",
+    "tormenta_desc": "Intense lightning and potential hail. Seek sturdy indoor shelter immediately.",
+    "viento_titulo": "💨 Violent Wind Gale Alert",
+    "viento_desc": "Damaging wind gusts up to {vel}. Secure loose outdoor items.",
+    "uv_titulo": "☀️ Extreme UV Radiation Alert",
+    "uv_desc": "UV Index reaching {uv} (Extreme). Avoid direct unprotected sun exposure."
+  },
+  "busqueda": {
+    "placeholder": "Search city, municipality or location...",
+    "reciente": "🕒 Recent",
+    "mi_ubicacion": "📍 My Location (GeoIP)",
+    "cercana": "🏙️ Nearby",
+    "no_encontrado": "⚠️ No results for '{query}'"
+  },
+  "ajustes": {
+    "titulo": "Settings",
+    "pestana_general": "General",
+    "pestana_unidades": "Units",
+    "pestana_notificaciones": "Notifications",
+    "idioma": "Interface language",
+    "temperatura": "Temperature",
+    "viento": "Wind speed",
+    "presion": "Atmospheric pressure",
+    "bandeja": "System Tray",
+    "mostrar_bandeja": "Show icon in system tray",
+    "cerrar_a_bandeja": "Minimize to system tray on window close",
+    "activar_notificaciones": "Enable desktop weather notifications",
+    "alerta_lluvia": "Rain start/stop alerts",
+    "alerta_tormenta": "Severe weather alerts",
+    "alerta_atardecer": "Sunset reminders",
+    "guardar": "Save",
+    "cancelar": "Cancel"
+  },
+  "bandeja": {
+    "mostrar": "Show Weather Linux",
+    "ocultar": "Hide",
+    "refrescar": "Refresh now",
+    "ajustes": "Settings...",
+    "salir": "Quit"
+  }
+}
+

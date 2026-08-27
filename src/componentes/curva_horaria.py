@@ -28,14 +28,15 @@ EMOJIS_CLIMA = {
 
 class LienzoCurvaHoraria(QWidget):
     """
-    Lienzo interactivo que dibuja la tira de 24 horas y la curva Bézier de temperatura.
-    Permite selección interactiva tanto por clic como por deslizamiento (hover).
+    Lienzo de dibujo personalizado que renderiza una curva suave Bézier de temperatura,
+    iconos, etiquetas de hora y probabilidad de lluvia con selección por clic.
     """
-    hora_hovered = Signal(object) # Emite PronosticoHora o None
+    hora_seleccionada = Signal(object) # Emite PronosticoHora al hacer clic
 
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
         self.horas: List[PronosticoHora] = []
+        self.selected_index: Optional[int] = 0
         self.hover_index: Optional[int] = None
         self.setMouseTracking(True)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -49,7 +50,8 @@ class LienzoCurvaHoraria(QWidget):
 
     def set_datos(self, horas: List[PronosticoHora]) -> None:
         self.horas = horas
-        self.hover_index = 0 if horas else None # Seleccionar primera hora por defecto
+        self.selected_index = 0 if horas else None
+        self.hover_index = None
         self.setFixedWidth(len(horas) * self.col_width)
         self.update()
 
@@ -59,15 +61,18 @@ class LienzoCurvaHoraria(QWidget):
         if 0 <= idx < len(self.horas):
             if self.hover_index != idx:
                 self.hover_index = idx
-                self.hora_hovered.emit(self.horas[idx])
                 self.update()
+
+    def leaveEvent(self, event) -> None:
+        self.hover_index = None
+        self.update()
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         x = event.position().x()
         idx = int(x // self.col_width)
         if 0 <= idx < len(self.horas):
-            self.hover_index = idx
-            self.hora_hovered.emit(self.horas[idx])
+            self.selected_index = idx
+            self.hora_seleccionada.emit(self.horas[idx])
             self.update()
 
     def paintEvent(self, event: QPaintEvent) -> None:
@@ -136,18 +141,24 @@ class LienzoCurvaHoraria(QWidget):
             col_x = i * self.col_width
             cx = puntos[i].x()
             cy = puntos[i].y()
+            es_seleccionado = (self.selected_index == i)
             es_hovered = (self.hover_index == i)
 
-            # Resaltado de fondo de columna seleccionada
-            if es_hovered:
+            # Resaltado de fondo de columna seleccionada o hover
+            if es_seleccionado:
                 painter.fillRect(
                     QRectF(col_x, 0, self.col_width, h),
-                    QColor(255, 255, 255, 32)
+                    QColor(255, 255, 255, 45)
+                )
+            elif es_hovered:
+                painter.fillRect(
+                    QRectF(col_x, 0, self.col_width, h),
+                    QColor(255, 255, 255, 20)
                 )
 
             # Hora
             painter.setFont(font_hora)
-            painter.setPen(QColor(255, 255, 255, 220 if not es_hovered else 255))
+            painter.setPen(QColor(255, 255, 255, 255 if es_seleccionado else 210))
             painter.drawText(
                 QRectF(col_x, self.margin_top, self.col_width, 16),
                 Qt.AlignmentFlag.AlignCenter,
@@ -174,20 +185,26 @@ class LienzoCurvaHoraria(QWidget):
                 )
 
             # Punto en la curva
-            if es_hovered:
+            if es_seleccionado:
                 painter.setPen(Qt.PenStyle.NoPen)
-                painter.setBrush(QColor(255, 255, 255, 110))
+                painter.setBrush(QColor(255, 255, 255, 120))
                 painter.drawEllipse(QPointF(cx, cy), 8, 8)
                 painter.setBrush(QColor(255, 255, 255, 255))
                 painter.drawEllipse(QPointF(cx, cy), 4.5, 4.5)
+            elif es_hovered:
+                painter.setPen(Qt.PenStyle.NoPen)
+                painter.setBrush(QColor(255, 255, 255, 80))
+                painter.drawEllipse(QPointF(cx, cy), 6, 6)
+                painter.setBrush(QColor(255, 255, 255, 230))
+                painter.drawEllipse(QPointF(cx, cy), 3.5, 3.5)
             else:
                 painter.setPen(Qt.PenStyle.NoPen)
-                painter.setBrush(QColor(255, 255, 255, 220))
+                painter.setBrush(QColor(255, 255, 255, 200))
                 painter.drawEllipse(QPointF(cx, cy), 3, 3)
 
             # Temperatura arriba del punto
             painter.setFont(font_temp)
-            painter.setPen(QColor(255, 255, 255, 240 if not es_hovered else 255))
+            painter.setPen(QColor(255, 255, 255, 255 if es_seleccionado else 230))
             painter.drawText(
                 QRectF(col_x, cy - 18, self.col_width, 16),
                 Qt.AlignmentFlag.AlignCenter,
@@ -232,7 +249,7 @@ class CurvaHorariaWidget(QScrollArea):
         """)
 
         self.lienzo = LienzoCurvaHoraria(self)
-        self.lienzo.hora_hovered.connect(self.hora_seleccionada)
+        self.lienzo.hora_seleccionada.connect(self.hora_seleccionada)
         self.setWidget(self.lienzo)
 
     def set_datos(self, horas: List[PronosticoHora]) -> None:

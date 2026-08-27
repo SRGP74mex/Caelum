@@ -1,6 +1,7 @@
 import os
 import sys
 import unittest
+from unittest.mock import patch
 
 from PySide6.QtWidgets import QApplication
 
@@ -79,9 +80,22 @@ class TestUIComponents(unittest.TestCase):
             dias_7d=[]
         )
 
+        self.patcher_geoip = patch(
+            "src.servicios.geocoding_service.GeocodingService.detectar_ubicacion_ip",
+            return_value=self.ubicacion
+        )
+        self.patcher_cercanas = patch(
+            "src.servicios.geocoding_service.GeocodingService.obtener_ciudades_cercanas",
+            return_value=[self.ubicacion]
+        )
+        self.patcher_geoip.start()
+        self.patcher_cercanas.start()
+
     def tearDown(self):
+        self.patcher_geoip.stop()
+        self.patcher_cercanas.stop()
         from PySide6.QtCore import QThreadPool
-        QThreadPool.globalInstance().waitForDone(200)
+        QThreadPool.globalInstance().waitForDone(500)
 
     def test_tarjeta_bento_creacion(self):
         tarjeta = TarjetaBento(titulo="Índice UV", icono="☀️")
@@ -118,12 +132,15 @@ class TestUIComponents(unittest.TestCase):
         self.assertTrue(barra.lista_sugerencias.isHidden())
 
     def test_ventana_principal_creacion(self):
-        ventana = VentanaPrincipal()
-        self.assertIsNotNone(ventana.cabecera)
-        self.assertIsNotNone(ventana.barra_busqueda)
-        self.assertIsNotNone(ventana.curva_horaria)
-        self.assertIsNotNone(ventana.fondo_particulas)
-        self.assertEqual(ventana.windowTitle(), "WeatherApp Linux")
+        from unittest.mock import patch
+        with patch.object(VentanaPrincipal, "_cargar_ubicacion_inicial"):
+            ventana = VentanaPrincipal()
+            self.assertIsNotNone(ventana.cabecera)
+            self.assertIsNotNone(ventana.barra_busqueda)
+            self.assertIsNotNone(ventana.curva_horaria)
+            self.assertIsNotNone(ventana.fondo_particulas)
+            self.assertEqual(ventana.windowTitle(), "WeatherApp Linux")
+            ventana.close()
 
     def test_curva_horaria_render(self):
         curva = CurvaHorariaWidget()

@@ -70,22 +70,24 @@ class BandejaSistema(QSystemTrayIcon):
             }
         """)
 
-        self.action_header = QAction("🌤️ WeatherApp Linux", self.menu)
+        from src.servicios.i18n import t
+
+        self.action_header = QAction(f"🌤️ {t('app.nombre')}", self.menu)
         self.action_header.setEnabled(False)
         self.menu.addAction(self.action_header)
         self.menu.addSeparator()
 
-        self.action_toggle = QAction("Mostrar / Ocultar Ventana", self.menu)
+        self.action_toggle = QAction(f"{t('bandeja.mostrar')} / {t('bandeja.ocultar')}", self.menu)
         self.action_toggle.triggered.connect(self.solicitar_mostrar_ocultar.emit)
         self.menu.addAction(self.action_toggle)
 
-        self.action_refrescar = QAction("🔄 Actualizar Clima", self.menu)
+        self.action_refrescar = QAction(f"🔄 {t('bandeja.refrescar')}", self.menu)
         self.action_refrescar.triggered.connect(self.solicitar_refresco.emit)
         self.menu.addAction(self.action_refrescar)
 
         self.menu.addSeparator()
 
-        self.action_salir = QAction("✕ Salir", self.menu)
+        self.action_salir = QAction(f"✕ {t('bandeja.salir')}", self.menu)
         self.action_salir.triggered.connect(self.solicitar_salir.emit)
         self.menu.addAction(self.action_salir)
 
@@ -131,3 +133,17 @@ class BandejaSistema(QSystemTrayIcon):
     def _on_activated(self, reason: QSystemTrayIcon.ActivationReason) -> None:
         if reason in [QSystemTrayIcon.ActivationReason.Trigger, QSystemTrayIcon.ActivationReason.DoubleClick]:
             self.solicitar_mostrar_ocultar.emit()
+
+    def mostrar_alerta(self, titulo: str, mensaje: str, icon_tipo: str = "info") -> None:
+        """Muestra una notificación nativa del sistema en Linux / Desktop."""
+        if not self.isVisible():
+            return
+
+        icon = QSystemTrayIcon.MessageIcon.Information
+        if icon_tipo == "warning":
+            icon = QSystemTrayIcon.MessageIcon.Warning
+        elif icon_tipo == "critical":
+            icon = QSystemTrayIcon.MessageIcon.Critical
+
+        self.showMessage(titulo, mensaje, icon, 6000)
+

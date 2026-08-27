@@ -115,10 +115,17 @@ class FilaDiaSemanal(QWidget):
         self.lbl_icono.setStyleSheet("font-size: 15px;")
         layout.addWidget(self.lbl_icono)
 
-        # 3. Probabilidad de Lluvia
-        prob_texto = f"🌧️ {dia.probabilidad_lluvia}%" if dia.probabilidad_lluvia >= 15 else ""
+        # 3. Probabilidad y Volumen de Precipitación
+        if dia.probabilidad_lluvia >= 15:
+            if dia.precipitacion_total_mm >= 1.0:
+                prob_texto = f"🌧️ {dia.probabilidad_lluvia}% ({dia.precipitacion_total_mm:.1f}mm)"
+            else:
+                prob_texto = f"🌧️ {dia.probabilidad_lluvia}%"
+        else:
+            prob_texto = ""
+
         self.lbl_lluvia = QLabel(prob_texto, self)
-        self.lbl_lluvia.setFixedWidth(52)
+        self.lbl_lluvia.setFixedWidth(84)
         self.lbl_lluvia.setStyleSheet("font-size: 11px; font-weight: 700; color: rgb(100, 210, 255);")
         layout.addWidget(self.lbl_lluvia)
 
@@ -163,6 +170,10 @@ class FilaDiaSemanal(QWidget):
             painter.drawRoundedRect(QRectF(2, 1, self.width() - 4, self.height() - 2), 10, 10)
 
 
+from src.servicios.i18n import t
+from src.utils.fecha_utils import FechaHelper
+
+
 class PronosticoSemanalWidget(TarjetaBento):
     """
     Tarjeta Bento interactiva para el pronóstico de 7 días con selección por clic.
@@ -170,7 +181,7 @@ class PronosticoSemanalWidget(TarjetaBento):
     dia_seleccionado = Signal(object) # Emite PronosticoDia
 
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Pronóstico 7 Días", icono="📅", parent=parent)
+        super().__init__(titulo=t("pronostico.titulo_semanal"), icono="📅", parent=parent)
         self.filas: List[FilaDiaSemanal] = []
         self.filas_layout = QVBoxLayout()
         self.filas_layout.setContentsMargins(0, 0, 0, 0)
@@ -179,6 +190,7 @@ class PronosticoSemanalWidget(TarjetaBento):
         self.contenido_layout.addLayout(self.filas_layout)
 
     def set_datos(self, dias: List[PronosticoDia], temp_actual: Optional[float] = None) -> None:
+        self.lbl_titulo.setText(t("pronostico.titulo_semanal"))
         # Limpiar filas previas
         while self.filas_layout.count():
             item = self.filas_layout.takeAt(0)

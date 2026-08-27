@@ -9,6 +9,7 @@ from config import CACHE_DIR, CACHE_TTL_SECONDS
 from src.modelos.clima_datos import (
     ClimaActual,
     CondicionClimatica,
+    DatosCalidadAire,
     PronosticoDia,
     PronosticoHora,
     ReporteClimaCompleto,
@@ -72,7 +73,9 @@ class CacheManager:
         act_data = data["actual"]
         cond_act_data = act_data.pop("condicion")
         cond_actual = CondicionClimatica(**cond_act_data)
-        actual = ClimaActual(condicion=cond_actual, **act_data)
+        calidad_raw = act_data.pop("calidad_aire", None)
+        calidad_aire = DatosCalidadAire(**calidad_raw) if calidad_raw else None
+        actual = ClimaActual(condicion=cond_actual, calidad_aire=calidad_aire, **act_data)
 
         horas_24h = []
         for h in data.get("horas_24h", []):

@@ -1,0 +1,212 @@
+{
+  "app": {
+    "nombre": "Weather Linux",
+    "subtitulo": "Prévisions météorologiques"
+  },
+  "comun": {
+    "hoy": "Aujourd'hui",
+    "ayer": "Hier",
+    "manana": "Demain",
+    "ahora": "Maintenant",
+    "cargando": "Chargement...",
+    "error_red": "Aucune connexion Internet",
+    "actualizado": "Mis à jour"
+  },
+  "dias": {
+    "hoy": "Aujourd'hui",
+    "lun": "Lundi",
+    "mar": "Mardi",
+    "mie": "Mercredi",
+    "jue": "Jeudi",
+    "vie": "Vendredi",
+    "sab": "Samedi",
+    "dom": "Dimanche"
+  },
+  "dias_cortos": {
+    "hoy": "Aujourd'hui",
+    "lun": "Lun",
+    "mar": "Mar",
+    "mie": "Mer",
+    "jue": "Jeu",
+    "vie": "Ven",
+    "sab": "Sam",
+    "dom": "Dim"
+  },
+  "meses": {
+    "1": "Janvier", "2": "Février", "3": "Mars", "4": "Avril",
+    "5": "Mai", "6": "Juin", "7": "Juillet", "8": "Août",
+    "9": "Septembre", "10": "Octobre", "11": "Novembre", "12": "Décembre"
+  },
+  "meses_cortos": {
+    "1": "Janv", "2": "Févr", "3": "Mars", "4": "Avr",
+    "5": "Mai", "6": "Juin", "7": "Juil", "8": "Août",
+    "9": "Sept", "10": "Oct", "11": "Nov", "12": "Déc"
+  },
+  "hijri": {
+    "1": "Mouharram", "2": "Safar", "3": "Rabi' al-Awwal", "4": "Rabi' al-Thani",
+    "5": "Joumada al-Oula", "6": "Joumada al-Thania", "7": "Rajab", "8": "Cha'ban",
+    "9": "Ramadan", "10": "Chawwal", "11": "Dhou al-Qi'da", "12": "Dhou al-Hijja",
+    "sufijo": "AH"
+  },
+  "condiciones": {
+    "0": "Ciel dégagé",
+    "1": "Principalement dégagé",
+    "2": "Partiellement nuageux",
+    "3": "Couvert",
+    "45": "Brouillard",
+    "48": "Brouillard givrant",
+    "51": "Bruine légère",
+    "53": "Bruine modérée",
+    "55": "Bruine dense",
+    "56": "Bruine verglaçante légère",
+    "57": "Bruine verglaçante dense",
+    "61": "Pluie légère",
+    "63": "Pluie modérée",
+    "65": "Pluie forte",
+    "66": "Pluie verglaçante légère",
+    "67": "Pluie verglaçante forte",
+    "71": "Chute de neige légère",
+    "73": "Chute de neige modérée",
+    "75": "Chute de neige forte",
+    "77": "Grains de neige",
+    "80": "Averses de pluie légères",
+    "81": "Averses de pluie modérées",
+    "82": "Averses violentes",
+    "85": "Averses de neige légères",
+    "86": "Averses de neige fortes",
+    "95": "Orage",
+    "96": "Orage avec grêle légère",
+    "99": "Orage avec grêle forte"
+  },
+  "cabecera": {
+    "sensacion": "Ressenti",
+    "max": "Max",
+    "min": "Min",
+    "hoy_rango": "Max: {max}° • Min: {min}°",
+    "esperados": "{mm} mm prévus"
+  },
+  "pronostico": {
+    "titulo_horas": "PRÉVISIONS PAR HEURE",
+    "titulo_semanal": "PRÉVISIONS SUR 7 JOURS"
+  },
+  "bento": {
+    "indice_uv": "INDICE UV",
+    "viento": "VENT",
+    "sol": "LEVER / COUCHER DU SOLEIL",
+    "luna": "PHASE LUNAIRE",
+    "calidad_aire": "QUALITÉ DE L'AIR",
+    "humedad": "HUMIDITÉ",
+    "visibilidad": "VISIBILITÉ",
+    "presion": "PRESSION"
+  },
+  "uv": {
+    "bajo": "Faible",
+    "moderado": "Modéré",
+    "alto": "Élevé",
+    "muy_alto": "Très élevé",
+    "extremo": "Extrême",
+    "desc_bajo": "Niveau sûr. Profitez du plein air.",
+    "desc_moderado": "Portez lunettes de soleil et crème.",
+    "desc_alto": "Protection nécessaire entre 10h et 16h.",
+    "desc_muy_alto": "Protection renforcée. Cherchez l'ombre.",
+    "desc_extremo": "Vigilance extrême. Évitez l'exposition."
+  },
+  "viento": {
+    "direccion": "Direction: {dir}",
+    "rafagas": "Rafales: {vel}",
+    "constante": "Vent régulier"
+  },
+  "sol": {
+    "ocaso_hoy": "Coucher: {hora}",
+    "amanecer_fue": "Le lever du soleil a eu lieu à {hora}",
+    "amanecer_hoy": "Lever: {hora}",
+    "ocaso_fue": "Le coucher du soleil a eu lieu à {hora}",
+    "puesta": "Coucher du soleil: {hora}"
+  },
+  "luna": {
+    "nueva": "Nouvelle Lune",
+    "creciente_fertil": "Premier Croissant",
+    "cuarto_creciente": "Premier Quartier",
+    "gibosa_creciente": "Gibbeuse Croissante",
+    "llena": "Pleine Lune",
+    "gibosa_menguante": "Gibbeuse Décroissante",
+    "cuarto_menguante": "Dernier Quartier",
+    "menguante": "Dernier Croissant",
+    "iluminacion": "Éclairement: {pct}% ({dias}j)",
+    "salida_puesta": "Lever: {salida} • Coucher: {puesta}",
+    "prox_llena": "Prochaine pleine lune: {fecha}"
+  },
+  "calidad_aire": {
+    "buena": "Excellente",
+    "moderada": "Acceptable",
+    "sensible": "Sensible",
+    "insalubre": "Mauvaise",
+    "muy_insalubre": "Très mauvaise",
+    "peligrosa": "Dangereuse",
+    "desc_buena": "Qualité de l'air idéale pour les activités extérieures.",
+    "desc_moderada": "Qualité acceptable. Personnes sensibles modérées.",
+    "desc_sensible": "Symptômes possibles chez les personnes sensibles.",
+    "desc_insalubre": "Effets possibles sur la santé pour tous.",
+    "desc_muy_insalubre": "Alerte santé: Évitez les efforts extérieurs.",
+    "desc_peligrosa": "Urgence sanitaire: Restez à l'intérieur.",
+    "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
+  },
+  "humedad": {
+    "rocio_desc": "Le point de rosée est de {rocio} actuellement."
+  },
+  "visibilidad": {
+    "excelente": "Visibilité parfaitement claire.",
+    "moderada": "Léger voile à l'horizon.",
+    "reducida": "Visibilité réduite par brume ou précipitations."
+  },
+  "presion": {
+    "baja": "Basse pression • Nuages ou pluie possibles",
+    "alta": "Haute pression • Temps stable et clair",
+    "normal": "Pression atmosphérique standard"
+  },
+  "alertas": {
+    "inundacion_titulo": "🌊 Alerte Inondation / Pluie Torrentielle",
+    "inundacion_desc": "Précipitations extrêmes prévues: {mm} mm. Risque important d'inondations locales.",
+    "calor_titulo": "🔥 Alerte Canicule Extrême",
+    "calor_desc": "Températures dangereuses jusqu'à {temp}°C (Ressenti: {sens}°C). Hydratez-vous.",
+    "tormenta_titulo": "⛈️ Alerte Orages Violents et Grêle",
+    "tormenta_desc": "Activité électrique intense et risque de grêle. Mettez-vous à l'abri.",
+    "viento_titulo": "💨 Alerte Vents Violents / Coup de Vent",
+    "viento_desc": "Rafales destructrices jusqu'à {vel}. Sécurisez les objets extérieurs.",
+    "uv_titulo": "☀️ Alerte Rayonnement UV Extrême",
+    "uv_desc": "Indice UV atteignant {uv} (Extrême). Évitez toute exposition directe."
+  },
+  "busqueda": {
+    "placeholder": "Rechercher une ville ou localité...",
+    "reciente": "🕒 Récent",
+    "mi_ubicacion": "📍 Ma position (GéoIP)",
+    "cercana": "🏙️ Proche",
+    "no_encontrado": "⚠️ Aucun résultat pour '{query}'"
+  },
+  "ajustes": {
+    "titulo": "Paramètres",
+    "pestana_general": "Général",
+    "pestana_unidades": "Unités",
+    "pestana_notificaciones": "Notifications",
+    "idioma": "Langue de l'interface",
+    "temperatura": "Température",
+    "viento": "Vitesse du vent",
+    "presion": "Pression atmosphérique",
+    "bandeja": "Zone de notification",
+    "mostrar_bandeja": "Afficher l'icône dans la barre des tâches",
+    "cerrar_a_bandeja": "Réduire dans la barre des tâches à la fermeture",
+    "activar_notificaciones": "Activer les notifications météo",
+    "alerta_lluvia": "Alerte de début et fin de pluie",
+    "alerta_tormenta": "Alertes météo extrêmes",
+    "alerta_atardecer": "Rappel de coucher du soleil",
+    "guardar": "Enregistrer",
+    "cancelar": "Annuler"
+  },
+  "bandeja": {
+    "mostrar": "Afficher Weather Linux",
+    "ocultar": "Masquer",
+    "refrescar": "Actualiser maintenant",
+    "ajustes": "Paramètres...",
+    "salir": "Quitter"
+  }
+}

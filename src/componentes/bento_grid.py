@@ -3,6 +3,8 @@ from typing import Optional
 from PySide6.QtWidgets import QGridLayout, QWidget
 
 from src.componentes.tarjetas_metricas import (
+    TarjetaCalidadAire,
+    TarjetaFaseLunar,
     TarjetaHumedad,
     TarjetaIndiceUV,
     TarjetaPresion,
@@ -17,9 +19,9 @@ from src.utils.unidades import celsius_desde, convertir_temperatura, sufijo_temp
 
 class BentoGridWidget(QWidget):
     """
-    Cuadrícula modular (Bento Grid) que organiza las 6 tarjetas de métricas climáticas
-    (Índice UV, Viento con Brújula, Sol con Arco Solar, Humedad, Presión y Visibilidad).
-    Permite actualización en tiempo real al seleccionar cualquier hora o día.
+    Cuadrícula modular (Bento Grid) que organiza las 8 tarjetas de métricas climáticas,
+    ambientales y astronómicas (Índice UV, Viento, Fase Lunar, Sol, Calidad del Aire,
+    Humedad, Visibilidad y Presión). Permite actualización en tiempo real.
     """
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
@@ -37,23 +39,31 @@ class BentoGridWidget(QWidget):
         self.grid_layout.addWidget(self.card_uv, 0, 0)
         self.grid_layout.addWidget(self.card_viento, 0, 1)
 
-        # Fila 1: Sol y Humedad
+        # Fila 1: Fase Lunar y Sol
+        self.card_luna = TarjetaFaseLunar(self)
         self.card_sol = TarjetaSol(self)
-        self.card_humedad = TarjetaHumedad(self)
-        self.grid_layout.addWidget(self.card_sol, 1, 0)
-        self.grid_layout.addWidget(self.card_humedad, 1, 1)
+        self.grid_layout.addWidget(self.card_luna, 1, 0)
+        self.grid_layout.addWidget(self.card_sol, 1, 1)
 
-        # Fila 2: Visibilidad y Presión
+        # Fila 2: Calidad del Aire y Humedad
+        self.card_calidad_aire = TarjetaCalidadAire(self)
+        self.card_humedad = TarjetaHumedad(self)
+        self.grid_layout.addWidget(self.card_calidad_aire, 2, 0)
+        self.grid_layout.addWidget(self.card_humedad, 2, 1)
+
+        # Fila 3: Visibilidad y Presión
         self.card_visibilidad = TarjetaVisibilidad(self)
         self.card_presion = TarjetaPresion(self)
-        self.grid_layout.addWidget(self.card_visibilidad, 2, 0)
-        self.grid_layout.addWidget(self.card_presion, 2, 1)
+        self.grid_layout.addWidget(self.card_visibilidad, 3, 0)
+        self.grid_layout.addWidget(self.card_presion, 3, 1)
 
     def actualizar_datos(self, actual: ClimaActual) -> None:
         """Actualiza todas las tarjetas de métricas para el clima actual en vivo."""
         self.card_uv.actualizar(actual)
         self.card_viento.actualizar(actual)
+        self.card_luna.actualizar(actual)
         self.card_sol.actualizar(actual)
+        self.card_calidad_aire.actualizar(actual)
         self.card_humedad.actualizar(actual)
         self.card_visibilidad.actualizar(actual)
         self.card_presion.actualizar(actual)

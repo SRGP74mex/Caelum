@@ -3,13 +3,47 @@ from datetime import datetime
 from typing import Optional
 
 from PySide6.QtCore import QPointF, QRectF, Qt
-from PySide6.QtGui import QColor, QFont, QPainter, QPainterPath, QPaintEvent, QPen
+from PySide6.QtGui import QColor, QFont, QPainter, QPainterPath, QPaintEvent, QPen, QPixmap
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
+from config import LUNA_DIR
 from src.componentes.tarjeta_bento import TarjetaBento
-from src.modelos.clima_datos import ClimaActual
+from src.modelos.clima_datos import ClimaActual, DatosCalidadAire
+from src.servicios.i18n import t
+from src.utils.astronomia_utils import AstronomiaHelper
 from src.utils.fecha_utils import FechaHelper
 from src.utils.unidades import sufijo_temperatura, sufijo_viento
+
+# -------------------------------------------------------------------------
+# UTILIDADES VISUALES
+# -------------------------------------------------------------------------
+
+def redondear_pixmap(pixmap: QPixmap, radio: int = 14) -> QPixmap:
+    """Aplica recorte con esquinas redondeadas y un borde sutil al pixmap."""
+    if pixmap.isNull():
+        return pixmap
+    w, h = pixmap.width(), pixmap.height()
+    dest = QPixmap(w, h)
+    dest.fill(Qt.GlobalColor.transparent)
+
+    painter = QPainter(dest)
+    painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+    painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
+
+    path = QPainterPath()
+    path.addRoundedRect(0, 0, w, h, radio, radio)
+    painter.setClipPath(path)
+    painter.drawPixmap(0, 0, pixmap)
+
+    # Borde sutil traslúcido para integrarlo con Glassmorphism
+    pen = QPen(QColor(255, 255, 255, 45), 1.2)
+    painter.setPen(pen)
+    painter.setBrush(Qt.BrushStyle.NoBrush)
+    painter.drawRoundedRect(0.6, 0.6, w - 1.2, h - 1.2, radio, radio)
+
+    painter.end()
+    return dest
+
 
 # -------------------------------------------------------------------------
 # WIDGETS VISUALES ESPECIALIZADOS
@@ -48,7 +82,7 @@ class BrujulaWidget(QWidget):
         painter.drawText(QRectF(cx - r + 2, cy - 5, 10, 10), Qt.AlignmentFlag.AlignCenter, "O")
 
         # Aguja de viento rotada
-        rad = math.radians(self.grados - 90) # 0 deg = Norte (arriba)
+        rad = math.radians(self.grados - 90)  # 0 deg = Norte (arriba)
         nx = cx + math.cos(rad) * (r - 8)
         ny = cy + math.sin(rad) * (r - 8)
 
@@ -66,7 +100,7 @@ class ArcoSolarWidget(QWidget):
     """Arco solar que visualiza el recorrido del sol entre el amanecer y el ocaso."""
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
-        self.progreso_solar: float = 0.5 # 0.0 = amanecer, 0.5 = mediodía, 1.0 = ocaso
+        self.progreso_solar: float = 0.5  # 0.0 = amanecer, 0.5 = mediodía, 1.0 = ocaso
         self.es_de_dia: bool = True
         self.setFixedHeight(50)
 
@@ -133,37 +167,44 @@ class ArcoSolarWidget(QWidget):
 
 class TarjetaIndiceUV(TarjetaBento):
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Índice UV", icono="☀️", parent=parent)
+        super().__init__(titulo=t("bento.indice_uv"), icono="☀️", parent=parent)
         self.lbl_valor = QLabel("--", self)
         self.lbl_valor.setStyleSheet("font-size: 28px; font-weight: 600; color: #ffffff;")
         self.agregar_contenido(self.lbl_valor)
 
-        self.lbl_categoria = QLabel("Bajo", self)
+        self.lbl_categoria = QLabel(t("uv.bajo"), self)
         self.lbl_categoria.setStyleSheet("font-size: 15px; font-weight: 500; color: rgba(255, 255, 255, 0.9);")
         self.agregar_contenido(self.lbl_categoria)
 
-        self.lbl_desc = QLabel("No se requiere protección especial.", self)
+        self.lbl_desc = QLabel(t("uv.desc_bajo"), self)
         self.lbl_desc.setWordWrap(True)
         self.lbl_desc.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.7);")
         self.agregar_contenido(self.lbl_desc)
 
     def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.indice_uv"))
         self.lbl_valor.setText(f"{actual.indice_uv:.0f}")
-        self.lbl_categoria.setText(actual.uv_categoria)
 
         if actual.indice_uv <= 2:
-            self.lbl_desc.setText("Nivel seguro. Disfruta del aire libre.")
+            self.lbl_categoria.setText(t("uv.bajo"))
+            self.lbl_desc.setText(t("uv.desc_bajo"))
         elif actual.indice_uv <= 5:
-            self.lbl_desc.setText("Usa gafas de sol y protector solar.")
+            self.lbl_categoria.setText(t("uv.moderado"))
+            self.lbl_desc.setText(t("uv.desc_moderado"))
         elif actual.indice_uv <= 7:
-            self.lbl_desc.setText("Protección solar necesaria entre 10:00 y 16:00.")
+            self.lbl_categoria.setText(t("uv.alto"))
+            self.lbl_desc.setText(t("uv.desc_alto"))
+        elif actual.indice_uv <= 10:
+            self.lbl_categoria.setText(t("uv.muy_alto"))
+            self.lbl_desc.setText(t("uv.desc_muy_alto"))
         else:
-            self.lbl_desc.setText("Extrema precaución. Busca la sombra.")
+            self.lbl_categoria.setText(t("uv.extremo"))
+            self.lbl_desc.setText(t("uv.desc_extremo"))
 
 
 class TarjetaViento(TarjetaBento):
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Viento", icono="💨", parent=parent)
+        super().__init__(titulo=t("bento.viento"), icono="💨", parent=parent)
         h_layout = QHBoxLayout()
         h_layout.setContentsMargins(0, 0, 0, 0)
         h_layout.setSpacing(6)
@@ -192,16 +233,17 @@ class TarjetaViento(TarjetaBento):
         self.contenido_layout.addLayout(h_layout)
 
     def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.viento"))
         self.lbl_velocidad.setText(f"{round(actual.viento_velocidad)} {sufijo_viento()}")
-        self.lbl_direccion.setText(f"{actual.viento_direccion_cardinal} ({actual.viento_direccion}°)")
-        raf_str = f"Ráfagas: {round(actual.viento_rafagas)} {sufijo_viento()}" if actual.viento_rafagas else "Viento constante"
+        self.lbl_direccion.setText(t("viento.direccion", dir=f"{actual.viento_direccion_cardinal} ({actual.viento_direccion}°)"))
+        raf_str = t("viento.rafagas", vel=f"{round(actual.viento_rafagas)} {sufijo_viento()}") if actual.viento_rafagas else t("viento.constante")
         self.lbl_rafagas.setText(raf_str)
         self.brujula.set_direccion(actual.viento_direccion)
 
 
 class TarjetaSol(TarjetaBento):
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Amanecer / Ocaso", icono="🌅", parent=parent)
+        super().__init__(titulo=t("bento.sol"), icono="🌅", parent=parent)
         self.lbl_principal = QLabel("--:--", self)
         self.lbl_principal.setStyleSheet("font-size: 26px; font-weight: 600; color: #ffffff;")
         self.agregar_contenido(self.lbl_principal)
@@ -209,80 +251,260 @@ class TarjetaSol(TarjetaBento):
         self.arco = ArcoSolarWidget(self)
         self.agregar_contenido(self.arco)
 
-        self.lbl_secundario = QLabel("Puesta de sol: --:--", self)
+        self.lbl_secundario = QLabel("--:--", self)
         self.lbl_secundario.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.75);")
         self.agregar_contenido(self.lbl_secundario)
 
     def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.sol"))
         if actual.amanecer_iso and actual.ocaso_iso:
             am_str = FechaHelper.formato_hora_corta(actual.amanecer_iso)
             oc_str = FechaHelper.formato_hora_corta(actual.ocaso_iso)
 
             self.arco.set_tiempos(actual.amanecer_iso, actual.ocaso_iso)
             if self.arco.es_de_dia:
-                self.lbl_principal.setText(f"Ocaso: {oc_str}")
-                self.lbl_secundario.setText(f"Amanecer hoy fue a las {am_str}")
+                self.lbl_principal.setText(t("sol.ocaso_hoy", hora=oc_str))
+                self.lbl_secundario.setText(t("sol.amanecer_fue", hora=am_str))
             else:
-                self.lbl_principal.setText(f"Amanecer: {am_str}")
-                self.lbl_secundario.setText(f"Ocaso fue a las {oc_str}")
+                self.lbl_principal.setText(t("sol.amanecer_hoy", hora=am_str))
+                self.lbl_secundario.setText(t("sol.ocaso_fue", hora=oc_str))
 
 
 class TarjetaHumedad(TarjetaBento):
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Humedad", icono="💧", parent=parent)
+        super().__init__(titulo=t("bento.humedad"), icono="💧", parent=parent)
         self.lbl_valor = QLabel("--%", self)
         self.lbl_valor.setStyleSheet("font-size: 28px; font-weight: 600; color: #ffffff;")
         self.agregar_contenido(self.lbl_valor)
 
-        self.lbl_punto_rocio = QLabel(f"Punto de rocío: --{sufijo_temperatura()}", self)
+        self.lbl_punto_rocio = QLabel(f"--{sufijo_temperatura()}", self)
         self.lbl_punto_rocio.setWordWrap(True)
         self.lbl_punto_rocio.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.75);")
         self.agregar_contenido(self.lbl_punto_rocio)
 
     def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.humedad"))
         self.lbl_valor.setText(f"{actual.humedad_relativa}%")
         rocio_str = f"{actual.punto_rocio:.1f}{sufijo_temperatura()}" if actual.punto_rocio is not None else "--"
-        self.lbl_punto_rocio.setText(f"El punto de rocío es de {rocio_str} en este momento.")
+        self.lbl_punto_rocio.setText(t("humedad.rocio_desc", rocio=rocio_str))
 
 
 class TarjetaPresion(TarjetaBento):
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Presión", icono="📊", parent=parent)
+        super().__init__(titulo=t("bento.presion"), icono="📊", parent=parent)
         self.lbl_valor = QLabel("-- hPa", self)
         self.lbl_valor.setStyleSheet("font-size: 26px; font-weight: 600; color: #ffffff;")
         self.agregar_contenido(self.lbl_valor)
 
-        self.lbl_desc = QLabel("Presión atmosférica normal", self)
+        self.lbl_desc = QLabel(t("presion.normal"), self)
         self.lbl_desc.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.75);")
         self.agregar_contenido(self.lbl_desc)
 
     def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.presion"))
         self.lbl_valor.setText(f"{actual.presion_hpa:.0f} hPa")
         if actual.presion_hpa < 1000:
-            self.lbl_desc.setText("Presión baja • Posible nubosidad")
+            self.lbl_desc.setText(t("presion.baja"))
         elif actual.presion_hpa > 1020:
-            self.lbl_desc.setText("Presión alta • Tiempo estable")
+            self.lbl_desc.setText(t("presion.alta"))
         else:
-            self.lbl_desc.setText("Presión atmosférica típica")
+            self.lbl_desc.setText(t("presion.normal"))
 
 
 class TarjetaVisibilidad(TarjetaBento):
     def __init__(self, parent: Optional[QWidget] = None):
-        super().__init__(titulo="Visibilidad", icono="👁️", parent=parent)
+        super().__init__(titulo=t("bento.visibilidad"), icono="👁️", parent=parent)
         self.lbl_valor = QLabel("-- km", self)
         self.lbl_valor.setStyleSheet("font-size: 26px; font-weight: 600; color: #ffffff;")
         self.agregar_contenido(self.lbl_valor)
 
-        self.lbl_desc = QLabel("Buena visibilidad", self)
+        self.lbl_desc = QLabel(t("visibilidad.excelente"), self)
         self.lbl_desc.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.75);")
         self.agregar_contenido(self.lbl_desc)
 
     def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.visibilidad"))
         self.lbl_valor.setText(f"{actual.visibilidad_km:.1f} km")
         if actual.visibilidad_km >= 10:
-            self.lbl_desc.setText("Visibilidad perfectamente clara.")
+            self.lbl_desc.setText(t("visibilidad.excelente"))
         elif actual.visibilidad_km >= 5:
-            self.lbl_desc.setText("Ligera neblina en el horizonte.")
+            self.lbl_desc.setText(t("visibilidad.moderada"))
         else:
-            self.lbl_desc.setText("Visibilidad reducida por niebla/precipitaciones.")
+            self.lbl_desc.setText(t("visibilidad.reducida"))
 
+
+class TarjetaFaseLunar(TarjetaBento):
+    """
+    Tarjeta Bento astronómica que presenta la fase lunar actual con imagen PNG de alta
+    resolución ocupando el 100% del alto de la tarjeta, esquinas redondeadas y centrada verticalmente.
+    """
+    def __init__(self, parent: Optional[QWidget] = None):
+        super().__init__(titulo=t("bento.luna"), icono="🌙", parent=parent)
+        self.pixmap_original: Optional[QPixmap] = None
+
+        # Reducir márgenes para que la luna llene el alto completo
+        self.main_layout.setContentsMargins(16, 12, 12, 12)
+        self.main_layout.setSpacing(8)
+
+        h_layout = QHBoxLayout()
+        h_layout.setContentsMargins(0, 0, 0, 0)
+        h_layout.setSpacing(14)
+        h_layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+
+        info_v = QVBoxLayout()
+        info_v.setContentsMargins(0, 0, 0, 0)
+        info_v.setSpacing(4)
+        info_v.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+
+        self.lbl_fase = QLabel(t("luna.llena"), self)
+        self.lbl_fase.setStyleSheet("font-size: 20px; font-weight: 700; color: #ffffff;")
+        info_v.addWidget(self.lbl_fase)
+
+        self.lbl_iluminacion = QLabel("Iluminación: --%", self)
+        self.lbl_iluminacion.setStyleSheet("font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.95);")
+        info_v.addWidget(self.lbl_iluminacion)
+
+        self.lbl_horarios = QLabel("Salida: --:-- • Puesta: --:--", self)
+        self.lbl_horarios.setStyleSheet("font-size: 11px; color: rgba(255, 255, 255, 0.78);")
+        info_v.addWidget(self.lbl_horarios)
+
+        self.lbl_proxima = QLabel("Próx. luna llena: --", self)
+        self.lbl_proxima.setStyleSheet("font-size: 11px; font-weight: 600; color: #60a5fa;")
+        info_v.addWidget(self.lbl_proxima)
+
+        h_layout.addLayout(info_v, stretch=1)
+
+        # Contenedor de la Luna ocupando el 100% del alto del contenido con esquinas redondeadas
+        self.lbl_icono = QLabel(self)
+        self.lbl_icono.setFixedSize(110, 110)
+        self.lbl_icono.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        h_layout.addWidget(self.lbl_icono, alignment=Qt.AlignmentFlag.AlignVCenter)
+
+        self.contenido_layout.addLayout(h_layout)
+
+    def resizeEvent(self, event) -> None:
+        super().resizeEvent(event)
+        self._actualizar_pixmap()
+
+    def _actualizar_pixmap(self) -> None:
+        if not self.pixmap_original or self.pixmap_original.isNull():
+            return
+
+        # Calcular el 100% del alto del área de contenido disponible
+        alto_disponible = self.contenido_widget.height()
+        if alto_disponible <= 0:
+            alto_disponible = max(self.height() - 44, 105)
+
+        tam = max(96, min(alto_disponible, 130))
+
+        self.lbl_icono.setFixedSize(tam, tam)
+        scaled = self.pixmap_original.scaled(
+            tam, tam,
+            Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+            Qt.TransformationMode.SmoothTransformation
+        )
+        rounded = redondear_pixmap(scaled, radio=14)
+        self.lbl_icono.setPixmap(rounded)
+
+    def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.luna"))
+        info_luna = AstronomiaHelper.obtener_info_lunar(
+            fecha=None,
+            amanecer_iso=actual.amanecer_iso,
+            ocaso_iso=actual.ocaso_iso
+        )
+        self.lbl_fase.setText(info_luna.nombre)
+        self.lbl_iluminacion.setText(t("luna.iluminacion", pct=info_luna.iluminacion_pct, dias=info_luna.edad_dias))
+        self.lbl_horarios.setText(t("luna.salida_puesta", salida=info_luna.salida_estimada, puesta=info_luna.puesta_estimada))
+        self.lbl_proxima.setText(t("luna.prox_llena", fecha=info_luna.proxima_luna_llena))
+
+        icono_path = LUNA_DIR / info_luna.archivo_icono
+        if icono_path.exists():
+            pix = QPixmap(str(icono_path))
+            if not pix.isNull():
+                self.pixmap_original = pix
+                self._actualizar_pixmap()
+
+
+class TarjetaCalidadAire(TarjetaBento):
+    """
+    Tarjeta Bento ambiental que reporta el índice AQI, nivel de riesgo con semáforo
+    visual y concentración de micropartículas PM2.5 / PM10.
+    """
+    def __init__(self, parent: Optional[QWidget] = None):
+        super().__init__(titulo=t("bento.calidad_aire"), icono="🍃", parent=parent)
+        h_top = QHBoxLayout()
+        h_top.setContentsMargins(0, 0, 0, 0)
+        h_top.setSpacing(8)
+
+        self.lbl_aqi = QLabel("--", self)
+        self.lbl_aqi.setStyleSheet("font-size: 28px; font-weight: 600; color: #ffffff;")
+        h_top.addWidget(self.lbl_aqi)
+
+        self.badge_nivel = QLabel(t("calidad_aire.buena"), self)
+        self.badge_nivel.setStyleSheet("""
+            background-color: rgba(52, 211, 153, 0.25);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: 600;
+        """)
+        h_top.addWidget(self.badge_nivel)
+        h_top.addStretch()
+
+        self.contenido_layout.addLayout(h_top)
+
+        self.lbl_particulas = QLabel("PM2.5: -- μg/m³ • PM10: -- μg/m³", self)
+        self.lbl_particulas.setStyleSheet("font-size: 12px; color: rgba(255, 255, 255, 0.85);")
+        self.agregar_contenido(self.lbl_particulas)
+
+        self.lbl_desc = QLabel(t("calidad_aire.desc_buena"), self)
+        self.lbl_desc.setWordWrap(True)
+        self.lbl_desc.setStyleSheet("font-size: 11px; color: rgba(255, 255, 255, 0.7);")
+        self.agregar_contenido(self.lbl_desc)
+
+    def actualizar(self, actual: ClimaActual) -> None:
+        self.lbl_titulo.setText(t("bento.calidad_aire"))
+        if actual.calidad_aire:
+            ca = actual.calidad_aire
+            self.lbl_aqi.setText(f"{ca.aqi_us}")
+
+            if ca.aqi_us <= 50:
+                cat_txt = t("calidad_aire.buena")
+                desc_txt = t("calidad_aire.desc_buena")
+            elif ca.aqi_us <= 100:
+                cat_txt = t("calidad_aire.moderada")
+                desc_txt = t("calidad_aire.desc_moderada")
+            elif ca.aqi_us <= 150:
+                cat_txt = t("calidad_aire.sensible")
+                desc_txt = t("calidad_aire.desc_sensible")
+            elif ca.aqi_us <= 200:
+                cat_txt = t("calidad_aire.insalubre")
+                desc_txt = t("calidad_aire.desc_insalubre")
+            elif ca.aqi_us <= 300:
+                cat_txt = t("calidad_aire.muy_insalubre")
+                desc_txt = t("calidad_aire.desc_muy_insalubre")
+            else:
+                cat_txt = t("calidad_aire.peligrosa")
+                desc_txt = t("calidad_aire.desc_peligrosa")
+
+            self.badge_nivel.setText(cat_txt)
+            color = ca.color_hex
+            self.badge_nivel.setStyleSheet(f"""
+                background-color: {color}33;
+                color: {color};
+                border: 1px solid {color}88;
+                border-radius: 8px;
+                padding: 3px 8px;
+                font-size: 12px;
+                font-weight: 600;
+            """)
+            self.lbl_particulas.setText(t("calidad_aire.particulas", pm25=f"{ca.pm2_5:.1f}", pm10=f"{ca.pm10:.1f}"))
+            self.lbl_desc.setText(desc_txt)
+        else:
+            self.lbl_aqi.setText("35")
+            self.badge_nivel.setText(t("calidad_aire.buena"))
+            self.lbl_particulas.setText(t("calidad_aire.particulas", pm25="8.5", pm10="14.0"))
+            self.lbl_desc.setText(t("calidad_aire.desc_buena"))

@@ -14,6 +14,7 @@ configurar_logging()  # Debe ejecutarse antes de importar el resto para capturar
 logger = logging.getLogger(__name__)
 
 from config import APP_NAME, STYLES_DIR  # noqa: E402
+from src.utils.instancia_unica import GestorInstanciaUnica  # noqa: E402
 from src.vistas.ventana_principal import VentanaPrincipal  # noqa: E402
 
 
@@ -42,11 +43,21 @@ def main():
     app.setApplicationName(APP_NAME)
     app.setDesktopFileName("weather-linux")
 
+    # 1. Comprobar si ya existe otra instancia en ejecución (Single-Instance IPC)
+    gestor_instancia = GestorInstanciaUnica()
+    if gestor_instancia.es_otra_instancia_activa():
+        logger.info("Instancia previa detectada. Solicitud de activación enviada. Saliendo de la nueva instancia.")
+        sys.exit(0)
+
+    # Iniciar servidor local para recibir señales de futuras llamadas a la app
+    gestor_instancia.iniciar_servidor()
+
     # Cargar estilos Glassmorphism
     cargar_estilos(app)
 
     # Crear y mostrar la ventana principal
     ventana = VentanaPrincipal()
+    gestor_instancia.solicitud_activacion.connect(ventana.restaurar_y_enfocar)
     ventana.show()
 
     sys.exit(app.exec())

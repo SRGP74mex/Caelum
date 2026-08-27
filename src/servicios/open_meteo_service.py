@@ -13,6 +13,7 @@ from src.modelos.clima_datos import (
     Ubicacion,
 )
 from src.servicios.base_provider import IWeatherProvider
+from src.servicios.calidad_aire_service import CalidadAireService
 from src.servicios.http_session import sesion_http
 from src.utils.fecha_utils import FechaHelper
 from src.utils.icon_mapper import IconMapper
@@ -22,6 +23,7 @@ logger = logging.getLogger(__name__)
 class OpenMeteoService(IWeatherProvider):
     def __init__(self, timeout: int = REQUEST_TIMEOUT):
         self.timeout = timeout
+        self.calidad_aire_service = CalidadAireService(timeout=timeout)
 
     def obtener_reporte_completo(self, ubicacion: Ubicacion) -> ReporteClimaCompleto:
         params = {
@@ -221,6 +223,8 @@ class OpenMeteoService(IWeatherProvider):
         amanecer_hoy = dias_lista[0].amanecer_iso if dias_lista else ""
         ocaso_hoy = dias_lista[0].ocaso_iso if dias_lista else ""
 
+        calidad_aire = self.calidad_aire_service.obtener_calidad_aire(ubicacion.latitud, ubicacion.longitud)
+
         clima_actual = ClimaActual(
             temperatura=temp_val,
             sensacion_termica=float(curr_data.get("apparent_temperature", temp_val)),
@@ -239,6 +243,7 @@ class OpenMeteoService(IWeatherProvider):
             amanecer_iso=amanecer_hoy,
             ocaso_iso=ocaso_hoy,
             condicion=cond_actual,
+            calidad_aire=calidad_aire,
             timestamp_iso=curr_data.get("time", datetime.now().isoformat())
         )
 

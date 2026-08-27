@@ -4,6 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from src.modelos.clima_datos import ReporteClimaCompleto
+from src.servicios.i18n import t
 from src.utils.fecha_utils import FechaHelper
 
 
@@ -23,7 +24,7 @@ class CabeceraClima(QWidget):
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # 1. Ciudad y País
-        self.lbl_ciudad = QLabel("Cargando...", self)
+        self.lbl_ciudad = QLabel(t("comun.cargando"), self)
         self.lbl_ciudad.setObjectName("ciudadCabecera")
         self.lbl_ciudad.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_ciudad)
@@ -40,13 +41,13 @@ class CabeceraClima(QWidget):
         layout.addWidget(self.lbl_temperatura)
 
         # 3. Condición Climática
-        self.lbl_condicion = QLabel("Obteniendo pronóstico...", self)
+        self.lbl_condicion = QLabel(t("comun.cargando"), self)
         self.lbl_condicion.setObjectName("condicionCabecera")
         self.lbl_condicion.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_condicion)
 
         # 4. Rango Térmico de Hoy (Máx / Mín)
-        self.lbl_rango_hoy = QLabel("Máx: --°  •  Mín: --°", self)
+        self.lbl_rango_hoy = QLabel(t("cabecera.hoy_rango", max="--", min="--"), self)
         self.lbl_rango_hoy.setObjectName("rangoHoyCabecera")
         self.lbl_rango_hoy.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_rango_hoy)
@@ -96,7 +97,7 @@ class CabeceraClima(QWidget):
         self.lbl_condicion.setText(act.condicion.descripcion)
 
         # Rango hoy
-        self.lbl_rango_hoy.setText(f"Máx: {round(act.temp_max_hoy)}°  •  Mín: {round(act.temp_min_hoy)}°")
+        self.lbl_rango_hoy.setText(t("cabecera.hoy_rango", max=round(act.temp_max_hoy), min=round(act.temp_min_hoy)))
 
         # Fechas
         greg_str, hijri_str = FechaHelper.fecha_dual_completa()

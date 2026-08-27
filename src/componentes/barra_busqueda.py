@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from PySide6.QtCore import Qt, QTimer, Signal
+from PySide6.QtCore import QPoint, Qt, QTimer, Signal
 from PySide6.QtGui import QFocusEvent, QKeyEvent
 from PySide6.QtWidgets import (
     QFrame,
@@ -21,7 +21,7 @@ from src.servicios.worker import ejecutar_en_segundo_plano
 
 
 class InputBusqueda(QLineEdit):
-    """QLineEdit con soporte para capturar teclas y foco."""
+    """QLineEdit con soporte para capturar teclas de navegación y foco."""
     flecha_abajo_presionada = Signal()
     flecha_arriba_presionada = Signal()
     escape_presionado = Signal()
@@ -46,10 +46,11 @@ class InputBusqueda(QLineEdit):
 
 class BarraBusqueda(QWidget):
     """
-    Barra de búsqueda reactiva con sugerencias dinámicas (GeoIP + Recientes + Cercanas):
-    - Al hacer foco sin texto, sugiere la ubicación detectada por IP y ciudades cercanas reales.
+    Barra de búsqueda reactiva con sugerencias flotantes tipo Pop-up / Overlay (Z-Index superior):
+    - Flota por encima de las tarjetas sin desplazar ni mover el contenido de la interfaz.
+    - Al hacer foco sin texto, sugiere la ubicación detectada por IP y ciudades recientes.
     - Al escribir, busca en tiempo real en todo el mundo.
-    - Manejo seguro de navegación por teclado y clics.
+    - Soporte completo para navegación por teclado (flechas, Enter, Esc) y ratón.
     """
     ciudad_seleccionada = Signal(Ubicacion)
 
@@ -72,7 +73,7 @@ class BarraBusqueda(QWidget):
     def _init_ui(self) -> None:
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(4)
+        main_layout.setSpacing(0)
 
         # Contenedor de la barra
         self.contenedor = QFrame(self)
@@ -108,14 +109,31 @@ class BarraBusqueda(QWidget):
 
         main_layout.addWidget(self.contenedor)
 
-        # Lista de sugerencias desplegable
-        self.lista_sugerencias = QListWidget(self)
+        # Lista de sugerencias desplegable flotante (Overlay / Z-Index)
+        # Se configura como Popup para flotar por encima de la ventana sin empujar los widgets
+        self.lista_sugerencias = QListWidget()
         self.lista_sugerencias.setObjectName("listaSugerencias")
+        self.lista_sugerencias.setWindowFlags(
+            Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint | Qt.WindowType.NoDropShadowWindowHint
+        )
+        self.lista_sugerencias.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.lista_sugerencias.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.lista_sugerencias.setVisible(False)
-        self.lista_sugerencias.setMaximumHeight(230)
         self.lista_sugerencias.itemClicked.connect(self._on_item_clicked)
-        main_layout.addWidget(self.lista_sugerencias)
+
+    def _posicionar_y_mostrar_sugerencias(self) -> None:
+        """Posiciona la lista flotante directamente bajo la barra de búsqueda en coordenadas globales."""
+        if self.lista_sugerencias.count() == 0 or not self.isVisible():
+            self.lista_sugerencias.hide()
+            return
+
+        pos_global = self.contenedor.mapToGlobal(QPoint(0, self.contenedor.height() + 4))
+        ancho = self.contenedor.width()
+        num_items = min(self.lista_sugerencias.count(), 6)
+        altura = min(num_items * 38 + 14, 240)
+
+        self.lista_sugerencias.setGeometry(pos_global.x(), pos_global.y(), ancho, altura)
+        self.lista_sugerencias.show()
+        self.lista_sugerencias.raise_()
 
     def _precargar_ciudades_cercanas(self) -> None:
         """Detecta la IP y precarga ciudades cercanas en segundo plano."""
@@ -141,19 +159,22 @@ class BarraBusqueda(QWidget):
         recientes = self.config_manager.obtener_ciudades_recientes()
         candidatos = []
 
+        from src.servicios.i18n import t
+
         # 1. Ciudades del historial reciente
         if recientes:
             for r in recientes[:4]:
-                candidatos.append((r, "🕒 Reciente"))
+                candidatos.append((r, t("busqueda.reciente")))
 
         # 2. Ciudades cercanas de GeoIP
         if self._ciudades_cercanas_cache:
             for c in self._ciudades_cercanas_cache:
                 if not any(cand[0].latitud == c.latitud and cand[0].longitud == c.longitud for cand in candidatos):
-                    tag = "📍 Mi Ubicación (GeoIP)" if len(candidatos) == 0 else "🏙️ Cercana"
+                    tag = t("busqueda.mi_ubicacion") if len(candidatos) == 0 else t("busqueda.cercana")
                     candidatos.append((c, tag))
 
         if not candidatos:
+            self.lista_sugerencias.hide()
             return
 
         for ub, etiqueta in candidatos[:6]:
@@ -164,7 +185,7 @@ class BarraBusqueda(QWidget):
             self.lista_sugerencias.addItem(item)
 
         self.lista_sugerencias.setCurrentRow(0)
-        self.lista_sugerencias.setVisible(True)
+        self._posicionar_y_mostrar_sugerencias()
 
     def _on_text_changed(self, texto: str) -> None:
         self.btn_limpiar.setVisible(bool(texto))
@@ -178,7 +199,7 @@ class BarraBusqueda(QWidget):
             self.debounce_timer.stop()
             self.resultados_actuales = []
             self.lista_sugerencias.clear()
-            self.lista_sugerencias.setVisible(False)
+            self.lista_sugerencias.hide()
 
     def _realizar_busqueda(self) -> None:
         texto = self.input_busqueda.text().strip()
@@ -201,11 +222,13 @@ class BarraBusqueda(QWidget):
         self.resultados_actuales = list(ciudades)
         self.lista_sugerencias.clear()
 
+        from src.servicios.i18n import t
+
         if not ciudades:
-            item = QListWidgetItem(f"⚠️ No se encontró '{self.input_busqueda.text().strip()}'")
+            item = QListWidgetItem(t("busqueda.no_encontrado", query=self.input_busqueda.text().strip()))
             item.setFlags(Qt.ItemFlag.NoItemFlags)
             self.lista_sugerencias.addItem(item)
-            self.lista_sugerencias.setVisible(True)
+            self._posicionar_y_mostrar_sugerencias()
             return
 
         for ub in ciudades:
@@ -215,13 +238,13 @@ class BarraBusqueda(QWidget):
             self.lista_sugerencias.addItem(item)
 
         self.lista_sugerencias.setCurrentRow(0)
-        self.lista_sugerencias.setVisible(True)
+        self._posicionar_y_mostrar_sugerencias()
 
     def _on_item_clicked(self, item: QListWidgetItem) -> None:
         idx = self.lista_sugerencias.row(item)
         if 0 <= idx < len(self.resultados_actuales):
             ub_seleccionada = self.resultados_actuales[idx]
-            self.lista_sugerencias.setVisible(False)
+            self.lista_sugerencias.hide()
             self.ciudad_seleccionada.emit(ub_seleccionada)
             QTimer.singleShot(25, self.limpiar)
 
@@ -232,7 +255,7 @@ class BarraBusqueda(QWidget):
         if self.resultados_actuales and self.lista_sugerencias.isVisible():
             idx = row if (0 <= row < len(self.resultados_actuales)) else 0
             ub_seleccionada = self.resultados_actuales[idx]
-            self.lista_sugerencias.setVisible(False)
+            self.lista_sugerencias.hide()
             self.ciudad_seleccionada.emit(ub_seleccionada)
             QTimer.singleShot(25, self.limpiar)
             return
@@ -248,7 +271,7 @@ class BarraBusqueda(QWidget):
             def _on_result_inmediato(ciudades: List[Ubicacion]):
                 if current_id == self._search_id:
                     if ciudades:
-                        self.lista_sugerencias.setVisible(False)
+                        self.lista_sugerencias.hide()
                         self.ciudad_seleccionada.emit(ciudades[0])
                         QTimer.singleShot(25, self.limpiar)
                     else:
@@ -272,6 +295,6 @@ class BarraBusqueda(QWidget):
         self.debounce_timer.stop()
         self.input_busqueda.clear()
         self.lista_sugerencias.clear()
-        self.lista_sugerencias.setVisible(False)
+        self.lista_sugerencias.hide()
         self.resultados_actuales = []
         self.input_busqueda.clearFocus()

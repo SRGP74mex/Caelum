@@ -1,0 +1,212 @@
+{
+  "app": {
+    "nombre": "Weather Linux",
+    "subtitulo": "天気予報"
+  },
+  "comun": {
+    "hoy": "今日",
+    "ayer": "昨日",
+    "manana": "明日",
+    "ahora": "現在",
+    "cargando": "読み込み中...",
+    "error_red": "ネットワーク接続がありません",
+    "actualizado": "更新"
+  },
+  "dias": {
+    "hoy": "今日",
+    "lun": "月曜日",
+    "mar": "火曜日",
+    "mie": "水曜日",
+    "jue": "木曜日",
+    "vie": "金曜日",
+    "sab": "土曜日",
+    "dom": "日曜日"
+  },
+  "dias_cortos": {
+    "hoy": "今日",
+    "lun": "月",
+    "mar": "火",
+    "mie": "水",
+    "jue": "木",
+    "vie": "金",
+    "sab": "土",
+    "dom": "日"
+  },
+  "meses": {
+    "1": "1月", "2": "2月", "3": "3月", "4": "4月",
+    "5": "5月", "6": "6月", "7": "7月", "8": "8月",
+    "9": "9月", "10": "10月", "11": "11月", "12": "12月"
+  },
+  "meses_cortos": {
+    "1": "1月", "2": "2月", "3": "3月", "4": "4月",
+    "5": "5月", "6": "6月", "7": "7月", "8": "8月",
+    "9": "9月", "10": "10月", "11": "11月", "12": "12月"
+  },
+  "hijri": {
+    "1": "ムハッラム", "2": "サファル", "3": "ラビー・アル＝アウワル", "4": "ラビー・アッ＝サーニー",
+    "5": "ジュマーダー・アル＝アウワル", "6": "ジュマーダー・アッ＝サーニー", "7": "ラジャブ", "8": "シャアバーン",
+    "9": "ラマダーン", "10": "シャウワール", "11": "ズー・アル＝カイダ", "12": "ズー・アル＝ヒッジャ",
+    "sufijo": "AH"
+  },
+  "condiciones": {
+    "0": "快晴",
+    "1": "おおむね晴れ",
+    "2": "時々曇り",
+    "3": "曇り",
+    "45": "霧",
+    "48": "着氷性の霧",
+    "51": "弱い霧雨",
+    "53": "霧雨",
+    "55": "強い霧雨",
+    "56": "弱い着氷性の霧雨",
+    "57": "強い着氷性の霧雨",
+    "61": "小雨",
+    "63": "雨",
+    "65": "大雨",
+    "66": "弱い着氷性の雨",
+    "67": "強い着氷性の雨",
+    "71": "小雪",
+    "73": "雪",
+    "75": "大雪",
+    "77": "霧雪・雪あられ",
+    "80": "にわか雨（弱）",
+    "81": "にわか雨（中）",
+    "82": "激しいにわか雨",
+    "85": "にわか雪（弱）",
+    "86": "にわか雪（強）",
+    "95": "雷雨",
+    "96": "雷雨（小雹を伴う）",
+    "99": "激しい雷雨（大雹を伴う）"
+  },
+  "cabecera": {
+    "sensacion": "体感温度",
+    "max": "最高",
+    "min": "最低",
+    "hoy_rango": "最高: {max}° • 最低: {min}°",
+    "esperados": "{mm} mm 予想"
+  },
+  "pronostico": {
+    "titulo_horas": "1時間ごとの予報",
+    "titulo_semanal": "7日間の天気予報"
+  },
+  "bento": {
+    "indice_uv": "UVインデックス",
+    "viento": "風速・風向",
+    "sol": "日の出 / 日の入り",
+    "luna": "月相",
+    "calidad_aire": "空気質指数",
+    "humedad": "湿度",
+    "visibilidad": "視程",
+    "presion": "気圧"
+  },
+  "uv": {
+    "bajo": "低い",
+    "moderado": "中程度",
+    "alto": "高い",
+    "muy_alto": "非常に高い",
+    "extremo": "極端に高い",
+    "desc_bajo": "安全なレベルです。屋外で快適に過ごせます。",
+    "desc_moderado": "日焼け止めとサングラスの着用をおすすめします。",
+    "desc_alto": "10:00〜16:00の間は日よけが必要です。",
+    "desc_muy_alto": "日陰に入り、長袖の着用をおすすめします。",
+    "desc_extremo": "極めて危険です。日中の外出をできるだけ避けてください。"
+  },
+  "viento": {
+    "direccion": "風向: {dir}",
+    "rafagas": "突風: {vel}",
+    "constante": "定常風"
+  },
+  "sol": {
+    "ocaso_hoy": "日の入り: {hora}",
+    "amanecer_fue": "本日の日の出時刻は {hora} でした",
+    "amanecer_hoy": "日の出: {hora}",
+    "ocaso_fue": "日の入り時刻は {hora} でした",
+    "puesta": "日の入り: {hora}"
+  },
+  "luna": {
+    "nueva": "新月",
+    "creciente_fertil": "三日月",
+    "cuarto_creciente": "上弦の月",
+    "gibosa_creciente": "十日夜の月",
+    "llena": "満月",
+    "gibosa_menguante": "十六夜の月",
+    "cuarto_menguante": "下弦の月",
+    "menguante": "有明月",
+    "iluminacion": "輝度: {pct}% ({dias}日)",
+    "salida_puesta": "月の出: {salida} • 月の入り: {puesta}",
+    "prox_llena": "次の満月: {fecha}"
+  },
+  "calidad_aire": {
+    "buena": "非常に良い",
+    "moderada": "普通",
+    "sensible": "敏感な人に影響",
+    "insalubre": "健康に良くない",
+    "muy_insalubre": "極めて健康に良くない",
+    "peligrosa": "危険",
+    "desc_buena": "空気質は非常に良好です。屋外活動に最適です。",
+    "desc_moderada": "許容範囲内です。極端に敏感な方は注意してください。",
+    "desc_sensible": "呼吸器系に敏感な方は症状が出る可能性があります。",
+    "desc_insalubre": "すべての人に健康影響が生じる可能性があります。",
+    "desc_muy_insalubre": "健康警告: 屋外での激しい運動を避けてください。",
+    "desc_peligrosa": "緊急警報: 屋内で空気清浄機を使用してください。",
+    "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
+  },
+  "humedad": {
+    "rocio_desc": "現在の露点温度は {rocio} です。"
+  },
+  "visibilidad": {
+    "excelente": "視界は極めて明瞭です。",
+    "moderada": "地平線付近に薄いもやがあります。",
+    "reducida": "霧や降水により視界が悪化しています。"
+  },
+  "presion": {
+    "baja": "低気圧 • 雲や雨の可能性があります",
+    "alta": "高気圧 • 安定した晴天",
+    "normal": "標準的な大気圧"
+  },
+  "alertas": {
+    "inundacion_titulo": "🌊 洪水・豪雨警報",
+    "inundacion_desc": "{mm} mm の猛烈な降水が予想されます。道路冠水や土砂災害に厳重警戒してください。",
+    "calor_titulo": "🔥 熱中症・極度高温警報",
+    "calor_desc": "最高気温 {temp}°C（体感: {sens}°C）に達する見込みです。十分な水分補給を行ってください。",
+    "tormenta_titulo": "⛈️ 激しい雷雨・降雹警報",
+    "tormenta_desc": "激しい落雷と突風、降雹のおそれがあります。頑丈な建物内に避難してください。",
+    "viento_titulo": "💨 暴風・強風警報",
+    "viento_desc": "最大 {vel} の猛烈な突風が予想されます。飛来物に警戒してください。",
+    "uv_titulo": "☀️ 極端紫外線（UV）警報",
+    "uv_desc": "UVインデックスが {uv}（極度）に達します。直射日光を避けてください。"
+  },
+  "busqueda": {
+    "placeholder": "都市・自治体・地域を検索...",
+    "reciente": "🕒 履歴",
+    "mi_ubicacion": "📍 現在地 (GeoIP)",
+    "cercana": "🏙️ 周辺都市",
+    "no_encontrado": "⚠️ '{query}' に一致する結果は見つかりませんでした"
+  },
+  "ajustes": {
+    "titulo": "設定",
+    "pestana_general": "一般",
+    "pestana_unidades": "単位",
+    "pestana_notificaciones": "通知",
+    "idioma": "インターフェース言語",
+    "temperatura": "温度単位",
+    "viento": "風速単位",
+    "presion": "気圧単位",
+    "bandeja": "システムトレイ",
+    "mostrar_bandeja": "タスクバーにトレイアイコンを表示",
+    "cerrar_a_bandeja": "ウィンドウを閉じた時にトレイに最小化",
+    "activar_notificaciones": "デスクトップ天気通知を有効にする",
+    "alerta_lluvia": "雨の降り始め・降り止み通知",
+    "alerta_tormenta": "気象警報・注意報通知",
+    "alerta_atardecer": "日の入りリマインダー",
+    "guardar": "保存",
+    "cancelar": "キャンセル"
+  },
+  "bandeja": {
+    "mostrar": "Weather Linux を表示",
+    "ocultar": "非表示",
+    "refrescar": "今すぐ更新",
+    "ajustes": "設定...",
+    "salir": "終了"
+  }
+}

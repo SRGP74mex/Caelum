@@ -15,12 +15,19 @@ DEFAULT_CONFIG: Dict[str, Any] = {
     "ultima_ciudad": None,
     "ciudades_recientes": [],
     "ciudades_favoritas": [],
+    "idioma": "auto",
     "unidades": {
         "temperatura": "celsius",
         "viento": "kmh"
     },
     "mostrar_bandeja": True,
-    "cerrar_a_bandeja": False
+    "cerrar_a_bandeja": False,
+    "notificaciones": {
+        "activadas": True,
+        "alerta_lluvia": True,
+        "alerta_tormenta": True,
+        "alerta_atardecer": False
+    }
 }
 
 class ConfigManager:
@@ -56,11 +63,22 @@ class ConfigManager:
         except Exception:
             logger.warning("No se pudo guardar configuración en %s", self.ruta_archivo, exc_info=True)
 
-    def guardar_preferencias(self, unidades: Dict[str, str], mostrar_bandeja: bool, cerrar_a_bandeja: bool) -> None:
+    def guardar_preferencias(
+        self,
+        unidades: Dict[str, str],
+        mostrar_bandeja: bool,
+        cerrar_a_bandeja: bool,
+        notificaciones: Optional[Dict[str, bool]] = None,
+        idioma: Optional[str] = None
+    ) -> None:
         """Persiste las preferencias editables desde la pantalla de ajustes."""
         self.datos["unidades"] = unidades
         self.datos["mostrar_bandeja"] = mostrar_bandeja
         self.datos["cerrar_a_bandeja"] = cerrar_a_bandeja
+        if idioma is not None:
+            self.datos["idioma"] = idioma
+        if notificaciones is not None:
+            self.datos["notificaciones"] = notificaciones
         self._guardar_dict(self.datos)
 
     def guardar_ultima_ciudad(self, ubicacion: Ubicacion) -> None:

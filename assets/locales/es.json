@@ -1,0 +1,213 @@
+{
+  "app": {
+    "nombre": "Weather Linux",
+    "subtitulo": "Pronóstico meteorológico"
+  },
+  "comun": {
+    "hoy": "Hoy",
+    "ayer": "Ayer",
+    "manana": "Mañana",
+    "ahora": "Ahora",
+    "cargando": "Cargando datos...",
+    "error_red": "Sin conexión a internet",
+    "actualizado": "Actualizado"
+  },
+  "dias": {
+    "hoy": "Hoy",
+    "lun": "Lunes",
+    "mar": "Martes",
+    "mie": "Miércoles",
+    "jue": "Jueves",
+    "vie": "Viernes",
+    "sab": "Sábado",
+    "dom": "Domingo"
+  },
+  "dias_cortos": {
+    "hoy": "Hoy",
+    "lun": "Lun",
+    "mar": "Mar",
+    "mie": "Mié",
+    "jue": "Jue",
+    "vie": "Vie",
+    "sab": "Sáb",
+    "dom": "Dom"
+  },
+  "meses": {
+    "1": "Enero", "2": "Febrero", "3": "Marzo", "4": "Abril",
+    "5": "Mayo", "6": "Junio", "7": "Julio", "8": "Agosto",
+    "9": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
+  },
+  "meses_cortos": {
+    "1": "Ene", "2": "Feb", "3": "Mar", "4": "Abr",
+    "5": "May", "6": "Jun", "7": "Jul", "8": "Ago",
+    "9": "Sep", "10": "Oct", "11": "Nov", "12": "Dic"
+  },
+  "hijri": {
+    "1": "Muharram", "2": "Safar", "3": "Rabi' al-Awwal", "4": "Rabi' al-Thani",
+    "5": "Jumada al-Awwal", "6": "Jumada al-Thani", "7": "Rajab", "8": "Sha'ban",
+    "9": "Ramadán", "10": "Shawwal", "11": "Dhu al-Qi'dah", "12": "Dhu al-Hijjah",
+    "sufijo": "AH"
+  },
+  "condiciones": {
+    "0": "Despejado",
+    "1": "Mayormente despejado",
+    "2": "Parcialmente nublado",
+    "3": "Nublado",
+    "45": "Niebla",
+    "48": "Niebla con escarcha",
+    "51": "Llovizna ligera",
+    "53": "Llovizna moderada",
+    "55": "Llovizna densa",
+    "56": "Llovizna helada ligera",
+    "57": "Llovizna helada densa",
+    "61": "Lluvia ligera",
+    "63": "Lluvia moderada",
+    "65": "Lluvia fuerte",
+    "66": "Lluvia helada ligera",
+    "67": "Lluvia helada fuerte",
+    "71": "Nevada ligera",
+    "73": "Nevada moderada",
+    "75": "Nevada fuerte",
+    "77": "Granos de nieve",
+    "80": "Chubascos ligeros",
+    "81": "Chubascos moderados",
+    "82": "Chubascos violentos",
+    "85": "Chubascos de nieve ligeros",
+    "86": "Chubascos de nieve fuertes",
+    "95": "Tormenta eléctrica",
+    "96": "Tormenta con granizo ligero",
+    "99": "Tormenta con granizo fuerte"
+  },
+  "cabecera": {
+    "sensacion": "Sensación térmica",
+    "max": "Máx",
+    "min": "Mín",
+    "hoy_rango": "Máx: {max}° • Mín: {min}°",
+    "esperados": "{mm} mm esperados"
+  },
+  "pronostico": {
+    "titulo_horas": "PRONÓSTICO POR HORAS",
+    "titulo_semanal": "PRONÓSTICO DE 7 DÍAS"
+  },
+  "bento": {
+    "indice_uv": "ÍNDICE UV",
+    "viento": "VIENTO",
+    "sol": "AMANECER / OCASO",
+    "luna": "FASE LUNAR",
+    "calidad_aire": "CALIDAD DEL AIRE",
+    "humedad": "HUMEDAD",
+    "visibilidad": "VISIBILIDAD",
+    "presion": "PRESIÓN"
+  },
+  "uv": {
+    "bajo": "Bajo",
+    "moderado": "Moderado",
+    "alto": "Alto",
+    "muy_alto": "Muy Alto",
+    "extremo": "Extremo",
+    "desc_bajo": "Nivel seguro. Disfruta del aire libre.",
+    "desc_moderado": "Usa gafas de sol y protector solar.",
+    "desc_alto": "Protección solar necesaria entre 10:00 y 16:00.",
+    "desc_muy_alto": "Protección extra necesaria. Busca la sombra.",
+    "desc_extremo": "Extrema precaución. Evita la exposición solar."
+  },
+  "viento": {
+    "direccion": "Dirección: {dir}",
+    "rafagas": "Ráfagas: {vel}",
+    "constante": "Viento constante"
+  },
+  "sol": {
+    "ocaso_hoy": "Ocaso: {hora}",
+    "amanecer_fue": "Amanecer hoy fue a las {hora}",
+    "amanecer_hoy": "Amanecer: {hora}",
+    "ocaso_fue": "Ocaso fue a las {hora}",
+    "puesta": "Puesta de sol: {hora}"
+  },
+  "luna": {
+    "nueva": "Luna Nueva",
+    "creciente_fertil": "Creciente",
+    "cuarto_creciente": "Cuarto Creciente",
+    "gibosa_creciente": "Gibosa Creciente",
+    "llena": "Luna Llena",
+    "gibosa_menguante": "Gibosa Menguante",
+    "cuarto_menguante": "Cuarto Menguante",
+    "menguante": "Menguante",
+    "iluminacion": "Iluminación: {pct}% ({dias}d)",
+    "salida_puesta": "Salida: {salida} • Puesta: {puesta}",
+    "prox_llena": "Próx. luna llena: {fecha}"
+  },
+  "calidad_aire": {
+    "buena": "Excelente",
+    "moderada": "Aceptable",
+    "sensible": "Sensible",
+    "insalubre": "Dañina",
+    "muy_insalubre": "Muy Dañina",
+    "peligrosa": "Peligrosa",
+    "desc_buena": "Calidad del aire ideal. Disfruta de actividades al aire libre.",
+    "desc_moderada": "Calidad aceptable. Personas muy sensibles deberían moderarse.",
+    "desc_sensible": "Grupos sensibles pueden experimentar síntomas respiratorios.",
+    "desc_insalubre": "Efectos adversos posibles para la población general.",
+    "desc_muy_insalubre": "Alerta de salud: Evita la actividad física al aire libre.",
+    "desc_peligrosa": "Emergencia sanitaria: Permanece en interiores con filtro.",
+    "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
+  },
+  "humedad": {
+    "rocio_desc": "El punto de rocío es de {rocio} en este momento."
+  },
+  "visibilidad": {
+    "excelente": "Visibilidad perfectamente clara.",
+    "moderada": "Ligera neblina en el horizonte.",
+    "reducida": "Visibilidad reducida por niebla/precipitaciones."
+  },
+  "presion": {
+    "baja": "Presión baja • Posible nubosidad",
+    "alta": "Presión alta • Tiempo estable",
+    "normal": "Presión atmosférica típica"
+  },
+  "alertas": {
+    "inundacion_titulo": "🌊 Alerta de Inundación / Lluvia Torrencial",
+    "inundacion_desc": "Se esperan acumulados de hasta {mm} mm hoy. Precaución por encharcamientos y riesgo de desbordamientos.",
+    "calor_titulo": "🔥 Alerta de Calor Extremo",
+    "calor_desc": "Temperatura máxima pronosticada de {temp}°C (Sensación {sens}°C). Mantén hidratación constante y evita la exposición solar.",
+    "tormenta_titulo": "⛈️ Alerta de Tormenta Eléctrica con Granizo",
+    "tormenta_desc": "Condiciones propicias para caída de granizo y descargas eléctricas frecuentes. Resguárdate bajo techo seguro.",
+    "viento_titulo": "💨 Alerta de Ráfagas de Viento Violentas",
+    "viento_desc": "Ráfagas registradas de {vel}. Riesgo de caída de ramas y objetos sueltos.",
+    "uv_titulo": "☀️ Alerta de Radiación UV Extrema",
+    "uv_desc": "Índice UV de {uv}. Nivel extremo de radiación: el daño cutáneo ocurre en menos de 10 minutos."
+  },
+  "busqueda": {
+    "placeholder": "Buscar ciudad, municipio o localidad...",
+    "reciente": "🕒 Reciente",
+    "mi_ubicacion": "📍 Mi Ubicación (GeoIP)",
+    "cercana": "🏙️ Cercana",
+    "no_encontrado": "⚠️ No se encontró '{query}'"
+  },
+  "ajustes": {
+    "titulo": "Ajustes",
+    "pestana_general": "General",
+    "pestana_unidades": "Unidades",
+    "pestana_notificaciones": "Notificaciones",
+    "idioma": "Idioma de la interfaz",
+    "temperatura": "Temperatura",
+    "viento": "Velocidad del viento",
+    "presion": "Presión atmosférica",
+    "bandeja": "Bandeja del sistema (Tray)",
+    "mostrar_bandeja": "Mostrar icono en la barra de tareas",
+    "cerrar_a_bandeja": "Minimizar a la bandeja al cerrar la ventana",
+    "activar_notificaciones": "Activar alertas y notificaciones de escritorio",
+    "alerta_lluvia": "Aviso cuando comience o pare de llover",
+    "alerta_tormenta": "Alertas meteorológicas severas",
+    "alerta_atardecer": "Aviso de puesta de sol",
+    "guardar": "Guardar",
+    "cancelar": "Cancelar"
+  },
+  "bandeja": {
+    "mostrar": "Mostrar Weather Linux",
+    "ocultar": "Ocultar",
+    "refrescar": "Refrescar ahora",
+    "ajustes": "Ajustes...",
+    "salir": "Salir"
+  }
+}
+

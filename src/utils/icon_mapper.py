@@ -1,6 +1,6 @@
 from src.modelos.clima_datos import CondicionClimatica
 
-# Mapeo WMO -> (Descripción Español, Icono Día, Icono Noche, Tipo Animación)
+# Mapeo WMO -> (Descripción por Defecto, Icono Día, Icono Noche, Tipo Animación)
 WMO_TABLE = {
     0: ("Despejado", "clear-day", "clear-night", "clear"),
     1: ("Mayormente Despejado", "clear-day", "clear-night", "clear"),
@@ -35,8 +35,12 @@ WMO_TABLE = {
 class IconMapper:
     @staticmethod
     def obtener_condicion(wmo_code: int, es_dia: bool = True) -> CondicionClimatica:
+        from src.servicios.i18n import t
         info = WMO_TABLE.get(wmo_code, ("Variable", "cloudy", "cloudy", "clouds"))
-        descripcion, icon_dia, icon_noche, animacion = info
+        def_desc, icon_dia, icon_noche, animacion = info
+        descripcion = t(f"condiciones.{wmo_code}")
+        if descripcion == str(wmo_code) or not descripcion:
+            descripcion = def_desc
         icon_name = icon_dia if es_dia else icon_noche
         return CondicionClimatica(
             wmo_code=wmo_code,

@@ -4,6 +4,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = BASE_DIR / "assets"
 ICONS_DIR = ASSETS_DIR / "icons" / "meteocons"
+LUNA_DIR = ASSETS_DIR / "icons" / "luna"
 STYLES_DIR = ASSETS_DIR / "styles"
 BACKGROUNDS_DIR = ASSETS_DIR / "backgrounds"
 CACHE_DIR = Path.home() / ".cache" / "weather_linux"
@@ -41,4 +42,6 @@ CACHE_TTL_SECONDS = 900            # 15 minutos de caché
 GEOLOCATION_IP_API = "https://ipapi.co/json/"
 OPEN_METEO_BASE_URL = "https://api.open-meteo.com/v1/forecast"
 OPEN_METEO_GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
+OPEN_METEO_AIR_QUALITY_URL = "https://air-quality-api.open-meteo.com/v1/air-quality"
+
 

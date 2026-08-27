@@ -21,6 +21,46 @@ class CondicionClimatica:
     es_dia: bool = True
     animacion_tipo: str = "clear"  # "clear", "clouds", "rain", "snow", "thunderstorm", "fog"
 
+
+@dataclass
+class DatosCalidadAire:
+    aqi_europeo: int               # 0-100+
+    aqi_us: int                    # 0-500
+    pm2_5: float                   # μg/m³
+    pm10: float                    # μg/m³
+    dioxido_nitrogeno: Optional[float] = None
+    ozono: Optional[float] = None
+    dioxido_azufre: Optional[float] = None
+
+    @property
+    def categoria(self) -> str:
+        if self.aqi_us <= 50:
+            return "Excelente"
+        elif self.aqi_us <= 100:
+            return "Aceptable"
+        elif self.aqi_us <= 150:
+            return "Sensible"
+        elif self.aqi_us <= 200:
+            return "Dañina"
+        elif self.aqi_us <= 300:
+            return "Muy Dañina"
+        return "Peligrosa"
+
+    @property
+    def color_hex(self) -> str:
+        if self.aqi_us <= 50:
+            return "#34d399"  # Verde
+        elif self.aqi_us <= 100:
+            return "#fbbf24"  # Amarillo
+        elif self.aqi_us <= 150:
+            return "#fb923c"  # Naranja
+        elif self.aqi_us <= 200:
+            return "#f87171"  # Rojo
+        elif self.aqi_us <= 300:
+            return "#c084fc"  # Morado
+        return "#b91c1c"      # Granate
+
+
 @dataclass
 class ClimaActual:
     temperatura: float
@@ -40,6 +80,7 @@ class ClimaActual:
     amanecer_iso: str              # ISO datetime
     ocaso_iso: str                 # ISO datetime
     condicion: CondicionClimatica
+    calidad_aire: Optional[DatosCalidadAire] = None
     timestamp_iso: str = field(default_factory=lambda: datetime.now().isoformat())
 
     @property
@@ -60,6 +101,7 @@ class ClimaActual:
                        "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
         idx = int((self.viento_direccion + 11.25) / 22.5) % 16
         return direcciones[idx]
+
 
 @dataclass
 class PronosticoHora:
