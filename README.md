@@ -112,8 +112,8 @@ _Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day fo
 ### Quick Launch (1 Command)
 
 ```bash
-git clone https://github.com/tu-usuario/caelum.git
-cd "caelum"
+git clone https://github.com/SRGP74mex/Caelum.git
+cd "Caelum"
 ./run.sh
 ```
 
