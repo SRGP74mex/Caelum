@@ -13,17 +13,27 @@ EMOJIS_CLIMA = {
     "partly-cloudy-day": "⛅",
     "partly-cloudy-night": "☁️",
     "cloudy": "☁️",
-    "drizzle": "🌦️",
+    "drizzle": "🌧️",
+    "drizzle-day": "🌦️",
+    "drizzle-night": "🌧️",
+    "partly-cloudy-day-rain": "🌦️",
+    "partly-cloudy-night-rain": "🌧️",
     "rain": "🌧️",
     "heavy-rain": "🌧️",
     "thunderstorms-day": "⛈️",
     "thunderstorms-night": "⛈️",
+    "thunderstorms-day-rain": "⛈️",
+    "thunderstorms-night-rain": "⛈️",
     "snow": "❄️",
     "heavy-snow": "🌨️",
+    "partly-cloudy-day-snow": "🌨️",
+    "partly-cloudy-night-snow": "🌨️",
     "fog-day": "🌫️",
     "fog-night": "🌫️",
     "snowflake": "❄️",
-    "sleet": "🌨️"
+    "sleet": "🌨️",
+    "sleet-day": "🌨️",
+    "sleet-night": "🌨️",
 }
 
 class LienzoCurvaHoraria(QWidget):
@@ -166,7 +176,8 @@ class LienzoCurvaHoraria(QWidget):
             )
 
             # Icono Emoji
-            emoji = EMOJIS_CLIMA.get(h_obj.condicion.icon_name, "⛅")
+            default_fallback = "🌙" if h_obj.es_noche else "☀️"
+            emoji = EMOJIS_CLIMA.get(h_obj.condicion.icon_name, default_fallback)
             painter.setFont(font_emoji)
             painter.drawText(
                 QRectF(col_x, self.margin_top + 18, self.col_width, 20),
