@@ -46,7 +46,7 @@ _WeatherApp Linux displaying real-time daytime conditions, 24h temperature curve
 - **💨 Wind Compass Widget**: Real-time speed, direction bearing, cardinal direction (e.g. `SSE (159°)`), and peak wind gusts.
 - **🍃 Air Quality Index (AQI)**: Live European Air Quality Index with color-coded badges, health advisories, and PM2.5 / PM10 particulate concentrations.
 - **🌔 Moon Phase & Astronomy**: Astronomical phase calculation, exact illumination percentage, moonrise/moonset timestamps, and next full moon countdown.
-- **☀️ UV Index & Sun Trajectory**: Real-time UV risk category with solar countdown (*e.g., "Sunset in 3h 12m"*).
+- **☀️ UV Index & Sun Trajectory**: Real-time UV risk category with solar countdown (_e.g., "Sunset in 3h 12m"_).
 - **💧 Humidity & Dew Point**: Precise hygrometer with comfort index and Magnus-Tetens dew point calculation.
 - **👁️ Visibility & Atmospheric Pressure**: Kilometre visibility clarity and hectopascal (hPa) barometric readings.
 

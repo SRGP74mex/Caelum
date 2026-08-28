@@ -301,3 +301,4 @@ class CalendarioChino:
         day = offset + 1
         zodiac_idx = (year - 4) % 12
         return year, month, day, is_leap, cls.ZODIACO_KEYS[zodiac_idx]
+

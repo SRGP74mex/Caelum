@@ -55,6 +55,7 @@ logger = logging.getLogger(__name__)
 
 PALETAS_CIELO = {
     "dia_despejado": [QColor(24, 76, 120), QColor(48, 122, 178), QColor(95, 170, 222)],
+    "dia_mayormente_despejado": [QColor(28, 80, 128), QColor(54, 128, 184), QColor(102, 175, 226)],
     "dia_parcialmente_despejado": [QColor(30, 85, 135), QColor(60, 135, 190), QColor(110, 180, 230)],
     "dia_parcialmente_nublado": [QColor(45, 65, 85), QColor(75, 105, 130), QColor(115, 145, 170)],
     "dia_nublado": [QColor(50, 60, 70), QColor(75, 90, 105), QColor(110, 125, 140)],
@@ -67,6 +68,7 @@ PALETAS_CIELO = {
     "dia_nevado_medio_nublado": [QColor(55, 75, 95), QColor(90, 115, 140), QColor(135, 160, 185)],
     "dia_nevado_nublado": [QColor(50, 65, 80), QColor(80, 100, 120), QColor(120, 140, 160)],
     "noche_despejado": [QColor(8, 14, 28), QColor(18, 28, 50), QColor(30, 44, 72)],
+    "noche_mayormente_despejado": [QColor(9, 15, 29), QColor(19, 30, 52), QColor(32, 46, 74)],
     "noche_semidespejado": [QColor(10, 16, 30), QColor(20, 32, 54), QColor(34, 48, 76)],
     "noche_seminublado": [QColor(12, 18, 30), QColor(24, 34, 52), QColor(40, 52, 74)],
     "noche_nublado": [QColor(14, 20, 28), QColor(26, 35, 46), QColor(42, 52, 65)],
@@ -129,8 +131,9 @@ class VentanaPrincipal(QMainWindow):
         """Carga en memoria el conjunto de 20 imágenes panorámicas normalizadas."""
         mapeo_archivos = {
             "dia_despejado": "dia_despejado.png",
+            "dia_mayormente_despejado": "dia_mayormente_despejado.png",
             "dia_parcialmente_despejado": "dia_parcialmente_despejado.png",
-            "dia_parcialmente_nublado": "dia_parcialmente_nublado.png",
+            "dia_parcialmente_nublado": "dia_parcialmente_despejado.png",
             "dia_nublado": "dia_nublado.png",
             "dia_cirrus": "dia_cirrus.png",
             "dia_lluvia": "dia_lluvia.png",
@@ -141,13 +144,14 @@ class VentanaPrincipal(QMainWindow):
             "dia_nevado_medio_nublado": "dia_nevado_medio_nublado.png",
             "dia_nevado_nublado": "dia_nevado_nublado.png",
             "noche_despejado": "noche_despejado.png",
+            "noche_mayormente_despejado": "noche_mayormente_despejado.png",
             "noche_semidespejado": "noche_semidespejado.png",
-            "noche_seminublado": "noche_seminublado.png",
+            "noche_seminublado": "noche_semidespejado.png",
             "noche_nublado": "noche_nublado.png",
             "noche_cirrus": "noche_cirrus.png",
             "noche_despejado_nevado": "noche_despejado_nevado.png",
             "amanecer": "amanecer.png",
-            "atardecer": "atardecer.png"
+            "atardecer": "atardecer.png",
         }
         for key, fname in mapeo_archivos.items():
             path = BACKGROUNDS_DIR / fname
@@ -586,18 +590,16 @@ class VentanaPrincipal(QMainWindow):
                         key = "dia_nevado_medio_nublado"
                 else:
                     key = "noche_despejado_nevado"
-            elif wmo_code in [51, 53, 55, 61, 63, 65, 80, 81, 82] or anim_tipo == "rain":
-                key = "dia_lluvia" if es_dia else "noche_nublado"
-            elif wmo_code in [95, 96, 99] or anim_tipo == "thunderstorm":
+            elif wmo_code in [51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99] or anim_tipo in ["rain", "thunderstorm"]:
                 key = "dia_lluvia" if es_dia else "noche_nublado"
             elif wmo_code in [45, 48] or anim_tipo == "fog":
                 key = "dia_banco_neblina" if es_dia else "noche_nublado"
+            elif wmo_code == 2:
+                key = "dia_parcialmente_despejado" if es_dia else "noche_semidespejado"
+            elif wmo_code == 1:
+                key = "dia_mayormente_despejado" if es_dia else "noche_mayormente_despejado"
             elif wmo_code == 3 or anim_tipo == "clouds":
                 key = "dia_nublado" if es_dia else "noche_nublado"
-            elif wmo_code == 2:
-                key = "dia_parcialmente_nublado" if es_dia else "noche_seminublado"
-            elif wmo_code == 1:
-                key = "dia_parcialmente_despejado" if es_dia else "noche_semidespejado"
             else:
                 key = "dia_despejado" if es_dia else "noche_despejado"
 
