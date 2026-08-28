@@ -20,15 +20,9 @@ class EntornoSistema:
     @staticmethod
     def configurar_optimizaciones_wayland() -> None:
         """
-        Aplica banderas de entorno y políticas Qt antes de instanciar QApplication.
-        Mejora el escalado fraccional y la respuesta bajo compositores Wayland.
+        Aplica políticas Qt antes de instanciar QApplication.
+        Mejora el escalado fraccional y la respuesta bajo compositores Wayland y X11.
         """
-        # Si no se ha forzado una plataforma específica, permitir a Qt usar Wayland con fallback a X11
-        if "QT_QPA_PLATFORM" not in os.environ:
-            session_type = os.environ.get("XDG_SESSION_TYPE", "").lower()
-            if session_type == "wayland" or "WAYLAND_DISPLAY" in os.environ:
-                os.environ["QT_QPA_PLATFORM"] = "wayland;xcb"
-
         # Escalado fraccional nítido en pantallas 2K/4K
         try:
             QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
