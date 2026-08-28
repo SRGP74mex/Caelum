@@ -271,6 +271,11 @@ class VentanaPrincipal(QMainWindow):
             self.showNormal()
         self.raise_()
         self.activateWindow()
+        try:
+            if hasattr(self, "windowHandle") and self.windowHandle():
+                self.windowHandle().requestActivate()
+        except Exception:
+            pass
 
     def toggle_visibilidad(self) -> None:
         if self.isVisible() and not self.isMinimized():

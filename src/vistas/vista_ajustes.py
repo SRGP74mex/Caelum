@@ -215,8 +215,15 @@ class VistaAjustes(QDialog):
 
         layout.addSpacing(6)
 
-        # Botones
+        from src.utils.entorno_sistema import EntornoSistema
+        servidor = EntornoSistema.obtener_servidor_grafico()
+        escritorio = EntornoSistema.obtener_entorno_escritorio()
+
+        # Botones y pie informativo
         botones = QHBoxLayout()
+        lbl_entorno = QLabel(f"🐧 {servidor} • {escritorio}", self)
+        lbl_entorno.setStyleSheet("color: rgba(255, 255, 255, 0.45); font-size: 11px;")
+        botones.addWidget(lbl_entorno)
         botones.addStretch()
 
         self.btn_cancelar = QPushButton(t("ajustes.cancelar"), self)
