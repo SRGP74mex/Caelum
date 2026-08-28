@@ -26,6 +26,7 @@ class InputBusqueda(QLineEdit):
     flecha_arriba_presionada = Signal()
     escape_presionado = Signal()
     foco_ganado = Signal()
+    foco_perdido = Signal()
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         if event.key() == Qt.Key.Key_Down:
@@ -43,13 +44,18 @@ class InputBusqueda(QLineEdit):
         super().focusInEvent(event)
         self.foco_ganado.emit()
 
+    def focusOutEvent(self, event: QFocusEvent) -> None:
+        super().focusOutEvent(event)
+        self.foco_perdido.emit()
+
 
 class BarraBusqueda(QWidget):
     """
     Barra de búsqueda reactiva con sugerencias flotantes tipo Pop-up / Overlay (Z-Index superior):
     - Flota por encima de las tarjetas sin desplazar ni mover el contenido de la interfaz.
+    - No secuestra el foco de teclado, permitiendo escribir fluidamente sin interrupciones.
     - Al hacer foco sin texto, sugiere la ubicación detectada por IP y ciudades recientes.
-    - Al escribir, busca en tiempo real en todo el mundo.
+    - Al escribir, busca en tiempo real en todo el mundo con respuesta instantánea y caché.
     - Soporte completo para navegación por teclado (flechas, Enter, Esc) y ratón.
     """
     ciudad_seleccionada = Signal(Ubicacion)
@@ -62,7 +68,7 @@ class BarraBusqueda(QWidget):
         self._search_id = 0
         self._ciudades_cercanas_cache: List[Ubicacion] = []
 
-        # Temporizador para debounce de búsqueda rápida (200 ms)
+        # Temporizador para debounce de búsqueda suave (320 ms)
         self.debounce_timer = QTimer(self)
         self.debounce_timer.setSingleShot(True)
         self.debounce_timer.timeout.connect(self._realizar_busqueda)
@@ -97,6 +103,7 @@ class BarraBusqueda(QWidget):
         self.input_busqueda.flecha_arriba_presionada.connect(self._on_flecha_arriba)
         self.input_busqueda.escape_presionado.connect(self.limpiar)
         self.input_busqueda.foco_ganado.connect(self._on_foco_ganado)
+        self.input_busqueda.foco_perdido.connect(self._on_foco_perdido)
         bar_layout.addWidget(self.input_busqueda)
 
         # Botón limpiar
@@ -110,13 +117,14 @@ class BarraBusqueda(QWidget):
         main_layout.addWidget(self.contenedor)
 
         # Lista de sugerencias desplegable flotante (Overlay / Z-Index)
-        # Se configura como Popup para flotar por encima de la ventana sin empujar los widgets
+        # Se configura con ToolTip y WindowDoesNotAcceptFocus para flotar por encima sin robar el teclado
         self.lista_sugerencias = QListWidget()
         self.lista_sugerencias.setObjectName("listaSugerencias")
         self.lista_sugerencias.setWindowFlags(
-            Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint | Qt.WindowType.NoDropShadowWindowHint
+            Qt.WindowType.ToolTip | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowDoesNotAcceptFocus
         )
         self.lista_sugerencias.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        self.lista_sugerencias.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
         self.lista_sugerencias.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.lista_sugerencias.itemClicked.connect(self._on_item_clicked)
 
@@ -136,11 +144,10 @@ class BarraBusqueda(QWidget):
         self.lista_sugerencias.raise_()
 
     def _precargar_ciudades_cercanas(self) -> None:
-        """Detecta la IP y precarga ciudades cercanas en segundo plano."""
+        """Detecta la IP y precarga ciudades en segundo plano sin bloquear."""
         def _detect():
             ub_ip = self.geo_service.detectar_ubicacion_ip()
-            cercanas = self.geo_service.obtener_ciudades_cercanas(ub_ip.latitud, ub_ip.longitud, limite=6)
-            return [ub_ip] + cercanas
+            return [ub_ip]
 
         def _on_result(ciudades: List[Ubicacion]):
             self._ciudades_cercanas_cache = ciudades
@@ -151,6 +158,14 @@ class BarraBusqueda(QWidget):
         """Al hacer clic en la barra vacía, muestra sugerencias dinámicas (GeoIP y recientes)."""
         if not self.input_busqueda.text().strip():
             self._mostrar_sugerencias_dinamicas()
+
+    def _on_foco_perdido(self) -> None:
+        """Oculta las sugerencias si el foco se mueve a otro control."""
+        QTimer.singleShot(250, self._verificar_cerrar_popup)
+
+    def _verificar_cerrar_popup(self) -> None:
+        if not self.input_busqueda.hasFocus():
+            self.lista_sugerencias.hide()
 
     def _mostrar_sugerencias_dinamicas(self) -> None:
         self.lista_sugerencias.clear()
@@ -166,7 +181,7 @@ class BarraBusqueda(QWidget):
             for r in recientes[:4]:
                 candidatos.append((r, t("busqueda.reciente")))
 
-        # 2. Ciudades cercanas de GeoIP
+        # 2. Ciudades cercanas / IP
         if self._ciudades_cercanas_cache:
             for c in self._ciudades_cercanas_cache:
                 if not any(cand[0].latitud == c.latitud and cand[0].longitud == c.longitud for cand in candidatos):
@@ -191,7 +206,7 @@ class BarraBusqueda(QWidget):
         self.btn_limpiar.setVisible(bool(texto))
         query = texto.strip()
         if len(query) >= 2:
-            self.debounce_timer.start(200)
+            self.debounce_timer.start(320)
         elif len(query) == 0:
             self.debounce_timer.stop()
             self._mostrar_sugerencias_dinamicas()

@@ -561,14 +561,15 @@ class VentanaPrincipal(QMainWindow):
 
         if amanecer_iso or ocaso_iso:
             try:
-                ahora = datetime.now(timezone.utc)
                 if amanecer_iso:
                     am_dt = FechaHelper.parse_iso(amanecer_iso)
+                    ahora = datetime.now(am_dt.tzinfo) if am_dt.tzinfo else datetime.now()
                     if abs((ahora - am_dt).total_seconds()) <= 2400:  # +- 40 min
                         key = "amanecer"
                         es_ventana_solar = True
                 if not es_ventana_solar and ocaso_iso:
                     oc_dt = FechaHelper.parse_iso(ocaso_iso)
+                    ahora = datetime.now(oc_dt.tzinfo) if oc_dt.tzinfo else datetime.now()
                     if abs((ahora - oc_dt).total_seconds()) <= 2400:  # +- 40 min
                         key = "atardecer"
                         es_ventana_solar = True

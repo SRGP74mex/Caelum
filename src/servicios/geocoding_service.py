@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import List
+from typing import Dict, List, Optional
 
 from config import (
     DEFAULT_CITY,
@@ -9,7 +9,6 @@ from config import (
     DEFAULT_TIMEZONE,
     LANGUAGE,
     OPEN_METEO_GEOCODING_URL,
-    REQUEST_TIMEOUT,
 )
 from src.modelos.clima_datos import Ubicacion
 from src.servicios.http_session import sesion_http
@@ -38,9 +37,11 @@ ALIAS_CIUDADES = {
     "rio": "Rio de Janeiro"
 }
 
+
 class GeocodingService:
-    def __init__(self, timeout: int = REQUEST_TIMEOUT):
+    def __init__(self, timeout: int = 4):
         self.timeout = timeout
+        self._cache_busquedas: Dict[str, List[Ubicacion]] = {}
 
     def _normalizar_texto(self, consulta: str) -> str:
         """Reemplaza acrónimos y limpia separadores."""
@@ -49,46 +50,47 @@ class GeocodingService:
         tokens_normalizados = [ALIAS_CIUDADES.get(t.lower(), t) for t in tokens if t]
         return " ".join(tokens_normalizados)
 
-    def buscar_ciudades(self, consulta: str, limite: int = 6, idioma: str = LANGUAGE) -> List[Ubicacion]:
+    def buscar_ciudades(self, consulta: str, limite: int = 6, idioma: Optional[str] = None) -> List[Ubicacion]:
         """
-        Búsqueda inteligente multi-estrategia:
+        Búsqueda ultra-rápida y multi-estrategia con caché en memoria:
         1. Open-Meteo Geocoding con consulta procesada.
-        2. Búsqueda por término principal si contiene provincia/estado.
-        3. Fallback a Nominatim OpenStreetMap para búsquedas complejas.
+        2. Búsqueda por ciudad base si contiene comas (ej. "Zapopan, Jalisco").
+        3. Fallback a Nominatim OpenStreetMap en caso necesario.
         """
         if not consulta or len(consulta.strip()) < 2:
             return []
 
         query_limpia = consulta.strip()
+        query_key = f"{query_limpia.lower()}_{limite}_{idioma}"
+        if query_key in self._cache_busquedas:
+            return self._cache_busquedas[query_key]
+
+        from src.servicios.i18n import obtener_idioma_actual
+        idioma_req = idioma or obtener_idioma_actual()
+        if idioma_req == "auto":
+            idioma_req = "es"
+
         query_normalizada = self._normalizar_texto(query_limpia)
 
         # 1. Intentar Open-Meteo Geocoding directo
-        resultados = self._buscar_open_meteo(query_normalizada, limite, idioma)
+        resultados = self._buscar_open_meteo(query_normalizada, limite, idioma_req)
+        if not resultados and query_normalizada != query_limpia:
+            resultados = self._buscar_open_meteo(query_limpia, limite, idioma_req)
+
+        # 2. Si la consulta tiene comas (ej: "Madrid, España"), buscar por el primer término
+        if not resultados:
+            partes = [p.strip() for p in re.split(r'[,]+', query_limpia) if p.strip()]
+            if len(partes) > 1:
+                resultados = self._buscar_open_meteo(partes[0], limite, idioma_req)
+
+        # 3. Fallback a Nominatim solo si Open-Meteo no arrojó resultados
+        if not resultados:
+            resultados = self._buscar_nominatim(query_normalizada or query_limpia, limite)
+
         if resultados:
-            return resultados
+            self._cache_busquedas[query_key] = resultados
 
-        if query_normalizada != query_limpia:
-            resultados = self._buscar_open_meteo(query_limpia, limite, idioma)
-            if resultados:
-                return resultados
-
-        # 2. Si la consulta tiene múltiples palabras o comas
-        partes = [p.strip() for p in re.split(r'[,]+', query_limpia) if p.strip()]
-        if len(partes) > 1:
-            resultados_partes = self._buscar_open_meteo(partes[0], limite, idioma)
-            if resultados_partes:
-                return resultados_partes
-
-        # Probar con las primeras 2 palabras
-        palabras = query_limpia.split()
-        if len(palabras) > 2:
-            sub_query = " ".join(palabras[:2])
-            resultados_sub = self._buscar_open_meteo(sub_query, limite, idioma)
-            if resultados_sub:
-                return resultados_sub
-
-        # 3. Fallback a Nominatim OpenStreetMap
-        return self._buscar_nominatim(query_normalizada or query_limpia, limite)
+        return resultados
 
     def _buscar_open_meteo(self, nombre: str, limite: int, idioma: str) -> List[Ubicacion]:
         params = {
@@ -123,7 +125,7 @@ class GeocodingService:
                 ))
             return resultados
         except Exception:
-            logger.warning("Fallo en búsqueda Open-Meteo para %r", nombre, exc_info=True)
+            logger.debug("Búsqueda Open-Meteo sin resultados para %r", nombre)
             return []
 
     def _buscar_nominatim(self, query: str, limite: int) -> List[Ubicacion]:
@@ -139,7 +141,7 @@ class GeocodingService:
         headers = {"User-Agent": "WeatherApp-Linux/1.0 (https://github.com/weatherapp-linux)"}
 
         try:
-            response = sesion_http.get(url, params=params, headers=headers, timeout=self.timeout)
+            response = sesion_http.get(url, params=params, headers=headers, timeout=2.5)
             response.raise_for_status()
             items = response.json()
 
@@ -166,7 +168,7 @@ class GeocodingService:
                 ))
             return resultados
         except Exception:
-            logger.warning("Fallo en búsqueda Nominatim para %r", query, exc_info=True)
+            logger.debug("Fallo en búsqueda Nominatim para %r", query)
             return []
 
     def obtener_ciudades_cercanas(self, lat: float, lon: float, limite: int = 6) -> List[Ubicacion]:
@@ -184,7 +186,7 @@ class GeocodingService:
         headers = {"User-Agent": "WeatherApp-Linux/1.0 (https://github.com/weatherapp-linux)"}
 
         try:
-            response = sesion_http.get(url, params=params, headers=headers, timeout=self.timeout)
+            response = sesion_http.get(url, params=params, headers=headers, timeout=2.5)
             response.raise_for_status()
             items = response.json()
 
@@ -215,58 +217,75 @@ class GeocodingService:
                 ))
             return resultados
         except Exception:
-            logger.warning("Fallo al obtener ciudades cercanas (%.4f, %.4f)", lat, lon, exc_info=True)
+            logger.debug("Fallo al obtener ciudades cercanas (%.4f, %.4f)", lat, lon)
             return []
 
     def detectar_ubicacion_ip(self) -> Ubicacion:
-        """Detecta la ubicación geográfica real del usuario mediante GeoIP con doble fallback."""
+        """
+        Detección multi-proveedor de GeoIP en cascada con fallback seguro:
+        1. ipapi.co
+        2. ipwho.is
+        3. ip-api.com
+        4. Fallback por defecto (Bogotá)
+        """
         headers = {"User-Agent": "WeatherApp-Linux/1.0"}
 
         # Proveedor 1: ipapi.co
         try:
-            response = sesion_http.get("https://ipapi.co/json/", headers=headers, timeout=4)
+            response = sesion_http.get("https://ipapi.co/json/", headers=headers, timeout=3)
             if response.status_code == 200:
                 data = response.json()
-                ciudad = data.get("city") or data.get("region") or DEFAULT_CITY
-                pais = data.get("country_name", "México")
-                lat = float(data.get("latitude", DEFAULT_LATITUDE))
-                lon = float(data.get("longitude", DEFAULT_LONGITUDE))
-                tz = data.get("timezone", DEFAULT_TIMEZONE)
-                region = data.get("region") or data.get("city")
-
-                return Ubicacion(
-                    ciudad=ciudad,
-                    pais=pais,
-                    latitud=lat,
-                    longitud=lon,
-                    timezone=tz,
-                    admin1=region
-                )
-        except Exception:
-            logger.warning("Fallo en proveedor de GeoIP ipapi.co", exc_info=True)
-
-        # Proveedor 2: ipwho.is (ip-api.com no soporta HTTPS en su nivel gratuito)
-        try:
-            response = sesion_http.get("https://ipwho.is/", headers=headers, timeout=4)
-            if response.status_code == 200:
-                data = response.json()
-                if data.get("success"):
+                if "latitude" in data and "longitude" in data and not data.get("error"):
                     return Ubicacion(
-                        ciudad=data.get("city", DEFAULT_CITY),
-                        pais=data.get("country", "México"),
-                        latitud=float(data.get("latitude", DEFAULT_LATITUDE)),
-                        longitud=float(data.get("longitude", DEFAULT_LONGITUDE)),
-                        timezone=(data.get("timezone") or {}).get("id", DEFAULT_TIMEZONE),
+                        ciudad=data.get("city") or DEFAULT_CITY,
+                        pais=data.get("country_name") or "Colombia",
+                        latitud=float(data.get("latitude")),
+                        longitud=float(data.get("longitude")),
+                        timezone=data.get("timezone") or DEFAULT_TIMEZONE,
                         admin1=data.get("region")
                     )
         except Exception:
-            logger.warning("Fallo en proveedor de GeoIP ipwho.is", exc_info=True)
+            logger.debug("Fallo en proveedor de GeoIP ipapi.co")
 
-        # Fallback genérico neutral
+        # Proveedor 2: ipwho.is
+        try:
+            response = sesion_http.get("https://ipwho.is/", headers=headers, timeout=3)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("success", True) and "latitude" in data and "longitude" in data:
+                    return Ubicacion(
+                        ciudad=data.get("city") or DEFAULT_CITY,
+                        pais=data.get("country") or "Colombia",
+                        latitud=float(data.get("latitude")),
+                        longitud=float(data.get("longitude")),
+                        timezone=data.get("timezone", {}).get("id") or DEFAULT_TIMEZONE,
+                        admin1=data.get("region")
+                    )
+        except Exception:
+            logger.debug("Fallo en proveedor de GeoIP ipwho.is")
+
+        # Proveedor 3: ip-api.com
+        try:
+            response = sesion_http.get("http://ip-api.com/json/", headers=headers, timeout=3)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("status") == "success":
+                    return Ubicacion(
+                        ciudad=data.get("city") or DEFAULT_CITY,
+                        pais=data.get("country") or "Colombia",
+                        latitud=float(data.get("lat")),
+                        longitud=float(data.get("lon")),
+                        timezone=data.get("timezone") or DEFAULT_TIMEZONE,
+                        admin1=data.get("regionName")
+                    )
+        except Exception:
+            logger.debug("Fallo en proveedor de GeoIP ip-api.com")
+
+        logger.info("Usando ubicación por defecto de respaldo: %s", DEFAULT_CITY)
         return Ubicacion(
-            ciudad="Ciudad de México",
-            pais="México",
-            latitud=19.4326,
-            longitud=-99.1332,
-            timezone="America/Mexico_City"
+            ciudad=DEFAULT_CITY,
+            pais="Colombia",
+            latitud=DEFAULT_LATITUDE,
+            longitud=DEFAULT_LONGITUDE,
+            timezone=DEFAULT_TIMEZONE
         )
