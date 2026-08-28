@@ -12,6 +12,7 @@
 [![Data](https://img.shields.io/badge/Weather_Data-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
 [![i18n](https://img.shields.io/badge/Languages-6_Supported-informational?style=for-the-badge)](assets/locales/)
 [![Calendars](https://img.shields.io/badge/World_Calendars-8_Supported-purple?style=for-the-badge)](src/utils/calendarios_mundo.py)
+[![Website](https://img.shields.io/badge/Live_Website-srgp74mex.github.io%2FCaelum-0284c7?style=for-the-badge&logo=google-chrome&logoColor=white)](https://srgp74mex.github.io/Caelum/)
 
 <br/>
 
