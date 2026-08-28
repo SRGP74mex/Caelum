@@ -1,7 +1,7 @@
 [project]
-name = "weather-linux"
+name = "caelum"
 version = "1.5.0"
-description = "Aplicación de clima estilo Apple para Linux con PySide6"
+description = "Caelum - Aplicación de clima y astronomía estilo Apple para Linux con PySide6"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.11"
@@ -13,6 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
+caelum = "main:main"
 weather-linux = "main:main"
 
 [build-system]

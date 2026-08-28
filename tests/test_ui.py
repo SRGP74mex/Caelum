@@ -141,7 +141,8 @@ class TestUIComponents(unittest.TestCase):
             self.assertIsNotNone(ventana.barra_busqueda)
             self.assertIsNotNone(ventana.curva_horaria)
             self.assertIsNotNone(ventana.fondo_particulas)
-            self.assertEqual(ventana.windowTitle(), "WeatherApp Linux")
+            from config import APP_NAME
+            self.assertEqual(ventana.windowTitle(), APP_NAME)
             ventana.close()
 
     def test_curva_horaria_render(self):

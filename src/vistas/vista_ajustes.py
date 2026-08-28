@@ -36,7 +36,8 @@ class VistaAjustes(QDialog):
     def __init__(self, config_manager: ConfigManager, parent: Optional[QWidget] = None):
         super().__init__(parent)
         self.config_manager = config_manager
-        self.setWindowTitle(f"{t('ajustes.titulo')} - WeatherApp Linux")
+        from config import APP_NAME
+        self.setWindowTitle(f"{t('ajustes.titulo')} - {APP_NAME}")
         self.setMinimumWidth(460)
         self._aplicar_estilos()
         self._init_ui()

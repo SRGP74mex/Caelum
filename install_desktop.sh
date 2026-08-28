@@ -10,24 +10,24 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DESKTOP_FILE="$SCRIPT_DIR/weather-linux.desktop"
+DESKTOP_FILE="$SCRIPT_DIR/caelum.desktop"
 TARGET_DIR="$HOME/.local/share/applications"
-TARGET_FILE="$TARGET_DIR/weather-linux.desktop"
+TARGET_FILE="$TARGET_DIR/caelum.desktop"
 
 cat > "$DESKTOP_FILE" <<EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Name=Weather Linux
-GenericName=Aplicación de Clima
-Comment=Aplicación de clima estilo Apple para Linux con PySide6
+Name=Caelum
+GenericName=Aplicación de Clima y Astronomía
+Comment=Aplicación de clima y astronomía estilo Apple para Linux con PySide6
 Exec=/bin/bash -c "cd '$SCRIPT_DIR' && ./run.sh"
 Icon=$SCRIPT_DIR/assets/icons/weather_app.svg
 Terminal=false
 Type=Application
-Categories=Utility;Weather;Qt;
-StartupWMClass=weather-linux
+Categories=Utility;Weather;Astronomy;Qt;
+StartupWMClass=caelum
 StartupNotify=true
-Keywords=weather;clima;pronostico;forecast;apple;
+Keywords=weather;clima;astronomia;pronostico;forecast;apple;caelum;
 EOF
 chmod 644 "$DESKTOP_FILE"
 
@@ -35,7 +35,8 @@ mkdir -p "$TARGET_DIR"
 cp "$DESKTOP_FILE" "$TARGET_FILE"
 chmod 644 "$TARGET_FILE"
 
-# Crear también enlace para com.weatherlinux.app.desktop por compatibilidad
+# Enlaces por compatibilidad con nombres anteriores
+ln -sf "$TARGET_FILE" "$TARGET_DIR/weather-linux.desktop"
 ln -sf "$TARGET_FILE" "$TARGET_DIR/com.weatherlinux.app.desktop"
 
 if command -v update-desktop-database >/dev/null 2>&1; then

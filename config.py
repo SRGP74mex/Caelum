@@ -17,9 +17,9 @@ except OSError:
     pass
 
 # Configuración de Aplicación
-APP_NAME = "WeatherApp Linux"
+APP_NAME = "Caelum"
 APP_VERSION = "1.5.0"
-APP_ID = "weather-linux"
+APP_ID = "caelum"
 
 # Configuración de Clima por Defecto
 DEFAULT_CITY = "Bogotá"

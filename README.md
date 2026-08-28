@@ -1,23 +1,23 @@
 <div align="center">
 
-# 🌤️ WeatherApp Linux
+# 🌤️ Caelum
 
-### _Apple-inspired Glassmorphism Weather Experience for the Linux Desktop_
+### _The Elegant Apple-style Weather & Astronomical Experience for Linux_
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![PySide6](https://img.shields.io/badge/PySide6-Qt_6-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://www.qt.io/)
 [![Wayland / X11](https://img.shields.io/badge/Display_Server-Wayland_%7C_X11-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://wayland.freedesktop.org/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL_v3.0-blue.svg?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-64%2F64_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-67%2F67_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Data](https://img.shields.io/badge/Weather_Data-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
 [![i18n](https://img.shields.io/badge/Languages-6_Supported-informational?style=for-the-badge)](assets/locales/)
 [![Calendars](https://img.shields.io/badge/World_Calendars-8_Supported-purple?style=for-the-badge)](src/utils/calendarios_mundo.py)
 
 <br/>
 
-<img src="docs/screenshots/hero_preview.png" alt="WeatherApp Linux - Daytime Hero Preview" width="850" style="border-radius: 14px; box-shadow: 0 16px 38px rgba(0,0,0,0.4);" />
+<img src="docs/screenshots/hero_preview.png" alt="Caelum - Daytime Hero Preview" width="850" style="border-radius: 14px; box-shadow: 0 16px 38px rgba(0,0,0,0.4);" />
 
-_WeatherApp Linux displaying real-time daytime conditions, 24h temperature curve, 7-day forecast bars, and the full 8-metric Bento Grid._
+_Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day forecast bars, and the full 8-metric Bento Grid._
 
 </div>
 
@@ -112,8 +112,8 @@ _WeatherApp Linux displaying real-time daytime conditions, 24h temperature curve
 ### Quick Launch (1 Command)
 
 ```bash
-git clone https://github.com/tu-usuario/Weather-Linux.git
-cd "Weather-Linux"
+git clone https://github.com/tu-usuario/caelum.git
+cd "caelum"
 ./run.sh
 ```
 
@@ -123,19 +123,19 @@ cd "Weather-Linux"
 
 ### Desktop Launcher Installation
 
-To add WeatherApp Linux to your application launcher menu and system dock:
+To add Caelum to your application launcher menu and system dock:
 
 ```bash
 ./install_desktop.sh
 ```
 
-This dynamically generates `weather-linux.desktop` pointing to your local path and registers it in `~/.local/share/applications/`.
+This dynamically generates `caelum.desktop` pointing to your local path and registers it in `~/.local/share/applications/`.
 
 ---
 
 ## ⚙️ Configuration & Local Data
 
-WeatherApp Linux stores user preferences and cache according to the **XDG Base Directory Specification**:
+Caelum stores user preferences and cache according to the **XDG Base Directory Specification**:
 
 | Directory / File                      | Description                                                                                        |
 | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -146,16 +146,16 @@ WeatherApp Linux stores user preferences and cache according to the **XDG Base D
 
 ## 🧪 Testing & Code Quality
 
-The project includes an extensive deterministic test suite covering unit conversions, models, mock services, i18n locales, bento metrics, and display environment detectors:
+The project includes an extensive deterministic test suite covering unit conversions, models, mock services, i18n locales, bento metrics, 8 world calendars, and display environment detectors:
 
 ```bash
-# Run all 56 tests headlessly
+# Run all 67 tests headlessly
 QT_QPA_PLATFORM=offscreen venv/bin/python3 -m unittest discover -s tests -v
 ```
 
 ```text
-Ran 56 tests in 2.394s
-OK
+Ran 67 tests in 14.520s
+OK (skipped=3)
 ```
 
 ---

@@ -1,0 +1,13 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Caelum
+GenericName=Aplicación de Clima y Astronomía
+Comment=Aplicación de clima y astronomía estilo Apple para Linux con PySide6
+Exec=/bin/bash -c "cd '/mnt/samsung/Desarollo/Weather Linux' && ./run.sh"
+Icon=/mnt/samsung/Desarollo/Weather Linux/assets/icons/weather_app.svg
+Terminal=false
+Type=Application
+Categories=Utility;Weather;Astronomy;Qt;
+StartupWMClass=caelum
+StartupNotify=true
+Keywords=weather;clima;astronomia;pronostico;forecast;apple;caelum;
