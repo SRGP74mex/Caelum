@@ -97,18 +97,21 @@ class BrujulaWidget(QWidget):
 
 
 class ArcoSolarWidget(QWidget):
-    """Arco solar que visualiza el recorrido del sol entre el amanecer y el ocaso."""
+    """Arco solar que visualiza el recorrido del sol en tiempo real entre el amanecer y el ocaso."""
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
-        self.progreso_solar: float = 0.5  # 0.0 = amanecer, 0.5 = mediodía, 1.0 = ocaso
+        self.progreso_solar: float = 0.5  # 0.0 = amanecer, 0.5 = mediodía solar, 1.0 = ocaso
         self.es_de_dia: bool = True
-        self.setFixedHeight(50)
+        self.setFixedHeight(56)
 
-    def set_tiempos(self, amanecer_iso: str, ocaso_iso: str) -> None:
+    def set_tiempos(self, amanecer_iso: str, ocaso_iso: str, hora_referencia_iso: str = "") -> None:
         try:
             am_dt = FechaHelper.parse_iso(amanecer_iso)
             oc_dt = FechaHelper.parse_iso(ocaso_iso)
-            now_dt = datetime.now(am_dt.tzinfo) if am_dt.tzinfo else datetime.now()
+            if hora_referencia_iso:
+                now_dt = FechaHelper.parse_iso(hora_referencia_iso)
+            else:
+                now_dt = datetime.now(am_dt.tzinfo) if am_dt.tzinfo else datetime.now()
 
             total_dia_sec = max((oc_dt - am_dt).total_seconds(), 1.0)
             elapsed_sec = (now_dt - am_dt).total_seconds()
@@ -126,38 +129,80 @@ class ArcoSolarWidget(QWidget):
 
         w = float(self.width())
         h = float(self.height())
-        horizon_y = h - 10.0
+        horizon_y = h - 12.0
 
-        # Línea de horizonte
-        painter.setPen(QPen(QColor(255, 255, 255, 50), 1.0, Qt.PenStyle.DashLine))
-        painter.drawLine(QPointF(10, horizon_y), QPointF(w - 10, horizon_y))
+        p0 = QPointF(16, horizon_y)
+        p1 = QPointF(w / 2.0, 6.0)
+        p2 = QPointF(w - 16, horizon_y)
 
-        # Arco solar
-        path = QPainterPath()
-        path.moveTo(15, horizon_y)
-        path.quadTo(w / 2.0, 4.0, w - 15, horizon_y)
+        # 1. Línea de horizonte
+        painter.setPen(QPen(QColor(255, 255, 255, 60), 1.0, Qt.PenStyle.DashLine))
+        painter.drawLine(QPointF(8, horizon_y), QPointF(w - 8, horizon_y))
 
-        painter.setPen(QPen(QColor(255, 215, 60, 100), 2.0))
-        painter.drawPath(path)
+        # 2. Área diurna suave bajo el arco
+        path_arco = QPainterPath()
+        path_arco.moveTo(p0)
+        path_arco.quadTo(p1, p2)
 
-        # Posición del sol sobre el arco cuadrático
+        path_relleno = QPainterPath(path_arco)
+        path_relleno.lineTo(p2.x(), horizon_y)
+        path_relleno.lineTo(p0.x(), horizon_y)
+        path_relleno.closeSubpath()
+
+        grad_dia = QLinearGradient(0, 6.0, 0, horizon_y)
+        if self.es_de_dia:
+            grad_dia.setColorAt(0.0, QColor(255, 220, 90, 45))
+            grad_dia.setColorAt(1.0, QColor(255, 180, 50, 5))
+        else:
+            grad_dia.setColorAt(0.0, QColor(255, 255, 255, 15))
+            grad_dia.setColorAt(1.0, QColor(255, 255, 255, 0))
+
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QBrush(grad_dia))
+        painter.drawPath(path_relleno)
+
+        # 3. Arco completo de trayectoria
+        pen_arco = QPen(QColor(255, 220, 100, 90), 2.0)
+        painter.setPen(pen_arco)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.drawPath(path_arco)
+
+        # 4. Posición precisa del Sol sobre la curva Bézier
         t = self.progreso_solar
-        p0 = QPointF(15, horizon_y)
-        p1 = QPointF(w / 2.0, 4.0)
-        p2 = QPointF(w - 15, horizon_y)
-
         sun_x = (1 - t)**2 * p0.x() + 2 * (1 - t) * t * p1.x() + t**2 * p2.x()
         sun_y = (1 - t)**2 * p0.y() + 2 * (1 - t) * t * p1.y() + t**2 * p2.y()
 
-        # Resplandor solar
+        # 5. Trayectoria recorrida hasta la posición actual
+        if self.es_de_dia and t > 0.01:
+            path_recorrido = QPainterPath()
+            path_recorrido.moveTo(p0)
+            steps = max(2, int(t * 30))
+            for i in range(1, steps + 1):
+                st = (t * i) / steps
+                sx = (1 - st)**2 * p0.x() + 2 * (1 - st) * st * p1.x() + st**2 * p2.x()
+                sy = (1 - st)**2 * p0.y() + 2 * (1 - st) * st * p1.y() + st**2 * p2.y()
+                path_recorrido.lineTo(sx, sy)
+            pen_prog = QPen(QColor(255, 235, 120, 220), 2.5)
+            painter.setPen(pen_prog)
+            painter.drawPath(path_recorrido)
+
+        # 6. Renderizado del Astro Solar con Corona de Resplandor
         painter.setPen(Qt.PenStyle.NoPen)
         if self.es_de_dia:
-            painter.setBrush(QColor(255, 215, 60, 100))
-            painter.drawEllipse(QPointF(sun_x, sun_y), 7.0, 7.0)
-            painter.setBrush(QColor(255, 240, 150, 255))
-            painter.drawEllipse(QPointF(sun_x, sun_y), 4.0, 4.0)
+            # Corona exterior
+            painter.setBrush(QColor(255, 210, 60, 45))
+            painter.drawEllipse(QPointF(sun_x, sun_y), 13.0, 13.0)
+            # Resplandor medio
+            painter.setBrush(QColor(255, 225, 80, 120))
+            painter.drawEllipse(QPointF(sun_x, sun_y), 7.5, 7.5)
+            # Núcleo brillante
+            painter.setBrush(QColor(255, 255, 220, 255))
+            painter.drawEllipse(QPointF(sun_x, sun_y), 4.5, 4.5)
         else:
-            painter.setBrush(QColor(180, 210, 255, 180))
+            # Indicador de crepúsculo/noche
+            painter.setBrush(QColor(180, 210, 255, 80))
+            painter.drawEllipse(QPointF(sun_x, sun_y), 7.0, 7.0)
+            painter.setBrush(QColor(210, 230, 255, 220))
             painter.drawEllipse(QPointF(sun_x, sun_y), 4.0, 4.0)
 
 

@@ -99,7 +99,15 @@ class BentoGridWidget(QWidget):
 
         # 3. Sol
         if amanecer_iso and ocaso_iso:
-            self.card_sol.arco.set_tiempos(amanecer_iso, ocaso_iso)
+            self.card_sol.arco.set_tiempos(amanecer_iso, ocaso_iso, hora_referencia_iso=hora.fecha_hora_iso)
+            am_str = FechaHelper.formato_hora_corta(amanecer_iso)
+            oc_str = FechaHelper.formato_hora_corta(ocaso_iso)
+            if self.card_sol.arco.es_de_dia:
+                self.card_sol.lbl_principal.setText(t("sol.ocaso_hoy", hora=oc_str))
+                self.card_sol.lbl_secundario.setText(f"☀️ Posición a las {hora.hora_etiqueta}")
+            else:
+                self.card_sol.lbl_principal.setText(t("sol.amanecer_hoy", hora=am_str))
+                self.card_sol.lbl_secundario.setText(f"🌙 Noche a las {hora.hora_etiqueta}")
 
         # 4. Humedad y Punto de Rocío
         self.card_humedad.lbl_valor.setText(f"{hora.humedad_relativa}%")

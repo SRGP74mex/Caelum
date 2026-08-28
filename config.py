@@ -19,7 +19,7 @@ except OSError:
 # Configuración de Aplicación
 APP_NAME = "WeatherApp Linux"
 APP_VERSION = "1.5.0"
-APP_ID = "com.weatherlinux.app"
+APP_ID = "weather-linux"
 
 # Configuración de Clima por Defecto
 DEFAULT_CITY = "Bogotá"

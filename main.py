@@ -41,9 +41,9 @@ def main():
     logger.info("Iniciando %s", APP_NAME)
 
     app = QApplication(sys.argv)
-    app.setApplicationName(APP_NAME)
+    app.setApplicationName(APP_ID)
     app.setApplicationDisplayName(APP_NAME)
-    app.setDesktopFileName(f"{APP_ID}.desktop")
+    app.setDesktopFileName(APP_ID)
 
     servidor_grafico = EntornoSistema.obtener_servidor_grafico()
     escritorio = EntornoSistema.obtener_entorno_escritorio()
