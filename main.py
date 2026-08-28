@@ -1,6 +1,5 @@
 import faulthandler
 import logging
-import os
 import sys
 
 # Habilitar faulthandler para capturar trazas de diagnóstico

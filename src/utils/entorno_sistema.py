@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QGuiApplication
@@ -78,7 +78,7 @@ class EntornoSistema:
             return "Wayland"
         elif EntornoSistema.es_x11():
             return "X11 (XCB)"
-        
+
         app = QGuiApplication.instance()
         if app:
             plat = QGuiApplication.platformName()
@@ -116,7 +116,7 @@ class EntornoSistema:
             return "Pantheon"
         elif "COSMIC" in escritorio_upper:
             return "COSMIC"
-        
+
         return escritorio_raw if escritorio_raw else "Linux Desktop"
 
     @staticmethod

@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from pathlib import Path
 from typing import Any, Dict, Optional
 
 from PySide6.QtCore import QLocale, QObject, Signal
@@ -80,7 +79,7 @@ class I18nService(QObject):
         Soporta reemplazo de variables con formato {nombre_variable}.
         """
         partes = clave.split(".")
-        
+
         # 1. Buscar en el idioma activo
         texto = self._buscar_en_catalogo(self.idioma_activo, partes)
 

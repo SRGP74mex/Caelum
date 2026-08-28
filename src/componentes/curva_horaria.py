@@ -105,9 +105,7 @@ class LienzoCurvaHoraria(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setRenderHint(QPainter.RenderHint.TextAntialiasing)
 
-        w = self.width()
         h = self.height()
-        n = len(self.horas)
 
         temps = [h_obj.temperatura for h_obj in self.horas]
         min_temp = min(temps)

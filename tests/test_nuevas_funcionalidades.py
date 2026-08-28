@@ -20,7 +20,6 @@ from src.modelos.clima_datos import (
     ReporteClimaCompleto,
     Ubicacion,
 )
-from src.servicios.calidad_aire_service import CalidadAireService
 from src.servicios.config_manager import ConfigManager
 from src.utils.astronomia_utils import AstronomiaHelper
 from src.vistas.vista_ajustes import VistaAjustes

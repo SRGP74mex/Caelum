@@ -7,6 +7,7 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 from src.componentes.curva_horaria import EMOJIS_CLIMA
 from src.componentes.tarjeta_bento import TarjetaBento
 from src.modelos.clima_datos import PronosticoDia
+from src.servicios.i18n import t
 
 
 class BarraRangoTermico(QWidget):
@@ -168,10 +169,6 @@ class FilaDiaSemanal(QWidget):
             painter.setPen(QPen(QColor(255, 255, 255, 80), 1.0))
             painter.setBrush(QColor(255, 255, 255, 35))
             painter.drawRoundedRect(QRectF(2, 1, self.width() - 4, self.height() - 2), 10, 10)
-
-
-from src.servicios.i18n import t
-from src.utils.fecha_utils import FechaHelper
 
 
 class PronosticoSemanalWidget(TarjetaBento):

@@ -3,12 +3,12 @@ from datetime import datetime
 from typing import Optional
 
 from PySide6.QtCore import QPointF, QRectF, Qt
-from PySide6.QtGui import QColor, QFont, QPainter, QPainterPath, QPaintEvent, QPen, QPixmap
+from PySide6.QtGui import QBrush, QColor, QFont, QLinearGradient, QPainter, QPainterPath, QPaintEvent, QPen, QPixmap
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from config import LUNA_DIR
 from src.componentes.tarjeta_bento import TarjetaBento
-from src.modelos.clima_datos import ClimaActual, DatosCalidadAire
+from src.modelos.clima_datos import ClimaActual
 from src.servicios.i18n import t
 from src.utils.astronomia_utils import AstronomiaHelper
 from src.utils.fecha_utils import FechaHelper

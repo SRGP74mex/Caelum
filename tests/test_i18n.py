@@ -5,8 +5,8 @@ from datetime import datetime
 
 from PySide6.QtWidgets import QApplication
 
-from config import IDIOMAS_SOPORTADOS, LOCALES_DIR
-from src.servicios.i18n import I18nService, establecer_idioma, get_i18n, obtener_idioma_actual, t
+from config import LOCALES_DIR
+from src.servicios.i18n import I18nService, establecer_idioma
 from src.utils.astronomia_utils import AstronomiaHelper
 from src.utils.fecha_utils import FechaHelper
 from src.utils.icon_mapper import IconMapper

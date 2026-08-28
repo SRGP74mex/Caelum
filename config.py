@@ -18,10 +18,8 @@ except OSError:
 
 # Configuración de Aplicación
 APP_NAME = "Caelum"
-APP_VERSION = "1.5.0"
 APP_ID = "caelum"
 
-# Configuración de Clima por Defecto
 DEFAULT_CITY = "Bogotá"
 DEFAULT_LATITUDE = 4.6097
 DEFAULT_LONGITUDE = -74.0817

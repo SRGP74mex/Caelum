@@ -13,6 +13,7 @@ from src.componentes.tarjetas_metricas import (
     TarjetaVisibilidad,
 )
 from src.modelos.clima_datos import ClimaActual, PronosticoDia, PronosticoHora
+from src.servicios.i18n import t
 from src.utils.fecha_utils import FechaHelper
 from src.utils.unidades import celsius_desde, convertir_temperatura, sufijo_temperatura, sufijo_viento
 

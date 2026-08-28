@@ -3,7 +3,7 @@ import time
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
-from PySide6.QtCore import QTimer, Qt
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtGui import (
     QCloseEvent,
     QColor,
@@ -100,7 +100,6 @@ class VentanaPrincipal(QMainWindow):
         self.geocoding_service = GeocodingService()
         self.cache_manager = CacheManager()
         self.config_manager = ConfigManager()
-        from src.servicios.i18n import establecer_idioma, t
         establecer_idioma(self.config_manager.datos.get("idioma", "auto"))
         establecer_preferencias_unidades(self.config_manager.datos.get("unidades", {}))
 
@@ -290,7 +289,7 @@ class VentanaPrincipal(QMainWindow):
 
     def _aplicar_ajustes_actuales(self) -> None:
         """Se ejecuta al guardar ajustes: aplica unidades e idioma y refresca sin consultar la red."""
-        from src.servicios.i18n import establecer_idioma, t
+        from src.servicios.i18n import t
         establecer_idioma(self.config_manager.datos.get("idioma", "auto"))
         establecer_preferencias_unidades(self.config_manager.datos.get("unidades", {}))
         self.cabecera.establecer_config_calendarios(self.config_manager.obtener_calendarios_activos())
