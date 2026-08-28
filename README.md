@@ -2,7 +2,7 @@
 
 # 🌤️ Caelum
 
-### _The Elegant Apple-style Weather & Astronomical Experience for Linux_
+### _A Fluid, Fast, and Visually Immersive Weather & Astronomical Experience for Linux_
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![PySide6](https://img.shields.io/badge/PySide6-Qt_6-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://www.qt.io/)
@@ -25,7 +25,7 @@ _Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day fo
 
 ## 🌟 Highlights & Features
 
-### 🎨 Apple-Grade Glassmorphism Aesthetic
+### 🎨 Fluid & Modern Glassmorphism Aesthetic
 
 - **Dynamic Sky Palettes**: Background gradients seamlessly shift between golden hour, clear skies, overcast storm clouds, twilight, and starry nights according to exact solar elevation.
 - **Hardware-Accelerated Particle Engine**: Smooth falling rain, snowfall, and twinkling stars composited directly by your GPU.
@@ -168,7 +168,7 @@ OK (skipped=3)
 ├── run.sh                    # Automated self-bootstrapping launch script
 ├── install_desktop.sh        # XDG .desktop application installer
 ├── assets/
-│   ├── fonts/                # Inter & Apple-style system font assets
+│   ├── fonts/                # Inter & modern system font assets
 │   ├── icons/                # Weather vector icons & SVG assets
 │   ├── images/               # High-resolution dynamic sky backgrounds
 │   ├── locales/              # Translation catalogs (en, es, fr, it, de, ja)

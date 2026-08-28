@@ -18,8 +18,7 @@ cat > "$DESKTOP_FILE" <<EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
 Name=Caelum
-GenericName=Aplicación de Clima y Astronomía
-Comment=Aplicación de clima y astronomía estilo Apple para Linux con PySide6
+Comment=Aplicación de clima y astronomía moderna, fluida y rápida para Linux
 Exec=/bin/bash -c "cd '$SCRIPT_DIR' && ./run.sh"
 Icon=$SCRIPT_DIR/assets/icons/weather_app.svg
 Terminal=false
@@ -27,7 +26,7 @@ Type=Application
 Categories=Utility;Weather;Astronomy;Qt;
 StartupWMClass=caelum
 StartupNotify=true
-Keywords=weather;clima;astronomia;pronostico;forecast;apple;caelum;
+Keywords=weather;clima;astronomia;pronostico;forecast;caelum;glassmorphism;
 EOF
 chmod 644 "$DESKTOP_FILE"
 

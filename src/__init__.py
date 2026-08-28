@@ -1,4 +1,4 @@
-"""WeatherApp Linux - Aplicación de Clima Estilo Apple."""
+"""Caelum - Aplicación de clima y astronomía fluida, rápida y moderna para Linux."""
 
-__version__ = "1.0.0"
+__version__ = "1.5.0"
 
