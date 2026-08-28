@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caelum — The Fluid & Visually Immersive Weather App for Linux</title>
+  <meta name="description" content="A fluid, ultra-responsive, and visually immersive weather and astronomical desktop hub built natively for Linux on top of PySide6 (Qt 6) and Wayland." />
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Caelum — Weather & Astronomy for Linux" />
+  <meta property="og:description" content="Fluid Glassmorphism, 60 FPS particles, 8 world calendars, and proactive environmental safety alerts for Linux desktop." />
+  <meta property="og:image" content="screenshots/hero_preview.png" />
+  <meta property="og:url" content="https://srgp74mex.github.io/Caelum/" />
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-base: #080d16;
+      --bg-surface: rgba(255, 255, 255, 0.04);
+      --bg-surface-hover: rgba(255, 255, 255, 0.08);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --border-glass-hover: rgba(255, 255, 255, 0.25);
+      --accent-blue: #38bdf8;
+      --accent-cyan: #22d3ee;
+      --accent-amber: #f59e0b;
+      --accent-purple: #c084fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 20% 15%, rgba(56, 189, 248, 0.15), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(192, 132, 252, 0.12), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(34, 211, 238, 0.1), transparent 50%);
+      background-attachment: fixed;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header / Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(8, 13, 22, 0.75);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 16px 0;
+      transition: all 0.3s ease;
+    }
+
+    .nav-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      font-size: 1.6rem;
+      filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.6));
+    }
+
+    .brand-title {
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .btn-github {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-github:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 90px 0 60px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+
+    .hero-ctas {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--accent-blue), #0284c7);
+      color: #041322;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.5);
+      color: #000;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Terminal Quick Copy */
+    .terminal-box {
+      max-width: 620px;
+      margin: 0 auto 60px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(16px);
+    }
+
+    .terminal-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .terminal-code span.prompt {
+      color: var(--text-dim);
+      user-select: none;
+    }
+
+    .btn-copy {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-copy:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    /* Hero Screenshot Showcase */
+    .showcase-container {
+      position: relative;
+      margin: 0 auto 90px;
+      max-width: 1000px;
+    }
+
+    .showcase-frame {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 100px rgba(56, 189, 248, 0.15);
+      background: #0d1520;
+    }
+
+    .showcase-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: opacity 0.4s ease;
+    }
+
+    .toggle-bar {
+      display: inline-flex;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border-glass);
+      padding: 4px;
+      border-radius: 9999px;
+      margin-top: 24px;
+      backdrop-filter: blur(12px);
+    }
+
+    .toggle-btn {
+      padding: 8px 20px;
+      border-radius: 9999px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .toggle-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-blue);
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.2);
+    }
+
+    /* Features Bento Grid */
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .section-title p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .bento-features {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      margin-bottom: 100px;
+    }
+
+    .glass-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .glass-card:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-glass-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .card-content h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .card-content p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    .col-span-8 { grid-column: span 8; }
+    .col-span-4 { grid-column: span 4; }
+    .col-span-6 { grid-column: span 6; }
+    .col-span-12 { grid-column: span 12; }
+
+    .card-preview-img {
+      width: 100%;
+      border-radius: 12px;
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Calendars Pill Grid */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .calendar-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-glass);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .calendar-pill span.icon {
+      font-size: 1.2rem;
+    }
+
+    /* Install & Commands */
+    .install-section {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(8, 13, 22, 0.95) 100%);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 50px 40px;
+      margin-bottom: 100px;
+      backdrop-filter: blur(20px);
+      text-align: center;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+      text-align: left;
+    }
+
+    .step-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      font-weight: 700;
+      border-radius: 8px;
+      margin-bottom: 14px;
+    }
+
+    .step-item h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-item p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-glass);
+      padding: 50px 0;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    footer p {
+      margin-bottom: 12px;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: var(--accent-blue);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .col-span-8, .col-span-4, .col-span-6 { grid-column: span 12; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <div class="container nav-wrap">
+      <a href="#" class="brand">
+        <span class="brand-icon">🌤️</span>
+        <span class="brand-title">Caelum</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#calendars">World Calendars</a>
+        <a href="#install">Installation</a>
+        <a href="https://github.com/SRGP74mex/Caelum/releases" target="_blank">Releases (v1.5.0)</a>
+        <a href="https://github.com/SRGP74mex/Caelum" target="_blank" class="btn-github">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span>✨ Version 1.5.0 — Multi-Calendar & Safety Hub</span>
+      </div>
+      <h1>A Fluid, Fast & Visually Immersive<br/>Weather Experience for Linux</h1>
+      <p>
+        Caelum blends high-performance 60 FPS particle physics, live astronomical transit, 8 world cultural calendars, and severe weather early warnings on top of Wayland & Qt6.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#install" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Quick Install (Linux)
+        </a>
+        <a href="https://github.com/SRGP74mex/Caelum" target="_blank" class="btn-secondary">
+          Star on GitHub ⭐
+        </a>
+      </div>
+
+      <!-- Terminal 1-Liner Copy -->
+      <div class="terminal-box">
+        <div class="terminal-code">
+          <span class="prompt">$</span>
+          <span id="clone-cmd">git clone https://github.com/SRGP74mex/Caelum.git && cd Caelum && ./run.sh</span>
+        </div>
+        <button class="btn-copy" onclick="copyCommand()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span id="copy-text">Copy</span>
+        </button>
+      </div>
+
+      <!-- Showcase Image Switcher -->
+      <div class="showcase-container">
+        <div class="showcase-frame">
+          <img id="preview-img" src="screenshots/hero_preview.png" alt="Caelum Desktop Screenshot" />
+        </div>
+        <div class="toggle-bar">
+          <button class="toggle-btn active" onclick="switchTheme('day')">☀️ Daylight Mode</button>
+          <button class="toggle-btn" onclick="switchTheme('night')">🌙 Night & Starry Skies</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Features Bento Grid -->
+  <section id="features" class="container">
+    <div class="section-title">
+      <h2>Engineered for Precision & Atmosphere</h2>
+      <p>Combining modern desktop aesthetics with scientific meteorological depth.</p>
+    </div>
+
+    <div class="bento-features">
+      
+      <!-- Card 1: Particle Engine & Skies -->
+      <div class="glass-card col-span-8">
+        <div class="card-content">
+          <span class="card-icon">🌧️</span>
+          <h3>60 FPS Particle Engine & 20 Dynamic Skies</h3>
+          <p>
+            Falling rain, drifting snow, twilight mist, and twinkling stars are composited directly by GPU shaders, smoothly reacting to changing wind speeds and precipitation volume over 20 panoramic atmospheric skies.
+          </p>
+        </div>
+        <img class="card-preview-img" src="screenshots/hourly_curve.png" alt="Interactive 24h temperature spline" />
+      </div>
+
+      <!-- Card 2: Severe Alerts -->
+      <div class="glass-card col-span-4">
+        <div class="card-content">
+          <span class="card-icon">🌊</span>
+          <h3>Proactive Disaster & Flood Alerts</h3>
+          <p>
+            Intelligent background engine continuously analyzes heavy rain accumulation, flash flood hazards, extreme heatwaves, and gale-force wind bursts with native Linux desktop toasts.
+          </p>
+        </div>
+        <img class="card-preview-img" src="screenshots/alert_toast.png" alt="Disaster warning toast" />
+      </div>
+
+      <!-- Card 3: Astronomy & Solar Transit -->
+      <div class="glass-card col-span-4">
+        <div class="card-content">
+          <span class="card-icon">☀️</span>
+          <h3>Solar Transit & Moon Phase Tracking</h3>
+          <p>
+            Interactive Bézier arc tracking live solar elevation and daylight progression alongside real-time moon illumination percentages and next full moon countdowns.
+          </p>
+        </div>
+        <img class="card-preview-img" src="screenshots/moon_phase.png" alt="Astronomical lunar tracking" />
+      </div>
+
+      <!-- Card 4: 8-Metric Bento Grid -->
+      <div class="glass-card col-span-4">
+        <div class="card-content">
+          <span class="card-icon">💨</span>
+          <h3>Live Wind Compass & European AQI</h3>
+          <p>
+            Bearing compass with peak gusts, particulate matter concentration (PM2.5 / PM10), Magnus-Tetens dew point, barometric pressure, and visibility clarity.
+          </p>
+        </div>
+        <img class="card-preview-img" src="screenshots/wind_compass.png" alt="Wind Compass Widget" />
+      </div>
+
+      <!-- Card 5: Native Linux & Wayland -->
+      <div class="glass-card col-span-4">
+        <div class="card-content">
+          <span class="card-icon">🐧</span>
+          <h3>Native Wayland & Single-Instance IPC</h3>
+          <p>
+            Zero tearing with `PassThrough` HiDPI fractional scaling on 2K/4K displays, local IPC socket preventing duplicate windows, and background system tray integration.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- World Calendars Section -->
+  <section id="calendars" class="container" style="margin-bottom: 100px;">
+    <div class="section-title">
+      <h2>🌍 8 World Cultural Calendars</h2>
+      <p>Honoring global heritage: toggle only your preferred calendars in Settings (⚙️).</p>
+    </div>
+
+    <div class="glass-card col-span-12">
+      <div class="calendar-grid">
+        <div class="calendar-pill"><span class="icon">📅</span> <strong>Gregorian</strong> (Universal)</div>
+        <div class="calendar-pill"><span class="icon">🌙</span> <strong>Hijri</strong> (Islamic Lunar)</div>
+        <div class="calendar-pill"><span class="icon">🕎</span> <strong>Hebrew</strong> (Jewish Lunisolar)</div>
+        <div class="calendar-pill"><span class="icon">☀️</span> <strong>Solar Persian</strong> (Jalali)</div>
+        <div class="calendar-pill"><span class="icon">☸️</span> <strong>Buddhist Era</strong> (BE)</div>
+        <div class="calendar-pill"><span class="icon">🇪🇹</span> <strong>Coptic / Ethiopian</strong> (Ge'ez)</div>
+        <div class="calendar-pill"><span class="icon">🇮🇳</span> <strong>Saka Samvat</strong> (Indian)</div>
+        <div class="calendar-pill"><span class="icon">🐉</span> <strong>Chinese Lunisolar</strong> (Nónglì)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Installation Steps -->
+  <section id="install" class="container">
+    <div class="install-section">
+      <h2>🚀 Get Started with Caelum</h2>
+      <p style="color: var(--text-muted); margin-top: 8px;">Run directly on Ubuntu, Fedora, Debian, Arch Linux, Manjaro, openSUSE, or any Linux desktop.</p>
+
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4>Clone Repository</h4>
+          <p>Clone the source tree from GitHub to your preferred local directory.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4>Execute <code>run.sh</code></h4>
+          <p>Self-bootstraps an isolated virtual environment and installs Qt6 requirements automatically.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4>Add to App Menu</h4>
+          <p>Run <code>./install_desktop.sh</code> to integrate Caelum seamlessly with your system dock and launcher.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p><strong>Caelum</strong> — Released under the GNU General Public License v3.0 (GPL-3.0).</p>
+      <p>
+        Weather data powered by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a> &bull;
+        Geocoding by <a href="https://nominatim.openstreetmap.org/" target="_blank">OpenStreetMap Nominatim</a> &bull;
+        Crafted with Python & PySide6
+      </p>
+      <p style="margin-top: 18px;">
+        <a href="https://github.com/SRGP74mex/Caelum" target="_blank">GitHub Repository</a> &bull;
+        <a href="https://github.com/SRGP74mex/Caelum/releases" target="_blank">Releases</a> &bull;
+        <a href="https://github.com/SRGP74mex/Caelum/blob/main/LICENSE" target="_blank">License</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function copyCommand() {
+      const text = document.getElementById('clone-cmd').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const copyText = document.getElementById('copy-text');
+        copyText.innerText = 'Copied! ✓';
+        setTimeout(() => {
+          copyText.innerText = 'Copy';
+        }, 2000);
+      });
+    }
+
+    function switchTheme(mode) {
+      const img = document.getElementById('preview-img');
+      const btns = document.querySelectorAll('.toggle-btn');
+      
+      btns.forEach(b => b.classList.remove('active'));
+      
+      if (mode === 'day') {
+        img.src = 'screenshots/hero_preview.png';
+        btns[0].classList.add('active');
+      } else {
+        img.src = 'screenshots/night_preview.png';
+        btns[1].classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>
