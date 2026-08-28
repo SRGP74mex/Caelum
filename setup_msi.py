@@ -22,11 +22,6 @@ build_exe_options = {
         "hijri_converter",
         "dateutil",
         "urllib3",
-        "PySide6.QtCore",
-        "PySide6.QtGui",
-        "PySide6.QtWidgets",
-        "PySide6.QtNetwork",
-        "PySide6.QtSvg",
     ],
     "include_files": [
         ("assets", "assets"),
@@ -35,53 +30,15 @@ build_exe_options = {
     "include_msvcr": True,
 }
 
-# -----------------------------------------------------------------------------
-# 2. Configuración de Accesos Directos (Escritorio y Menú Inicio de Windows)
-# -----------------------------------------------------------------------------
-shortcut_table = [
-    (
-        "DesktopShortcut",          # Shortcut
-        "DesktopFolder",            # Directory_
-        "Caelum",                   # Name
-        "TARGETDIR",                # Component_
-        "[TARGETDIR]Caelum.exe",    # Target
-        None,                       # Arguments
-        "Caelum - Clima y Astronomía", # Description
-        None,                       # Hotkey
-        None,                       # Icon
-        None,                       # IconIndex
-        None,                       # ShowCmd
-        "TARGETDIR",                # WkDir
-    ),
-    (
-        "ProgramMenuShortcut",      # Shortcut
-        "ProgramMenuFolder",        # Directory_
-        "Caelum",                   # Name
-        "TARGETDIR",                # Component_
-        "[TARGETDIR]Caelum.exe",    # Target
-        None,                       # Arguments
-        "Caelum - Clima y Astronomía", # Description
-        None,                       # Hotkey
-        None,                       # Icon
-        None,                       # IconIndex
-        None,                       # ShowCmd
-        "TARGETDIR",                # WkDir
-    ),
-]
-
-msi_data = {"Shortcut": shortcut_table}
-
 bdist_msi_options = {
-    "data": msi_data,
     "summary_data": {
         "author": "Salvador RG (SRGP74mex)",
         "comments": "Caelum - A Fluid, Fast & Visually Immersive Weather Experience",
     },
-    "upgrade_code": "{95C54926-C4DE-4942-88E2-CAELUM001500}",
+    "upgrade_code": "{D3E7B219-5481-54E3-8E57-2B5C9130D7B2}",
     "install_icon": "assets/icons/app_icon.ico",
 }
 
-# En Windows ocultar consola con Win32GUI
 base = "Win32GUI" if sys.platform == "win32" else None
 
 executables = [
@@ -106,3 +63,4 @@ setup(
     },
     executables=executables,
 )
+
