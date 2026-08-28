@@ -3,6 +3,17 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.1.0/).
 Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.4.0] - 2026-08-27
+
+### Añadido
+- **Integración Nativa Wayland y X11**: Detección dinámica de servidor gráfico y entorno de escritorio (GNOME, KDE Plasma, XFCE, Hyprland, Sway), escalado fraccional HiDPI (`PassThrough`) y activación segura vía protocolo `xdg_activation`.
+- **Sistema Multi-idioma Integral (i18n)**: Soporte completo para 6 idiomas (Español, Inglés, Francés, Italiano, Alemán y Japonés) con detección automática de idioma del sistema operativo (`auto`).
+- **Parrilla Bento Grid de 8 Métricas**: Calidad del aire (AQI con PM2.5/PM10), fases lunares con cálculo astronómico de iluminación, brújula dinámica de viento con ráfagas, índice UV, arco solar de amanecer/atardecer, punto de rocío, visibilidad y presión.
+- **Motor de Alertas Tempranas de Clima Severo**: Detección y notificación en escritorio para inundaciones repentinas y lluvias torrenciales ($\ge 30\text{ mm}$), olas de calor extremo ($> 40^\circ\text{C}$), tormentas con ráfagas destructivas y radiación UV peligrosa.
+- **Instancia Única (Single-Instance IPC)**: Prevención de procesos duplicados mediante `QLocalServer`/`QLocalSocket` para restaurar suavemente la ventana existente.
+- **Buscador Flotante Desacoplado**: Menú flotante sin bloqueo de foco de teclado (`ToolTip | WindowDoesNotAcceptFocus`) con caché en memoria (0 ms) para búsquedas instantáneas.
+- **Licencia Oficial GNU GPL-3.0**: Adopción de la licencia de código abierto GPL-3.0 para distribución comunitaria en Linux.
+
 ## [1.3.0] - 2026-08-26
 
 ### Añadido
