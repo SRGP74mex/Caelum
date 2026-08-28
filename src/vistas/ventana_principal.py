@@ -221,6 +221,7 @@ class VentanaPrincipal(QMainWindow):
 
         # Cabecera Principal
         self.cabecera = CabeceraClima(self.scroll_content)
+        self.cabecera.establecer_config_calendarios(self.config_manager.obtener_calendarios_activos())
         self.scroll_layout.addWidget(self.cabecera)
 
         # Tarjeta de Pronóstico 24 Horas con Curva Bézier
@@ -271,11 +272,6 @@ class VentanaPrincipal(QMainWindow):
             self.showNormal()
         self.raise_()
         self.activateWindow()
-        try:
-            if hasattr(self, "windowHandle") and self.windowHandle():
-                self.windowHandle().requestActivate()
-        except Exception:
-            pass
 
     def toggle_visibilidad(self) -> None:
         if self.isVisible() and not self.isMinimized():
@@ -293,6 +289,7 @@ class VentanaPrincipal(QMainWindow):
         from src.servicios.i18n import establecer_idioma, t
         establecer_idioma(self.config_manager.datos.get("idioma", "auto"))
         establecer_preferencias_unidades(self.config_manager.datos.get("unidades", {}))
+        self.cabecera.establecer_config_calendarios(self.config_manager.obtener_calendarios_activos())
 
         self.tarjeta_horas.lbl_titulo.setText(t("pronostico.titulo_horas"))
         self.pronostico_semanal.lbl_titulo.setText(t("pronostico.titulo_semanal"))
@@ -404,10 +401,7 @@ class VentanaPrincipal(QMainWindow):
 
             try:
                 dt = FechaHelper.parse_iso(dia.fecha_iso)
-                greg_str, hijri_str, hebrea_str = FechaHelper.fechas_calendarios_completas(dt)
-                self.cabecera.lbl_fecha_greg.setText(f"📅 {greg_str}")
-                self.cabecera.lbl_fecha_hijri.setText(f"🌙 {hijri_str}")
-                self.cabecera.lbl_fecha_hebrea.setText(f"🕎 {hebrea_str}")
+                self.cabecera.actualizar_fechas(dt)
             except Exception:
                 pass
 
@@ -535,7 +529,7 @@ class VentanaPrincipal(QMainWindow):
                 amanecer_iso=reporte.actual.amanecer_iso,
                 ocaso_iso=reporte.actual.ocaso_iso
             )
-            self.lbl_detalle_hora.setText(t("pronostico.ayuda_click"))
+            self.lbl_detalle_hora.setText("Haz clic sobre cualquier hora o día para ver el pronóstico detallado")
 
             if hasattr(self, "bandeja"):
                 self.bandeja.actualizar_clima_tray(reporte)
@@ -566,15 +560,14 @@ class VentanaPrincipal(QMainWindow):
 
         if amanecer_iso or ocaso_iso:
             try:
+                ahora = datetime.now(timezone.utc)
                 if amanecer_iso:
                     am_dt = FechaHelper.parse_iso(amanecer_iso)
-                    ahora = datetime.now(am_dt.tzinfo) if am_dt.tzinfo else datetime.now()
                     if abs((ahora - am_dt).total_seconds()) <= 2400:  # +- 40 min
                         key = "amanecer"
                         es_ventana_solar = True
                 if not es_ventana_solar and ocaso_iso:
                     oc_dt = FechaHelper.parse_iso(ocaso_iso)
-                    ahora = datetime.now(oc_dt.tzinfo) if oc_dt.tzinfo else datetime.now()
                     if abs((ahora - oc_dt).total_seconds()) <= 2400:  # +- 40 min
                         key = "atardecer"
                         es_ventana_solar = True

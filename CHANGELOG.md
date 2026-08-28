@@ -3,9 +3,27 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.1.0/).
 Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 
+## [1.5.0] - 2026-08-27
+
+### Añadido
+
+- **Sistema Multi-Calendario Mundial (8 Calendarios)**: Integración de algoritmos lunisolares, solares y astronómicos para los 8 principales calendarios de la humanidad:
+  - Gregoriano (Universal / Occidental)
+  - Hijri (Islámico / Lunar)
+  - Hebreo (Judío / Lunisolar con ciclo metónico de 19 años)
+  - Solar Persa / Jalali (Iraní / Solar astronómico)
+  - Era Budista (BE - Tailandia y Sudeste Asiático)
+  - Copto / Etíope (Ge'ez con año de 13 meses)
+  - Saka Samvat (Calendario Nacional de la India)
+  - Lunisolar Chino Tradicional (Nónglì con ciclo de 12 ramas del zodiaco)
+- **Selector de Calendarios Visibles en Ajustes (⚙️)**: Cada usuario puede encender o apagar individualmente cualquiera de los 8 calendarios desde la pantalla de Ajustes.
+- **Píldoras Dinámicas en Cabecera**: La cabecera adapta automáticamente el número de píldoras mostradas según las preferencias guardadas en `config.json`.
+- **Traducciones en 6 Idiomas**: Nombres de meses y signos del zodiaco localizados al español, inglés, francés, italiano, alemán y japonés.
+
 ## [1.4.0] - 2026-08-27
 
 ### Añadido
+
 - **Integración Nativa Wayland y X11**: Detección dinámica de servidor gráfico y entorno de escritorio (GNOME, KDE Plasma, XFCE, Hyprland, Sway), escalado fraccional HiDPI (`PassThrough`) y activación segura vía protocolo `xdg_activation`.
 - **Sistema Multi-idioma Integral (i18n)**: Soporte completo para 6 idiomas (Español, Inglés, Francés, Italiano, Alemán y Japonés) con detección automática de idioma del sistema operativo (`auto`).
 - **Parrilla Bento Grid de 8 Métricas**: Calidad del aire (AQI con PM2.5/PM10), fases lunares con cálculo astronómico de iluminación, brújula dinámica de viento con ráfagas, índice UV, arco solar de amanecer/atardecer, punto de rocío, visibilidad y presión.
@@ -17,6 +35,7 @@ Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 ## [1.3.0] - 2026-08-26
 
 ### Añadido
+
 - Pantalla de ajustes (⚙️) para elegir unidades de temperatura (°C/°F) y
   viento (km/h, m/s, mph), y comportamiento de la bandeja del sistema.
 - `cerrar_a_bandeja` ahora tiene efecto real: la ventana se minimiza a la
@@ -24,6 +43,7 @@ Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
   preferencia existía en el modelo de configuración pero no hacía nada).
 
 ### Corregido
+
 - Sufijos de unidad ("km/h", "°C") que estaban hardcodeados en varios
   widgets ahora reflejan la unidad realmente seleccionada.
 - El cálculo del punto de rocío horario en `bento_grid.py` (fórmula válida
@@ -33,12 +53,14 @@ Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 ## [1.2.0] - 2026-08-26
 
 ### Añadido
+
 - `pyproject.toml`: metadata del paquete y entry point (`weather-linux`),
   instalable con `pip install -e .` o `pipx install .`.
 
 ## [1.1.0] - 2026-08-26
 
 ### Añadido
+
 - Logging estructurado (archivo rotativo en `~/.cache/weather_linux/weatherapp.log`).
 - Reintentos automáticos con backoff en las llamadas HTTP (sesión `requests` compartida).
 - Tests deterministas con `unittest.mock` para los servicios de red (`tests/test_servicios_mock.py`).
@@ -46,11 +68,13 @@ Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 - CI en GitHub Actions (lint + tests headless en cada push/PR).
 
 ### Cambiado
+
 - Mejor feedback de error en la ventana principal (referencia explícita al botón de reintentar).
 
 ## [1.0.1] - 2026-08-26
 
 ### Corregido
+
 - Permisos world-writable en `venv/` corregidos.
 - Proveedor de respaldo de geolocalización por IP migrado de HTTP plano
   (`ip-api.com`, sin soporte HTTPS gratuito) a HTTPS (`ipwho.is`).
@@ -64,6 +88,7 @@ Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 ## [1.0.0] - 2026-08-25
 
 ### Añadido
+
 - Primera versión funcional: pronóstico actual, 24 horas y 7 días vía
   Open-Meteo, búsqueda de ciudades, caché local, bandeja de sistema y
   fondos animados según condición climática.

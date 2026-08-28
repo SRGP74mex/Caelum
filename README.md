@@ -2,21 +2,22 @@
 
 # 🌤️ WeatherApp Linux
 
-### *Apple-inspired Glassmorphism Weather Experience for the Linux Desktop*
+### _Apple-inspired Glassmorphism Weather Experience for the Linux Desktop_
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![PySide6](https://img.shields.io/badge/PySide6-Qt_6-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://www.qt.io/)
 [![Wayland / X11](https://img.shields.io/badge/Display_Server-Wayland_%7C_X11-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://wayland.freedesktop.org/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL_v3.0-blue.svg?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-56%2F56_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-64%2F64_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Data](https://img.shields.io/badge/Weather_Data-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
 [![i18n](https://img.shields.io/badge/Languages-6_Supported-informational?style=for-the-badge)](assets/locales/)
+[![Calendars](https://img.shields.io/badge/World_Calendars-8_Supported-purple?style=for-the-badge)](src/utils/calendarios_mundo.py)
 
 <br/>
 
 <img src="docs/screenshots/hero_preview.png" alt="WeatherApp Linux - Daytime Hero Preview" width="850" style="border-radius: 14px; box-shadow: 0 16px 38px rgba(0,0,0,0.4);" />
 
-*WeatherApp Linux displaying real-time daytime conditions, 24h temperature curve, 7-day forecast bars, and the full 8-metric Bento Grid.*
+_WeatherApp Linux displaying real-time daytime conditions, 24h temperature curve, 7-day forecast bars, and the full 8-metric Bento Grid._
 
 </div>
 
@@ -25,47 +26,49 @@
 ## 🌟 Highlights & Features
 
 ### 🎨 Apple-Grade Glassmorphism Aesthetic
+
 - **Dynamic Sky Palettes**: Background gradients seamlessly shift between golden hour, clear skies, overcast storm clouds, twilight, and starry nights according to exact solar elevation.
 - **Hardware-Accelerated Particle Engine**: Smooth falling rain, snowfall, and twinkling stars composited directly by your GPU.
 - **Crisp HiDPI & Fractional Scaling**: Optimized with `PassThrough` rounding policies for crystal-clear typography and cards on 1080p, 2K, and 4K displays.
 
 ### 🛡️ Real-Time Disaster Prevention & Severe Weather Alerts
+
 - **Proactive Early Warning Engine**: Monitors sudden precipitation bursts ($\ge 30\text{ mm}$), flash flood risks, severe gale-force gusts, extreme heatwaves ($> 40^\circ\text{C}$), and hazardous UV levels.
 - **Non-Intrusive Desktop Notifications**: Runs quietly in the background from your system tray and sends native Linux desktop alerts during critical weather changes.
 
 <div align="center">
-  <img src="docs/screenshots/alert_toast.png" alt="Flash Flood Early Warning Notification" width="420" style="border-radius: 8px; margin: 10px 0;" />
-  <p><em>Early flash flood detection and alert notification in Houston, TX.</em></p>
+  <img src="docs/screenshots/alert_toast.png" alt="Flash Flood Early Warning Notification" width="600" style="border-radius: 10px;" />
+  <p><em>Proactive Flood Warning toast triggered during extreme rainfall events.</em></p>
 </div>
 
 ### 📊 8-Card Bento Information Grid
+
 - **💨 Wind Compass Widget**: Real-time speed, direction bearing, cardinal direction (e.g. `SSE (159°)`), and peak wind gusts.
 - **🍃 Air Quality Index (AQI)**: Live European Air Quality Index with color-coded badges, health advisories, and PM2.5 / PM10 particulate concentrations.
 - **🌔 Moon Phase & Astronomy**: Astronomical phase calculation, exact illumination percentage, moonrise/moonset timestamps, and next full moon countdown.
-- **☀️ Sunrise & Sunset Arch**: Interactive solar trajectory curve with visual daylight progression.
-- **🌡️ UV Index**: Real-time UV intensity and protective recommendations.
-- **💧 Humidity & Dew Point**: Relative humidity with calculated dew point temperature.
-- **👁️ Visibility & 🧭 Atmospheric Pressure**: Distance visibility in kilometers/miles and barometric pressure in hPa.
+- **☀️ UV Index & Sun Trajectory**: Real-time UV risk category with solar countdown (*e.g., "Sunset in 3h 12m"*).
+- **💧 Humidity & Dew Point**: Precise hygrometer with comfort index and Magnus-Tetens dew point calculation.
+- **👁️ Visibility & Atmospheric Pressure**: Kilometre visibility clarity and hectopascal (hPa) barometric readings.
 
 <div align="center">
-  <table border="0">
-    <tr>
-      <td><img src="docs/screenshots/air_quality.png" alt="Air Quality Bento Card" width="270" /></td>
-      <td><img src="docs/screenshots/moon_phase.png" alt="Moon Phase Bento Card" width="270" /></td>
-      <td><img src="docs/screenshots/wind_compass.png" alt="Wind Compass Bento Card" width="270" /></td>
-    </tr>
-  </table>
+  <img src="docs/screenshots/wind_compass.png" alt="Wind Compass Widget" width="260" style="border-radius: 12px; margin: 4px;" />
+  <img src="docs/screenshots/air_quality.png" alt="Air Quality Bento Card" width="260" style="border-radius: 12px; margin: 4px;" />
+  <img src="docs/screenshots/moon_phase.png" alt="Moon Phase Widget" width="260" style="border-radius: 12px; margin: 4px;" />
+  <p><em>Real-time Wind Compass, European AQI Card, and Astronomical Moon Tracker.</em></p>
 </div>
 
 ### 📈 Interactive 24-Hour & 7-Day Forecasts
+
 - **Dynamic 24h Temperature Curve**: Smooth cubic Bezier spline with hourly weather icons, day/night indicators, and rain probability. Click on any hour to inspect its metrics in detail.
 - **Thermal 7-Day Spectrum Bars**: Visual horizontal temperature bars mapped from cold blues to warm ambers, displaying exact rain probabilities and cumulative millimetres.
 
 <div align="center">
-  <img src="docs/screenshots/hourly_curve.png" alt="24-Hour Forecast Curve" width="800" style="border-radius: 10px;" />
+  <img src="docs/screenshots/hourly_curve.png" alt="24h Hourly Curve Preview" width="850" style="border-radius: 14px;" />
+  <p><em>Interactive 24-hour cubic Bezier temperature curve.</em></p>
 </div>
 
 ### 🌙 Night Mode & Dynamic Themes
+
 - Automatic night-time transitions with stellar backdrops and moonlit landscapes.
 
 <div align="center">
@@ -73,12 +76,22 @@
   <p><em>Clear night sky view with starry backdrop in Minneapolis.</em></p>
 </div>
 
-### 🌍 Multi-Language & Triple Calendar Support
+### 🌍 Multi-Language & 8 World Calendars Support
+
 - **6 Built-in Languages**: English (`en`), Spanish (`es`), French (`fr`), Italian (`it`), German (`de`), and Japanese (`ja`).
 - **Automatic System Locale Detection**: Adapts immediately to your operating system language (`auto`).
-- **Triple Calendar Date Display**: Full Gregorian date formatting combined with the Islamic Hijri calendar (`AH`) and Hebrew calendar (`AM`).
+- **8 Configurable World Calendars**: Customize visible date pills from Settings (⚙️):
+  - 📅 **Gregorian** (Universal / Western)
+  - 🌙 **Hijri** (Islamic Lunar)
+  - 🕎 **Hebrew** (Jewish Lunisolar)
+  - ☀️ **Solar Persian / Jalali** (Iran & Central Asia)
+  - ☸️ **Buddhist Era** (BE - Thailand & Southeast Asia)
+  - 🇪🇹 **Coptic / Ethiopian** (Ge'ez 13 Months)
+  - 🇮🇳 **Indian National** (Saka Samvat)
+  - 🐉 **Chinese Traditional Lunisolar** (Nónglì / 12 Zodiac Animals)
 
 ### 🐧 Native Wayland & Desktop Integration
+
 - **Display Server Compatibility**: Native **Wayland** protocol support (`xdg_activation`, zero-tearing) and **X11 (XCB)** fallback.
 - **Single-Instance IPC**: Prevents duplicate windows; launching the app while already running smoothly brings the existing window to the foreground.
 - **System Tray Management**: Live temperature badge on your taskbar with minimize-to-tray and quick action menu.
@@ -89,7 +102,8 @@
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Linux Distribution**: Ubuntu, Fedora, Debian, Arch Linux, Manjaro, openSUSE, Pop!_OS, etc.
+
+- **Linux Distribution**: Ubuntu, Fedora, Debian, Arch Linux, Manjaro, openSUSE, Pop!\_OS, etc.
 - **Python**: Version `3.11+` with `python3-venv` installed.
 - **Internet Connection**: Live weather data is fetched without requiring any private API keys.
 
@@ -123,10 +137,10 @@ This dynamically generates `weather-linux.desktop` pointing to your local path a
 
 WeatherApp Linux stores user preferences and cache according to the **XDG Base Directory Specification**:
 
-| Directory / File | Description |
-|---|---|
+| Directory / File                      | Description                                                                                        |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `~/.config/weather_linux/config.json` | Persistent user preferences (language, temperature unit, wind unit, recent cities, tray settings). |
-| `~/.cache/weather_linux/` | In-memory & disk weather cache (15-minute TTL) and structured diagnostic logs (`weatherapp.log`). |
+| `~/.cache/weather_linux/`             | In-memory & disk weather cache (15-minute TTL) and structured diagnostic logs (`weatherapp.log`).  |
 
 ---
 

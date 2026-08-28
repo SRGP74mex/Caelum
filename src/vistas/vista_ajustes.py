@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QFormLayout,
     QFrame,
+    QGridLayout,
     QHBoxLayout,
     QLabel,
     QPushButton,
@@ -26,6 +27,7 @@ class VistaAjustes(QDialog):
     """
     Diálogo modal de preferencias con estilo Glassmorphism oscuro:
     - Selector de Idioma (Español, English, Français, Italiano, Deutsch, 日本語).
+    - Selector de Calendarios Visibles (Gregoriano, Hijri, Hebreo, Jalali, Budista, Etíope, Saka, Chino).
     - Unidades de medida (temperatura, viento).
     - Bandeja del sistema y notificaciones meteorológicas inteligentes.
     """
@@ -35,7 +37,7 @@ class VistaAjustes(QDialog):
         super().__init__(parent)
         self.config_manager = config_manager
         self.setWindowTitle(f"{t('ajustes.titulo')} - WeatherApp Linux")
-        self.setMinimumWidth(400)
+        self.setMinimumWidth(460)
         self._aplicar_estilos()
         self._init_ui()
         self._cargar_valores_actuales()
@@ -137,8 +139,8 @@ class VistaAjustes(QDialog):
 
     def _init_ui(self) -> None:
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(22, 22, 22, 18)
-        layout.setSpacing(12)
+        layout.setContentsMargins(22, 20, 22, 18)
+        layout.setSpacing(10)
 
         titulo = QLabel(f"⚙️ {t('ajustes.titulo')}", self)
         titulo.setStyleSheet("font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 4px;")
@@ -150,7 +152,7 @@ class VistaAjustes(QDialog):
         layout.addWidget(lbl_sec_general)
 
         form = QFormLayout()
-        form.setSpacing(10)
+        form.setSpacing(8)
 
         # Selector de Idioma
         self.combo_idioma = QComboBox(self)
@@ -178,8 +180,42 @@ class VistaAjustes(QDialog):
         sep1.setFrameShape(QFrame.Shape.HLine)
         layout.addWidget(sep1)
 
-        # 2. Sección Bandeja
-        lbl_sec_bandeja = QLabel(f"🖥️ {t('ajustes.bandeja').upper()}", self)
+        # 2. Sección Calendarios Visibles
+        lbl_sec_cal = QLabel(f"📅 {t('ajustes.calendarios_titulo').upper()}", self)
+        lbl_sec_cal.setObjectName("seccion_titulo")
+        layout.addWidget(lbl_sec_cal)
+
+        grid_cal = QGridLayout()
+        grid_cal.setSpacing(8)
+
+        self.chk_cal_gregoriano = QCheckBox(f"📅 {t('ajustes.cal_gregoriano')}", self)
+        self.chk_cal_hijri = QCheckBox(f"🌙 {t('ajustes.cal_hijri')}", self)
+        self.chk_cal_hebreo = QCheckBox(f"🕎 {t('ajustes.cal_hebreo')}", self)
+        self.chk_cal_jalali = QCheckBox(f"☀️ {t('ajustes.cal_jalali')}", self)
+        self.chk_cal_budista = QCheckBox(f"☸️ {t('ajustes.cal_budista')}", self)
+        self.chk_cal_etiope = QCheckBox(f"🇪🇹 {t('ajustes.cal_etiope')}", self)
+        self.chk_cal_saka = QCheckBox(f"🇮🇳 {t('ajustes.cal_saka')}", self)
+        self.chk_cal_chino = QCheckBox(f"🐉 {t('ajustes.cal_chino')}", self)
+
+        grid_cal.addWidget(self.chk_cal_gregoriano, 0, 0)
+        grid_cal.addWidget(self.chk_cal_hijri, 0, 1)
+        grid_cal.addWidget(self.chk_cal_hebreo, 1, 0)
+        grid_cal.addWidget(self.chk_cal_jalali, 1, 1)
+        grid_cal.addWidget(self.chk_cal_budista, 2, 0)
+        grid_cal.addWidget(self.chk_cal_etiope, 2, 1)
+        grid_cal.addWidget(self.chk_cal_saka, 3, 0)
+        grid_cal.addWidget(self.chk_cal_chino, 3, 1)
+
+        layout.addLayout(grid_cal)
+
+        # Separador 2
+        sep2 = QFrame(self)
+        sep2.setObjectName("separador")
+        sep2.setFrameShape(QFrame.Shape.HLine)
+        layout.addWidget(sep2)
+
+        # 3. Sección Bandeja & Notificaciones
+        lbl_sec_bandeja = QLabel(f"🖥️ {t('ajustes.bandeja').upper()} & 🔔 {t('ajustes.pestana_notificaciones').upper()}", self)
         lbl_sec_bandeja.setObjectName("seccion_titulo")
         layout.addWidget(lbl_sec_bandeja)
 
@@ -189,29 +225,19 @@ class VistaAjustes(QDialog):
         self.chk_cerrar_a_bandeja = QCheckBox(t("ajustes.cerrar_a_bandeja"), self)
         layout.addWidget(self.chk_cerrar_a_bandeja)
 
-        # Separador 2
-        sep2 = QFrame(self)
-        sep2.setObjectName("separador")
-        sep2.setFrameShape(QFrame.Shape.HLine)
-        layout.addWidget(sep2)
-
-        # 3. Sección Notificaciones
-        lbl_sec_notif = QLabel(f"🔔 {t('ajustes.pestana_notificaciones').upper()}", self)
-        lbl_sec_notif.setObjectName("seccion_titulo")
-        layout.addWidget(lbl_sec_notif)
-
         self.chk_notif_activadas = QCheckBox(t("ajustes.activar_notificaciones"), self)
         self.chk_notif_activadas.toggled.connect(self._on_notif_toggled)
         layout.addWidget(self.chk_notif_activadas)
 
+        notif_row = QHBoxLayout()
+        notif_row.setSpacing(12)
         self.chk_alerta_lluvia = QCheckBox(t("ajustes.alerta_lluvia"), self)
-        layout.addWidget(self.chk_alerta_lluvia)
-
         self.chk_alerta_tormenta = QCheckBox(t("ajustes.alerta_tormenta"), self)
-        layout.addWidget(self.chk_alerta_tormenta)
-
         self.chk_alerta_atardecer = QCheckBox(t("ajustes.alerta_atardecer"), self)
-        layout.addWidget(self.chk_alerta_atardecer)
+        notif_row.addWidget(self.chk_alerta_lluvia)
+        notif_row.addWidget(self.chk_alerta_tormenta)
+        notif_row.addWidget(self.chk_alerta_atardecer)
+        layout.addLayout(notif_row)
 
         layout.addSpacing(6)
 
@@ -257,9 +283,22 @@ class VistaAjustes(QDialog):
         idx_viento = self.combo_viento.findData(unidades.get("viento", "kmh"))
         self.combo_viento.setCurrentIndex(max(idx_viento, 0))
 
+        # Calendarios
+        cal_cfg = self.config_manager.obtener_calendarios_activos()
+        self.chk_cal_gregoriano.setChecked(bool(cal_cfg.get("gregoriano", True)))
+        self.chk_cal_hijri.setChecked(bool(cal_cfg.get("hijri", True)))
+        self.chk_cal_hebreo.setChecked(bool(cal_cfg.get("hebreo", True)))
+        self.chk_cal_jalali.setChecked(bool(cal_cfg.get("jalali", False)))
+        self.chk_cal_budista.setChecked(bool(cal_cfg.get("budista", False)))
+        self.chk_cal_etiope.setChecked(bool(cal_cfg.get("etiope", False)))
+        self.chk_cal_saka.setChecked(bool(cal_cfg.get("saka", False)))
+        self.chk_cal_chino.setChecked(bool(cal_cfg.get("chino", False)))
+
+        # Bandeja
         self.chk_mostrar_bandeja.setChecked(bool(self.config_manager.datos.get("mostrar_bandeja", True)))
         self.chk_cerrar_a_bandeja.setChecked(bool(self.config_manager.datos.get("cerrar_a_bandeja", False)))
 
+        # Notificaciones
         notif = self.config_manager.datos.get("notificaciones", {})
         activadas = bool(notif.get("activadas", True))
         self.chk_notif_activadas.setChecked(activadas)
@@ -276,6 +315,16 @@ class VistaAjustes(QDialog):
             "temperatura": self.combo_temperatura.currentData(),
             "viento": self.combo_viento.currentData(),
         }
+        calendarios = {
+            "gregoriano": self.chk_cal_gregoriano.isChecked(),
+            "hijri": self.chk_cal_hijri.isChecked(),
+            "hebreo": self.chk_cal_hebreo.isChecked(),
+            "jalali": self.chk_cal_jalali.isChecked(),
+            "budista": self.chk_cal_budista.isChecked(),
+            "etiope": self.chk_cal_etiope.isChecked(),
+            "saka": self.chk_cal_saka.isChecked(),
+            "chino": self.chk_cal_chino.isChecked(),
+        }
         notificaciones = {
             "activadas": self.chk_notif_activadas.isChecked(),
             "alerta_lluvia": self.chk_alerta_lluvia.isChecked(),
@@ -287,7 +336,8 @@ class VistaAjustes(QDialog):
             mostrar_bandeja=self.chk_mostrar_bandeja.isChecked(),
             cerrar_a_bandeja=self.chk_cerrar_a_bandeja.isChecked(),
             notificaciones=notificaciones,
-            idioma=idioma
+            idioma=idioma,
+            calendarios=calendarios
         )
 
         self.ajustes_guardados.emit()

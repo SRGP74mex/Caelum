@@ -54,6 +54,38 @@
     "9": "Kislev", "10": "Tevet", "11": "Shevat", "12": "Adar", "13": "Adar II",
     "sufijo": "AM"
   },
+  "jalali": {
+    "1": "Farvardin", "2": "Ordibehesht", "3": "Khordad", "4": "Tir",
+    "5": "Mordad", "6": "Shahrivar", "7": "Mehr", "8": "Aban",
+    "9": "Azar", "10": "Dey", "11": "Bahman", "12": "Esfand",
+    "sufijo": "SH"
+  },
+  "budista": {
+    "sufijo": "BE"
+  },
+  "etiope": {
+    "1": "Meskerem", "2": "Tikimt", "3": "Hidar", "4": "Tahsas",
+    "5": "Tir", "6": "Yakatit", "7": "Magabit", "8": "Miyazya",
+    "9": "Ginbot", "10": "Sene", "11": "Hamle", "12": "Nehase", "13": "Pagume",
+    "sufijo": "EE"
+  },
+  "saka": {
+    "1": "Chaitra", "2": "Vaisakha", "3": "Jyeshtha", "4": "Ashadha",
+    "5": "Shravana", "6": "Bhadra", "7": "Ashwin", "8": "Kartika",
+    "9": "Agrahayana", "10": "Pausha", "11": "Magha", "12": "Phalguna",
+    "sufijo": "Saka"
+  },
+  "chino": {
+    "dia": "Giorno",
+    "mes": "Mese",
+    "anio": "Anno",
+    "bisiesto": "Bisestile",
+    "zodiaco": {
+      "rata": "Topo", "buey": "Bue", "tigre": "Tigre", "conejo": "Coniglio",
+      "dragon": "Drago", "serpiente": "Serpente", "caballo": "Cavallo",
+      "cabra": "Capra", "mono": "Scimmia", "gallo": "Gallo", "perro": "Cane", "cerdo": "Maiale"
+    }
+  },
   "condiciones": {
     "0": "Cielo sereno",
     "1": "Prevalentemente sereno",
@@ -93,8 +125,7 @@
   },
   "pronostico": {
     "titulo_horas": "PREVISIONI ORARIE",
-    "titulo_semanal": "PREVISIONI A 7 GIORNI",
-    "ayuda_click": "Clicca su qualsiasi ora o giorno per vedere le previsioni dettagliate"
+    "titulo_semanal": "PREVISIONI A 7 GIORNI"
   },
   "bento": {
     "indice_uv": "INDICE UV",
@@ -206,6 +237,15 @@
     "alerta_lluvia": "Avviso inizio o fine pioggia",
     "alerta_tormenta": "Allerte meteo severe",
     "alerta_atardecer": "Promemoria tramonto",
+    "calendarios_titulo": "Calendari Visibili",
+    "cal_gregoriano": "Gregoriano (Universale)",
+    "cal_hijri": "Hijri (Islamico)",
+    "cal_hebreo": "Ebraico (Giudaico)",
+    "cal_jalali": "Solare Persiano (Jalali)",
+    "cal_budista": "Era Buddista (BE)",
+    "cal_etiope": "Copto / Etiope (Ge'ez)",
+    "cal_saka": "Saka Samvat (Indiano)",
+    "cal_chino": "Lunisolare Cinese (Nónglì)",
     "guardar": "Salva",
     "cancelar": "Annulla"
   },
@@ -217,3 +257,4 @@
     "salir": "Esci"
   }
 }
+

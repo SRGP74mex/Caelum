@@ -27,6 +27,16 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "alerta_lluvia": True,
         "alerta_tormenta": True,
         "alerta_atardecer": False
+    },
+    "calendarios": {
+        "gregoriano": True,
+        "hijri": True,
+        "hebreo": True,
+        "jalali": False,
+        "budista": False,
+        "etiope": False,
+        "saka": False,
+        "chino": False
     }
 }
 
@@ -61,25 +71,38 @@ class ConfigManager:
             with open(self.ruta_archivo, "w", encoding="utf-8") as f:
                 json.dump(datos, f, ensure_ascii=False, indent=2)
         except Exception:
-            logger.warning("No se pudo guardar configuración en %s", self.ruta_archivo, exc_info=True)
+            logger.error("No se pudo escribir la configuración en %s", self.ruta_archivo, exc_info=True)
 
     def guardar_preferencias(
         self,
-        unidades: Dict[str, str],
-        mostrar_bandeja: bool,
-        cerrar_a_bandeja: bool,
+        unidades: Optional[Dict[str, str]] = None,
+        mostrar_bandeja: Optional[bool] = None,
+        cerrar_a_bandeja: Optional[bool] = None,
         notificaciones: Optional[Dict[str, bool]] = None,
-        idioma: Optional[str] = None
+        idioma: Optional[str] = None,
+        calendarios: Optional[Dict[str, bool]] = None
     ) -> None:
-        """Persiste las preferencias editables desde la pantalla de ajustes."""
-        self.datos["unidades"] = unidades
-        self.datos["mostrar_bandeja"] = mostrar_bandeja
-        self.datos["cerrar_a_bandeja"] = cerrar_a_bandeja
+        """Actualiza y persiste las preferencias generales del usuario."""
         if idioma is not None:
             self.datos["idioma"] = idioma
+        if unidades is not None:
+            self.datos["unidades"] = unidades
+        if mostrar_bandeja is not None:
+            self.datos["mostrar_bandeja"] = mostrar_bandeja
+        if cerrar_a_bandeja is not None:
+            self.datos["cerrar_a_bandeja"] = cerrar_a_bandeja
         if notificaciones is not None:
             self.datos["notificaciones"] = notificaciones
+        if calendarios is not None:
+            self.datos["calendarios"] = calendarios
         self._guardar_dict(self.datos)
+
+    def obtener_calendarios_activos(self) -> Dict[str, bool]:
+        """Retorna el diccionario de calendarios activos con valores por defecto."""
+        defaults = dict(DEFAULT_CONFIG["calendarios"])
+        guardados = self.datos.get("calendarios", {})
+        defaults.update(guardados)
+        return defaults
 
     def guardar_ultima_ciudad(self, ubicacion: Ubicacion) -> None:
         """Guarda la última ciudad y la añade al historial de recientes."""

@@ -1,7 +1,14 @@
-from typing import Optional
+from datetime import datetime
+from typing import Dict, Optional
 
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QVBoxLayout, QWidget
+from PySide6.QtWidgets import (
+    QFrame,
+    QHBoxLayout,
+    QLabel,
+    QVBoxLayout,
+    QWidget,
+)
 
 from src.modelos.clima_datos import ReporteClimaCompleto
 from src.servicios.i18n import t
@@ -10,85 +17,92 @@ from src.utils.fecha_utils import FechaHelper
 
 class CabeceraClima(QWidget):
     """
-    Cabecera visual principal con nombre de ciudad, temperatura prominente estilo Apple,
-    condición climática, rango térmico del día y píldoras con fechas duales.
+    Componente superior estilo iOS que muestra:
+    - Ciudad y País
+    - Temperatura actual grande
+    - Condición meteorológica y rango térmico diario
+    - Píldoras dinámicas de fechas para los calendarios activados por el usuario
     """
+
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
+        self._config_calendarios: Optional[Dict[str, bool]] = None
+        self._ultimo_dt: Optional[datetime] = None
         self._init_ui()
 
     def _init_ui(self) -> None:
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 10, 0, 15)
-        layout.setSpacing(4)
+        layout.setContentsMargins(0, 16, 0, 8)
+        layout.setSpacing(2)
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        # 1. Ciudad y País
-        self.lbl_ciudad = QLabel(t("comun.cargando"), self)
+        # 1. Nombre de Ciudad
+        self.lbl_ciudad = QLabel("--", self)
         self.lbl_ciudad.setObjectName("ciudadCabecera")
         self.lbl_ciudad.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_ciudad)
 
-        self.lbl_pais = QLabel("", self)
+        # 2. País / Región
+        self.lbl_pais = QLabel("--", self)
         self.lbl_pais.setObjectName("paisCabecera")
         self.lbl_pais.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_pais)
 
-        # 2. Temperatura Gigante
+        # 3. Temperatura Actual
         self.lbl_temperatura = QLabel("--°", self)
-        self.lbl_temperatura.setObjectName("temperaturaGigante")
+        self.lbl_temperatura.setObjectName("temperaturaCabecera")
         self.lbl_temperatura.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_temperatura)
 
-        # 3. Condición Climática
-        self.lbl_condicion = QLabel(t("comun.cargando"), self)
+        # 4. Condición y Rango Térmico
+        self.lbl_condicion = QLabel("--", self)
         self.lbl_condicion.setObjectName("condicionCabecera")
         self.lbl_condicion.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_condicion)
 
-        # 4. Rango Térmico de Hoy (Máx / Mín)
         self.lbl_rango_hoy = QLabel(t("cabecera.hoy_rango", max="--", min="--"), self)
         self.lbl_rango_hoy.setObjectName("rangoHoyCabecera")
         self.lbl_rango_hoy.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_rango_hoy)
 
-        # 5. Píldoras de Fechas (Gregoriano, Hijri, Hebreo)
-        fechas_layout = QHBoxLayout()
-        fechas_layout.setContentsMargins(0, 12, 0, 0)
-        fechas_layout.setSpacing(8)
-        fechas_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        # 5. Contenedor de Píldoras de Fechas Dinámicas
+        self.fechas_contenedor = QWidget(self)
+        self.fechas_layout = QHBoxLayout(self.fechas_contenedor)
+        self.fechas_layout.setContentsMargins(0, 8, 0, 0)
+        self.fechas_layout.setSpacing(8)
+        self.fechas_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.fechas_contenedor)
 
-        # Píldora Gregoriana
-        pildora_greg = QFrame(self)
-        pildora_greg.setObjectName("pildoraFecha")
-        pildora_greg_layout = QHBoxLayout(pildora_greg)
-        pildora_greg_layout.setContentsMargins(10, 4, 10, 4)
-        self.lbl_fecha_greg = QLabel("📅 --", pildora_greg)
-        self.lbl_fecha_greg.setObjectName("textoPildoraFecha")
-        pildora_greg_layout.addWidget(self.lbl_fecha_greg)
-        fechas_layout.addWidget(pildora_greg)
+        self.actualizar_fechas()
 
-        # Píldora Hijri
-        pildora_hijri = QFrame(self)
-        pildora_hijri.setObjectName("pildoraFecha")
-        pildora_hijri_layout = QHBoxLayout(pildora_hijri)
-        pildora_hijri_layout.setContentsMargins(10, 4, 10, 4)
-        self.lbl_fecha_hijri = QLabel("🌙 --", pildora_hijri)
-        self.lbl_fecha_hijri.setObjectName("textoPildoraFecha")
-        pildora_hijri_layout.addWidget(self.lbl_fecha_hijri)
-        fechas_layout.addWidget(pildora_hijri)
+    def establecer_config_calendarios(self, config_calendarios: Optional[Dict[str, bool]]) -> None:
+        """Actualiza la configuración de calendarios habilitados y reconstruye las píldoras."""
+        self._config_calendarios = config_calendarios
+        self.actualizar_fechas(self._ultimo_dt)
 
-        # Píldora Hebrea
-        pildora_hebrea = QFrame(self)
-        pildora_hebrea.setObjectName("pildoraFecha")
-        pildora_hebrea_layout = QHBoxLayout(pildora_hebrea)
-        pildora_hebrea_layout.setContentsMargins(10, 4, 10, 4)
-        self.lbl_fecha_hebrea = QLabel("🕎 --", pildora_hebrea)
-        self.lbl_fecha_hebrea.setObjectName("textoPildoraFecha")
-        pildora_hebrea_layout.addWidget(self.lbl_fecha_hebrea)
-        fechas_layout.addWidget(pildora_hebrea)
+    def actualizar_fechas(self, dt: Optional[datetime] = None) -> None:
+        """Reconstruye y actualiza las píldoras de fechas visibles según los calendarios activos."""
+        self._ultimo_dt = dt
 
-        layout.addLayout(fechas_layout)
+        # Limpiar píldoras previas
+        while self.fechas_layout.count():
+            item = self.fechas_layout.takeAt(0)
+            widget = item.widget()
+            if widget:
+                widget.deleteLater()
+
+        pildoras = FechaHelper.obtener_pildoras_calendarios(dt, self._config_calendarios)
+        for cal_id, icono, texto in pildoras:
+            pildora = QFrame(self.fechas_contenedor)
+            pildora.setObjectName("pildoraFecha")
+            pildora_layout = QHBoxLayout(pildora)
+            pildora_layout.setContentsMargins(10, 4, 10, 4)
+            pildora_layout.setSpacing(4)
+
+            lbl = QLabel(f"{icono} {texto}", pildora)
+            lbl.setObjectName("textoPildoraFecha")
+            pildora_layout.addWidget(lbl)
+            self.fechas_layout.addWidget(pildora)
 
     def actualizar_datos(self, reporte: ReporteClimaCompleto) -> None:
         """Actualiza todos los elementos de la cabecera con el reporte de clima."""
@@ -109,9 +123,5 @@ class CabeceraClima(QWidget):
         # Rango hoy
         self.lbl_rango_hoy.setText(t("cabecera.hoy_rango", max=round(act.temp_max_hoy), min=round(act.temp_min_hoy)))
 
-        # Fechas
-        greg_str, hijri_str, hebrea_str = FechaHelper.fechas_calendarios_completas()
-        self.lbl_fecha_greg.setText(f"📅 {greg_str}")
-        self.lbl_fecha_hijri.setText(f"🌙 {hijri_str}")
-        self.lbl_fecha_hebrea.setText(f"🕎 {hebrea_str}")
-
+        # Actualizar fechas dinámicas
+        self.actualizar_fechas()

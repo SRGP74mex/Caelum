@@ -54,6 +54,38 @@
     "9": "Kislew", "10": "Tewet", "11": "Schewat", "12": "Adar", "13": "Adar II",
     "sufijo": "AM"
   },
+  "jalali": {
+    "1": "Farwardin", "2": "Ordibehescht", "3": "Chordad", "4": "Tir",
+    "5": "Mordad", "6": "Schahriwar", "7": "Mehr", "8": "Aban",
+    "9": "Azar", "10": "Dey", "11": "Bahman", "12": "Esfand",
+    "sufijo": "SH"
+  },
+  "budista": {
+    "sufijo": "BE"
+  },
+  "etiope": {
+    "1": "Meskerem", "2": "Tikimt", "3": "Hidar", "4": "Tahsas",
+    "5": "Tir", "6": "Yakatit", "7": "Magabit", "8": "Miyazya",
+    "9": "Ginbot", "10": "Sene", "11": "Hamle", "12": "Nehase", "13": "Pagume",
+    "sufijo": "EE"
+  },
+  "saka": {
+    "1": "Chaitra", "2": "Vaisakha", "3": "Jyeshtha", "4": "Ashadha",
+    "5": "Shravana", "6": "Bhadra", "7": "Ashwin", "8": "Kartika",
+    "9": "Agrahayana", "10": "Pausha", "11": "Magha", "12": "Phalguna",
+    "sufijo": "Saka"
+  },
+  "chino": {
+    "dia": "Tag",
+    "mes": "Monat",
+    "anio": "Jahr",
+    "bisiesto": "Schaltmonat",
+    "zodiaco": {
+      "rata": "Ratte", "buey": "Büffel", "tigre": "Tiger", "conejo": "Hase",
+      "dragon": "Drache", "serpiente": "Schlange", "caballo": "Pferd",
+      "cabra": "Ziege", "mono": "Affe", "gallo": "Hahn", "perro": "Hund", "cerdo": "Schwein"
+    }
+  },
   "condiciones": {
     "0": "Klarer Himmel",
     "1": "Überwiegend klar",
@@ -206,6 +238,15 @@
     "alerta_lluvia": "Meldung bei Regenbeginn / -ende",
     "alerta_tormenta": "Schwere Unwetterwarnungen",
     "alerta_atardecer": "Erinnerung zum Sonnenuntergang",
+    "calendarios_titulo": "Sichtbare Kalender",
+    "cal_gregoriano": "Gregorianisch (Universal)",
+    "cal_hijri": "Hidschra (Islamisch)",
+    "cal_hebreo": "Hebräisch (Jüdisch)",
+    "cal_jalali": "Solarpersisch (Dschalali)",
+    "cal_budista": "Buddhistische Ära (BE)",
+    "cal_etiope": "Koptisch / Äthiopisch (Ge'ez)",
+    "cal_saka": "Saka Samvat (Indisch)",
+    "cal_chino": "Chinesischer Lunisolarkalender (Nónglì)",
     "guardar": "Speichern",
     "cancelar": "Abbrechen"
   },

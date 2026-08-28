@@ -39,6 +39,8 @@ class TestUIComponents(unittest.TestCase):
             cls.app = QApplication.instance()
 
     def setUp(self):
+        from src.servicios.i18n import establecer_idioma
+        establecer_idioma("es")
         self.ubicacion = Ubicacion(
             ciudad="Sevilla",
             pais="España",
