@@ -9,4 +9,5 @@ get-pip.py
 dist/
 build/
 *.egg-info/
+Impresiones_de_pantalla/
 weather-linux.desktop

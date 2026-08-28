@@ -87,7 +87,8 @@
   },
   "pronostico": {
     "titulo_horas": "1時間ごとの予報",
-    "titulo_semanal": "7日間の天気予報"
+    "titulo_semanal": "7日間の天気予報",
+    "ayuda_click": "時間または日をクリックして詳細な予報を表示します"
   },
   "bento": {
     "indice_uv": "UVインデックス",

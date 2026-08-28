@@ -535,7 +535,7 @@ class VentanaPrincipal(QMainWindow):
                 amanecer_iso=reporte.actual.amanecer_iso,
                 ocaso_iso=reporte.actual.ocaso_iso
             )
-            self.lbl_detalle_hora.setText("Haz clic sobre cualquier hora o día para ver el pronóstico detallado")
+            self.lbl_detalle_hora.setText(t("pronostico.ayuda_click"))
 
             if hasattr(self, "bandeja"):
                 self.bandeja.actualizar_clima_tray(reporte)

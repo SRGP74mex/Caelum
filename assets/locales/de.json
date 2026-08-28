@@ -87,7 +87,8 @@
   },
   "pronostico": {
     "titulo_horas": "STUNDENVORHERSAGE",
-    "titulo_semanal": "7-TAGE-VORHERSAGE"
+    "titulo_semanal": "7-TAGE-VORHERSAGE",
+    "ayuda_click": "Klicke auf eine Stunde oder einen Tag für detaillierte Vorhersagen"
   },
   "bento": {
     "indice_uv": "UV-INDEX",

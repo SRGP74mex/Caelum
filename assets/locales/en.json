@@ -87,7 +87,8 @@
   },
   "pronostico": {
     "titulo_horas": "HOURLY FORECAST",
-    "titulo_semanal": "7-DAY FORECAST"
+    "titulo_semanal": "7-DAY FORECAST",
+    "ayuda_click": "Click on any hour or day to view detailed forecast"
   },
   "bento": {
     "indice_uv": "UV INDEX",

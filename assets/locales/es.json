@@ -87,7 +87,8 @@
   },
   "pronostico": {
     "titulo_horas": "PRONÓSTICO POR HORAS",
-    "titulo_semanal": "PRONÓSTICO DE 7 DÍAS"
+    "titulo_semanal": "PRONÓSTICO DE 7 DÍAS",
+    "ayuda_click": "Haz clic sobre cualquier hora o día para ver el pronóstico detallado"
   },
   "bento": {
     "indice_uv": "ÍNDICE UV",
