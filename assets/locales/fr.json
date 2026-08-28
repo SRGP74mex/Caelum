@@ -48,6 +48,12 @@
     "9": "Ramadan", "10": "Chawwal", "11": "Dhou al-Qi'da", "12": "Dhou al-Hijja",
     "sufijo": "AH"
   },
+  "hebreo": {
+    "1": "Nisan", "2": "Iyar", "3": "Sivan", "4": "Tammuz",
+    "5": "Av", "6": "Eloul", "7": "Tishri", "8": "Hechvan",
+    "9": "Kislev", "10": "Tevet", "11": "Chevat", "12": "Adar", "13": "Adar II",
+    "sufijo": "AM"
+  },
   "condiciones": {
     "0": "Ciel dégagé",
     "1": "Principalement dégagé",

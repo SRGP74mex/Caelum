@@ -404,10 +404,10 @@ class VentanaPrincipal(QMainWindow):
 
             try:
                 dt = FechaHelper.parse_iso(dia.fecha_iso)
-                greg_str = FechaHelper.fecha_gregoriana_legible(dt)
-                hijri_str = FechaHelper.fecha_hijri_legible(dt)
+                greg_str, hijri_str, hebrea_str = FechaHelper.fechas_calendarios_completas(dt)
                 self.cabecera.lbl_fecha_greg.setText(f"📅 {greg_str}")
                 self.cabecera.lbl_fecha_hijri.setText(f"🌙 {hijri_str}")
+                self.cabecera.lbl_fecha_hebrea.setText(f"🕎 {hebrea_str}")
             except Exception:
                 pass
 

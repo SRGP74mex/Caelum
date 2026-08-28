@@ -48,6 +48,12 @@
     "9": "Ramadan", "10": "Schawwal", "11": "Dhu al-Qa'da", "12": "Dhu al-Hiddscha",
     "sufijo": "AH"
   },
+  "hebreo": {
+    "1": "Nisan", "2": "Ijar", "3": "Siwan", "4": "Tammus",
+    "5": "Aw", "6": "Elul", "7": "Tischri", "8": "Cheschwan",
+    "9": "Kislew", "10": "Tewet", "11": "Schewat", "12": "Adar", "13": "Adar II",
+    "sufijo": "AM"
+  },
   "condiciones": {
     "0": "Klarer Himmel",
     "1": "Überwiegend klar",

@@ -52,10 +52,10 @@ class CabeceraClima(QWidget):
         self.lbl_rango_hoy.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_rango_hoy)
 
-        # 5. Píldoras de Fechas Duales
+        # 5. Píldoras de Fechas (Gregoriano, Hijri, Hebreo)
         fechas_layout = QHBoxLayout()
         fechas_layout.setContentsMargins(0, 12, 0, 0)
-        fechas_layout.setSpacing(10)
+        fechas_layout.setSpacing(8)
         fechas_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         # Píldora Gregoriana
@@ -77,6 +77,16 @@ class CabeceraClima(QWidget):
         self.lbl_fecha_hijri.setObjectName("textoPildoraFecha")
         pildora_hijri_layout.addWidget(self.lbl_fecha_hijri)
         fechas_layout.addWidget(pildora_hijri)
+
+        # Píldora Hebrea
+        pildora_hebrea = QFrame(self)
+        pildora_hebrea.setObjectName("pildoraFecha")
+        pildora_hebrea_layout = QHBoxLayout(pildora_hebrea)
+        pildora_hebrea_layout.setContentsMargins(10, 4, 10, 4)
+        self.lbl_fecha_hebrea = QLabel("🕎 --", pildora_hebrea)
+        self.lbl_fecha_hebrea.setObjectName("textoPildoraFecha")
+        pildora_hebrea_layout.addWidget(self.lbl_fecha_hebrea)
+        fechas_layout.addWidget(pildora_hebrea)
 
         layout.addLayout(fechas_layout)
 
@@ -100,7 +110,8 @@ class CabeceraClima(QWidget):
         self.lbl_rango_hoy.setText(t("cabecera.hoy_rango", max=round(act.temp_max_hoy), min=round(act.temp_min_hoy)))
 
         # Fechas
-        greg_str, hijri_str = FechaHelper.fecha_dual_completa()
+        greg_str, hijri_str, hebrea_str = FechaHelper.fechas_calendarios_completas()
         self.lbl_fecha_greg.setText(f"📅 {greg_str}")
         self.lbl_fecha_hijri.setText(f"🌙 {hijri_str}")
+        self.lbl_fecha_hebrea.setText(f"🕎 {hebrea_str}")
 

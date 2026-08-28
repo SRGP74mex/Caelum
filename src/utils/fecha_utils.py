@@ -46,13 +46,37 @@ class FechaHelper:
         return f"{hijri.day} {nombre_mes} {hijri.year} {sufijo}"
 
     @staticmethod
+    def fecha_hebrea_legible(dt: Optional[datetime] = None) -> str:
+        """Ej: '14 Elul 5786 AM' con nombres de mes traducidos y sufijo de era."""
+        from src.servicios.i18n import t
+        from src.utils.hebrew_converter import CalendarioHebreo
+
+        if dt is None:
+            dt = datetime.now()
+        h_year, h_month, h_day = CalendarioHebreo.de_gregoriano(dt.year, dt.month, dt.day)
+        nombre_mes = t(f"hebreo.{h_month}")
+        sufijo = t("hebreo.sufijo")
+        return f"{h_day} {nombre_mes} {h_year} {sufijo}"
+
+    @staticmethod
     def fecha_dual_completa(dt: Optional[datetime] = None) -> Tuple[str, str]:
-        """Retorna tupla (gregoriana, hijri)"""
+        """Retorna tupla (gregoriana, hijri) para compatibilidad."""
         if dt is None:
             dt = datetime.now()
         return (
             FechaHelper.fecha_gregoriana_legible(dt),
             FechaHelper.fecha_hijri_legible(dt)
+        )
+
+    @staticmethod
+    def fechas_calendarios_completas(dt: Optional[datetime] = None) -> Tuple[str, str, str]:
+        """Retorna tupla (gregoriana, hijri, hebrea)."""
+        if dt is None:
+            dt = datetime.now()
+        return (
+            FechaHelper.fecha_gregoriana_legible(dt),
+            FechaHelper.fecha_hijri_legible(dt),
+            FechaHelper.fecha_hebrea_legible(dt)
         )
 
     @staticmethod

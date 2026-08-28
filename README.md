@@ -73,10 +73,10 @@
   <p><em>Clear night sky view with starry backdrop in Minneapolis.</em></p>
 </div>
 
-### 🌍 Multi-Language & Dual Calendar Support
+### 🌍 Multi-Language & Triple Calendar Support
 - **6 Built-in Languages**: English (`en`), Spanish (`es`), French (`fr`), Italian (`it`), German (`de`), and Japanese (`ja`).
 - **Automatic System Locale Detection**: Adapts immediately to your operating system language (`auto`).
-- **Dual Date Display**: Full Gregorian date formatting combined with the Islamic Hijri calendar (`AH`).
+- **Triple Calendar Date Display**: Full Gregorian date formatting combined with the Islamic Hijri calendar (`AH`) and Hebrew calendar (`AM`).
 
 ### 🐧 Native Wayland & Desktop Integration
 - **Display Server Compatibility**: Native **Wayland** protocol support (`xdg_activation`, zero-tearing) and **X11 (XCB)** fallback.
