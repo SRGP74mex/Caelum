@@ -1,7 +1,15 @@
+import sys
 from pathlib import Path
 
-# Rutas Base del Proyecto
-BASE_DIR = Path(__file__).resolve().parent
+# Rutas Base del Proyecto (compatible con desarrollo, cx_Freeze y PyInstaller)
+if getattr(sys, "frozen", False):
+    if hasattr(sys, "_MEIPASS"):
+        BASE_DIR = Path(sys._MEIPASS).resolve()
+    else:
+        BASE_DIR = Path(sys.executable).resolve().parent
+else:
+    BASE_DIR = Path(__file__).resolve().parent
+
 ASSETS_DIR = BASE_DIR / "assets"
 ICONS_DIR = ASSETS_DIR / "icons" / "meteocons"
 LUNA_DIR = ASSETS_DIR / "icons" / "luna"
