@@ -21,14 +21,16 @@ def configurar_logging() -> None:
     handler_archivo.setLevel(logging.DEBUG)
     handler_archivo.setFormatter(formato)
 
-    handler_consola = logging.StreamHandler()
-    handler_consola.setLevel(nivel_consola)
-    handler_consola.setFormatter(formato)
-
     raiz = logging.getLogger()
     raiz.setLevel(logging.DEBUG)
     raiz.addHandler(handler_archivo)
-    raiz.addHandler(handler_consola)
+
+    import sys
+    if sys.stdout is not None or sys.stderr is not None:
+        handler_consola = logging.StreamHandler()
+        handler_consola.setLevel(nivel_consola)
+        handler_consola.setFormatter(formato)
+        raiz.addHandler(handler_consola)
 
     # Silenciar ruido de librerías de terceros
     logging.getLogger("urllib3").setLevel(logging.WARNING)

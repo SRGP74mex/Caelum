@@ -2,8 +2,12 @@ import faulthandler
 import logging
 import sys
 
-# Habilitar faulthandler para capturar trazas de diagnóstico
-faulthandler.enable()
+# Habilitar faulthandler si stderr está disponible (en ejecutables GUI de Windows sys.stderr es None)
+if sys.stderr is not None:
+    try:
+        faulthandler.enable()
+    except Exception:
+        pass
 
 from src.utils.logging_config import configurar_logging  # noqa: E402
 

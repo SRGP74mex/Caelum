@@ -5,6 +5,7 @@ Uso (en Windows o mediante GitHub Actions):
 """
 
 import sys
+
 from cx_Freeze import Executable, setup
 
 # -----------------------------------------------------------------------------
