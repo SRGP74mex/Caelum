@@ -1,0 +1,50 @@
+name: Auto Release on Version Tag
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Publicar Release Oficial y Compilar Binarios
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar código fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install cx_Freeze pyinstaller
+
+      - name: Compilar Instalador MSI
+        run: |
+          python setup_msi.py bdist_msi
+
+      - name: Compilar Ejecutable Portable
+        run: |
+          pyinstaller --noconfirm --onedir --windowed --name "Caelum" --icon "assets/icons/app_icon.ico" --add-data "assets;assets" --add-data "config.py;." main.py
+          Compress-Archive -Path dist/Caelum/* -DestinationPath dist/Caelum-Portable-Windows.zip
+
+      - name: Publicar Release Automático en GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Caelum ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            dist/*.msi
+            dist/*.zip

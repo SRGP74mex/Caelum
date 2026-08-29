@@ -1,0 +1,22 @@
+# Configuración de Dependabot para Caelum
+# Revisa automáticamente actualizaciones y alertas de seguridad en librerías y GitHub Actions.
+version: 2
+updates:
+  # 1. Dependencias de Python (requirements.txt / pyproject.toml)
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "python"
+
+  # 2. Acciones de GitHub (GitHub Actions)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "ci"
+      - "github-actions"

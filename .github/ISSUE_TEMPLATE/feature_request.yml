@@ -1,0 +1,24 @@
+name: 💡 Sugerencia o Nueva Función
+description: Propón una nueva idea o mejora para Caelum
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Nos encanta escuchar nuevas ideas para Caelum! 🚀
+  - type: textarea
+    id: sugerencia
+    attributes:
+      label: Descripción de la Sugerencia
+      description: ¿Qué función te gustaría ver añadida o mejorada?
+      placeholder: Me gustaría poder ver un nuevo gráfico o tarjeta de...
+    validations:
+      required: true
+  - type: textarea
+    id: valor_usuario
+    attributes:
+      label: ¿Qué valor o beneficio aporta a los usuarios?
+      placeholder: Permitiría saber rápidamente...
+    validations:
+      required: false

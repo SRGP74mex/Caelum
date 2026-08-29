@@ -1,0 +1,53 @@
+name: 🐛 Reportar un Problema (Bug)
+description: Ayúdanos a solucionar un fallo en Caelum
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por tomarte el tiempo de reportar este problema y mejorar Caelum! 🌤️
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Descripción del Problema
+      description: Explica de forma clara y concisa qué ocurrió.
+      placeholder: Al abrir la vista de ajustes, la aplicación...
+    validations:
+      required: true
+  - type: dropdown
+    id: sistema_operativo
+    attributes:
+      label: Sistema Operativo
+      options:
+        - Linux (Wayland)
+        - Linux (X11 / XCB)
+        - Windows 11
+        - Windows 10
+        - Otro
+    validations:
+      required: true
+  - type: input
+    id: entorno_escritorio
+    attributes:
+      label: Entorno de Escritorio / Distribución
+      placeholder: Ej. KDE Plasma 6.1 en Arch Linux, Ubuntu 24.04 GNOME, Fedora 40...
+    validations:
+      required: false
+  - type: textarea
+    id: pasos_reproducir
+    attributes:
+      label: Pasos para Reproducir
+      description: ¿Qué pasos realizaste antes de que ocurriera el problema?
+      placeholder: |
+        1. Abrir Caelum
+        2. Buscar la ciudad '...'
+        3. Hacer clic en '...'
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Registros (Logs de la aplicación)
+      description: Puedes pegar el contenido relevante de `~/.cache/weather_linux/weatherapp.log`
+      render: shell
