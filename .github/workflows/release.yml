@@ -39,7 +39,7 @@ jobs:
           Compress-Archive -Path dist/Caelum/* -DestinationPath dist/Caelum-Portable-Windows.zip
 
       - name: Publicar Release Automático en GitHub
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: Caelum ${{ github.ref_name }}
           draft: false
