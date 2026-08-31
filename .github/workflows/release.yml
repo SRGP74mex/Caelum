@@ -4,15 +4,15 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    name: Publicar Release Oficial y Compilar Binarios
+  build-windows:
+    name: Compilar Binarios Windows (MSI y Portable)
     runs-on: windows-latest
-
     steps:
       - name: Descargar código fuente
         uses: actions/checkout@v4
@@ -36,15 +36,76 @@ jobs:
       - name: Compilar Ejecutable Portable
         run: |
           pyinstaller --noconfirm --onedir --windowed --name "Caelum" --icon "assets/icons/app_icon.ico" --add-data "assets;assets" --add-data "config.py;." main.py
-          Compress-Archive -Path dist/Caelum/* -DestinationPath dist/Caelum-Portable-Windows.zip
+          Compress-Archive -Path dist/Caelum/* -DestinationPath dist/Caelum-Windows-Portable.zip
 
-      - name: Publicar Release Automático en GitHub
+      - name: Subir artefactos de Windows
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-assets
+          path: |
+            dist/*.msi
+            dist/*-Portable.zip
+
+  build-macos:
+    name: Compilar Caelum para macOS (.app)
+    runs-on: macos-latest
+    steps:
+      - name: Descargar código fuente
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Compilar Caelum.app
+        run: |
+          pyinstaller --noconfirm --windowed \
+            --name "Caelum" \
+            --icon "assets/icons/app_icon.icns" \
+            --add-data "assets:assets" \
+            --add-data "config.py:." \
+            main.py
+          cd dist
+          zip -r Caelum-macOS.zip Caelum.app
+
+      - name: Subir artefactos de macOS
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-release-assets
+          path: dist/Caelum-macOS.zip
+
+  publish-release:
+    name: Publicar Release Oficial en GitHub
+    needs: [build-windows, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código fuente
+        uses: actions/checkout@v4
+
+      - name: Descargar todos los binarios compilados
+        uses: actions/download-artifact@v4
+        with:
+          path: release-binaries
+
+      - name: Aplanar estructura de archivos
+        run: |
+          mkdir -p final-dist
+          find release-binaries -type f \( -name "*.msi" -o -name "*.zip" \) -exec cp {} final-dist/ \;
+          ls -la final-dist/
+
+      - name: Publicar Release Oficial
         uses: softprops/action-gh-release@v2
         with:
           name: Caelum ${{ github.ref_name }}
           draft: false
           prerelease: false
           generate_release_notes: true
-          files: |
-            dist/*.msi
-            dist/*.zip
+          files: final-dist/*

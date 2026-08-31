@@ -1,9 +1,6 @@
 name: Build Windows MSI Installer
 
 on:
-  push:
-    tags:
-      - "v*"
   workflow_dispatch:
 
 jobs:
@@ -38,13 +35,13 @@ jobs:
       - name: Subir instalador MSI como artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: Caelum-v1.5.0-Windows-x64-MSI
+          name: Caelum-${{ github.ref_name }}-Windows-x64-MSI
           path: dist/*.msi
           if-no-files-found: warn
 
       - name: Subir version Portable
         uses: actions/upload-artifact@v4
         with:
-          name: Caelum-v1.5.0-Windows-x64-Portable
+          name: Caelum-${{ github.ref_name }}-Windows-x64-Portable
           path: dist/Caelum/
           if-no-files-found: warn

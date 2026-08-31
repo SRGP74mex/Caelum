@@ -26,8 +26,9 @@ def configurar_logging() -> None:
     raiz.addHandler(handler_archivo)
 
     import sys
-    if sys.stdout is not None or sys.stderr is not None:
-        handler_consola = logging.StreamHandler()
+    stream_consola = sys.stderr if sys.stderr is not None else sys.stdout
+    if stream_consola is not None:
+        handler_consola = logging.StreamHandler(stream_consola)
         handler_consola.setLevel(nivel_consola)
         handler_consola.setFormatter(formato)
         raiz.addHandler(handler_consola)

@@ -4,11 +4,12 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from config import directorio_datos_usuario
 from src.modelos.clima_datos import Ubicacion
 
 logger = logging.getLogger(__name__)
 
-CONFIG_DIR = Path.home() / ".config" / "weather_linux"
+CONFIG_DIR = directorio_datos_usuario("config")
 CONFIG_FILE = CONFIG_DIR / "config.json"
 
 DEFAULT_CONFIG: Dict[str, Any] = {

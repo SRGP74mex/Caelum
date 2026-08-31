@@ -1,3 +1,4 @@
+import os
 import sys
 from pathlib import Path
 
@@ -16,7 +17,33 @@ LUNA_DIR = ASSETS_DIR / "icons" / "luna"
 STYLES_DIR = ASSETS_DIR / "styles"
 BACKGROUNDS_DIR = ASSETS_DIR / "backgrounds"
 LOCALES_DIR = ASSETS_DIR / "locales"
-CACHE_DIR = Path.home() / ".cache" / "weather_linux"
+
+
+def directorio_datos_usuario(tipo: str) -> Path:
+    """Resuelve el directorio de datos de usuario ("cache" o "config") según
+    la convención nativa de cada sistema operativo. El nombre de carpeta
+    "weather_linux" se conserva por compatibilidad con instalaciones previas.
+    """
+    home = Path.home()
+    nombre_carpeta = "weather_linux"
+
+    if sys.platform == "win32":
+        base = Path(os.environ.get("LOCALAPPDATA", home / "AppData" / "Local"))
+        return base / nombre_carpeta / tipo.capitalize()
+
+    if sys.platform == "darwin":
+        subcarpeta = "Caches" if tipo == "cache" else "Application Support"
+        return home / "Library" / subcarpeta / nombre_carpeta
+
+    # Linux y otros Unix: convención XDG Base Directory
+    variable_xdg = "XDG_CACHE_HOME" if tipo == "cache" else "XDG_CONFIG_HOME"
+    carpeta_por_defecto = ".cache" if tipo == "cache" else ".config"
+    base_xdg = os.environ.get(variable_xdg)
+    base = Path(base_xdg) if base_xdg else home / carpeta_por_defecto
+    return base / nombre_carpeta
+
+
+CACHE_DIR = directorio_datos_usuario("cache")
 
 # Crear directorio de caché si no existe
 try:
