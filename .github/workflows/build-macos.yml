@@ -39,7 +39,7 @@ jobs:
           zip -r Caelum-macOS.zip Caelum.app
 
       - name: Subir artefacto macOS
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Caelum-${{ github.ref_name }}-macOS-Universal
           path: dist/Caelum-macOS.zip

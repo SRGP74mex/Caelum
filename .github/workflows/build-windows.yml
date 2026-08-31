@@ -33,14 +33,14 @@ jobs:
           pyinstaller --noconfirm --onedir --windowed --name "Caelum" --icon "assets/icons/app_icon.ico" --add-data "assets;assets" --add-data "config.py;." main.py
 
       - name: Subir instalador MSI como artefacto
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Caelum-${{ github.ref_name }}-Windows-x64-MSI
           path: dist/*.msi
           if-no-files-found: warn
 
       - name: Subir version Portable
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Caelum-${{ github.ref_name }}-Windows-x64-Portable
           path: dist/Caelum/
