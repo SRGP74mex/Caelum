@@ -104,9 +104,20 @@ _Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day fo
 
 ### Prerequisites
 
-- **Linux Distribution**: Ubuntu, Fedora, Debian, Arch Linux, Manjaro, openSUSE, Pop!\_OS, etc.
-- **Python**: Version `3.11+` with `python3-venv` installed.
-- **Internet Connection**: Live weather data is fetched without requiring any private API keys.
+Caelum automatically bootstraps its Python virtual environment and dependencies via `./run.sh`. Ensure your system has standard Python environment packages:
+
+- **Linux Mint / Ubuntu / Debian**:
+  ```bash
+  sudo apt update && sudo apt install -y python3-venv python3-pip libxcb-cursor0
+  ```
+- **Manjaro / Arch Linux**:
+  ```bash
+  sudo pacman -S --needed python python-pip
+  ```
+- **Fedora / RHEL**:
+  ```bash
+  sudo dnf install -y python3 python3-pip
+  ```
 
 ---
 

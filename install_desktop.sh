@@ -14,6 +14,9 @@ DESKTOP_FILE="$SCRIPT_DIR/caelum.desktop"
 TARGET_DIR="$HOME/.local/share/applications"
 TARGET_FILE="$TARGET_DIR/caelum.desktop"
 
+# Asegurar que el entorno virtual y dependencias estén instaladas
+"$SCRIPT_DIR/run.sh" --setup-only || true
+
 cat > "$DESKTOP_FILE" <<EOF
 #!/usr/bin/env xdg-open
 [Desktop Entry]
