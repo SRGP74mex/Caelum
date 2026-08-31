@@ -1,6 +1,6 @@
 [project]
 name = "caelum"
-version = "1.5.0"
+version = "1.5.1"
 description = "Caelum - Aplicación de clima y astronomía fluida, rápida y moderna para Linux con PySide6"
 readme = "README.md"
 license = { file = "LICENSE" }

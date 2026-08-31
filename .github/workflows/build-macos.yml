@@ -41,6 +41,6 @@ jobs:
       - name: Subir artefacto macOS
         uses: actions/upload-artifact@v4
         with:
-          name: Caelum-v1.5.0-macOS-Universal
+          name: Caelum-${{ github.ref_name }}-macOS-Universal
           path: dist/Caelum-macOS.zip
           if-no-files-found: error

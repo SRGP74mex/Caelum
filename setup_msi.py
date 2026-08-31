@@ -55,7 +55,7 @@ executables = [
 
 setup(
     name="Caelum",
-    version="1.5.0",
+    version="1.5.1",
     author="Salvador RG",
     description="Caelum - A Fluid, Fast and Visually Immersive Weather App",
     options={
