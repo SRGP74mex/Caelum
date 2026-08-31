@@ -95,6 +95,16 @@ class FondoParticulasWidget(QWidget):
         self.timer.timeout.connect(self._on_tick)
         self.timer.start(16)
 
+    def pausar(self) -> None:
+        """Detiene el timer de animación. Úsese cuando la ventana no es visible
+        (minimizada u oculta en la bandeja) para no gastar CPU en segundo plano."""
+        self.timer.stop()
+
+    def reanudar(self) -> None:
+        """Reinicia el timer de animación tras una llamada a pausar()."""
+        if not self.timer.isActive():
+            self.timer.start(16)
+
     def _init_particulas(self, w: float, h: float) -> None:
         if w <= 0 or h <= 0:
             return

@@ -1,18 +1,21 @@
 import logging
 import time
+from collections import OrderedDict
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import QEvent, Qt, QTimer
 from PySide6.QtGui import (
     QCloseEvent,
     QColor,
+    QHideEvent,
     QIcon,
     QLinearGradient,
     QPainter,
     QPaintEvent,
     QPixmap,
     QResizeEvent,
+    QShowEvent,
 )
 from PySide6.QtWidgets import (
     QApplication,
@@ -84,6 +87,10 @@ class VentanaPrincipal(QMainWindow):
     Ventana principal de WeatherApp Linux con fondos fotográficos panorámicos HD 16:9,
     motor de partículas a 60 FPS superpuesto, Bento Grid de 8 métricas y notificaciones inteligentes.
     """
+
+    # Máximo de fondos panorámicos decodificados simultáneamente en RAM (~6MB c/u)
+    _FONDOS_CACHE_MAX = 3
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle(APP_NAME)
@@ -106,8 +113,9 @@ class VentanaPrincipal(QMainWindow):
         # Registro de timestamps para control anti-spam de notificaciones
         self._ultimas_notificaciones: Dict[str, float] = {}
 
-        # Fondos fotográficos en memoria
-        self.fondos_pixmap: Dict[str, QPixmap] = {}
+        # Fondos fotográficos: mapeo clave->archivo + caché LRU en memoria
+        # (carga bajo demanda, ver _obtener_pixmap_fondo)
+        self.fondos_pixmap_cache: "OrderedDict[str, QPixmap]" = OrderedDict()
         self._cargar_fondos_fotograficos()
 
         # Caché del fondo escalado al tamaño actual de la ventana
@@ -127,8 +135,14 @@ class VentanaPrincipal(QMainWindow):
         self._cargar_ubicacion_inicial()
 
     def _cargar_fondos_fotograficos(self) -> None:
-        """Carga en memoria el conjunto de 20 imágenes panorámicas normalizadas."""
-        mapeo_archivos = {
+        """Registra el mapeo clave->archivo de las 20 fotografías panorámicas.
+
+        No decodifica las imágenes: cada una pesa ~6MB sin comprimir en RAM y
+        solo se necesita una a la vez, así que se cargan bajo demanda en
+        _obtener_pixmap_fondo() con un pequeño caché LRU en vez de mantener
+        las 20 en memoria durante toda la ejecución.
+        """
+        self._mapeo_fondos_archivos: Dict[str, str] = {
             "dia_despejado": "dia_despejado.png",
             "dia_mayormente_despejado": "dia_mayormente_despejado.png",
             "dia_parcialmente_despejado": "dia_parcialmente_despejado.png",
@@ -152,12 +166,34 @@ class VentanaPrincipal(QMainWindow):
             "amanecer": "amanecer.png",
             "atardecer": "atardecer.png",
         }
-        for key, fname in mapeo_archivos.items():
-            path = BACKGROUNDS_DIR / fname
-            if path.exists():
-                pix = QPixmap(str(path))
-                if not pix.isNull():
-                    self.fondos_pixmap[key] = pix
+
+    def _obtener_pixmap_fondo(self, key: str) -> Optional[QPixmap]:
+        """Devuelve el QPixmap del fondo `key`, cargándolo bajo demanda.
+
+        Mantiene como máximo _FONDOS_CACHE_MAX imágenes decodificadas en
+        memoria (LRU), evitando las ~120MB que costaría precargar las 20.
+        """
+        pixmap = self.fondos_pixmap_cache.get(key)
+        if pixmap is not None:
+            self.fondos_pixmap_cache.move_to_end(key)
+            return pixmap
+
+        fname = self._mapeo_fondos_archivos.get(key)
+        if not fname:
+            return None
+
+        path = BACKGROUNDS_DIR / fname
+        if not path.exists():
+            return None
+
+        pix = QPixmap(str(path))
+        if pix.isNull():
+            return None
+
+        self.fondos_pixmap_cache[key] = pix
+        if len(self.fondos_pixmap_cache) > self._FONDOS_CACHE_MAX:
+            self.fondos_pixmap_cache.popitem(last=False)
+        return pix
 
     def _init_ui(self) -> None:
         self.central_widget = QWidget(self)
@@ -325,6 +361,33 @@ class VentanaPrincipal(QMainWindow):
         if hasattr(self, "fondo_particulas"):
             self.fondo_particulas.setGeometry(0, 0, self.width(), self.height())
 
+    def hideEvent(self, event: QHideEvent) -> None:
+        """Pausa el motor de partículas cuando la ventana se oculta (p. ej. a la bandeja)."""
+        super().hideEvent(event)
+        if hasattr(self, "fondo_particulas"):
+            self.fondo_particulas.pausar()
+
+    def showEvent(self, event: QShowEvent) -> None:
+        """Reanuda el motor de partículas al mostrar la ventana de nuevo."""
+        super().showEvent(event)
+        if hasattr(self, "fondo_particulas") and not self.isMinimized():
+            self.fondo_particulas.reanudar()
+
+    def changeEvent(self, event: QEvent) -> None:
+        """Pausa/reanuda el motor de partículas al minimizar/restaurar la ventana.
+
+        Minimizar no siempre dispara hideEvent (en Windows la ventana sigue
+        "visible" mientras está minimizada), así que se vigila el cambio de
+        estado explícitamente para no dejar el timer de 60 FPS corriendo
+        en segundo plano sin necesidad.
+        """
+        super().changeEvent(event)
+        if event.type() == QEvent.Type.WindowStateChange and hasattr(self, "fondo_particulas"):
+            if self.isMinimized():
+                self.fondo_particulas.pausar()
+            elif self.isVisible():
+                self.fondo_particulas.reanudar()
+
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
@@ -334,7 +397,7 @@ class VentanaPrincipal(QMainWindow):
         h = self.height()
 
         # 1. Dibujar fotografía atmosférica panorámica escalada
-        pixmap = self.fondos_pixmap.get(self.fondo_actual_key)
+        pixmap = self._obtener_pixmap_fondo(self.fondo_actual_key)
         if pixmap and not pixmap.isNull():
             cache_key = (self.fondo_actual_key, w, h)
             if cache_key != self._fondo_escalado_cache_key:
@@ -602,8 +665,8 @@ class VentanaPrincipal(QMainWindow):
             else:
                 key = "dia_despejado" if es_dia else "noche_despejado"
 
-        # Asignar fondo o fallback si no está cargado
-        self.fondo_actual_key = key if key in self.fondos_pixmap else ("dia_despejado" if es_dia else "noche_despejado")
+        # Asignar fondo o fallback si no está registrado
+        self.fondo_actual_key = key if key in self._mapeo_fondos_archivos else ("dia_despejado" if es_dia else "noche_despejado")
         self.colores_cielo = PALETAS_CIELO.get(
             self.fondo_actual_key,
             PALETAS_CIELO["dia_despejado" if es_dia else "noche_despejado"]
