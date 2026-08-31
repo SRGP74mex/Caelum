@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime
 
+from src.servicios.i18n import establecer_idioma, obtener_idioma_actual
 from src.utils.calendarios_mundo import (
     CalendarioHebreo,
 )
@@ -8,6 +9,17 @@ from src.utils.fecha_utils import FechaHelper
 
 
 class TestFechasUtils(unittest.TestCase):
+    def setUp(self) -> None:
+        # Los nombres de día/mes vienen de i18n, que autodetecta el idioma del
+        # locale del sistema operativo (QLocale/LANG). En runners de CI el
+        # locale por defecto suele ser inglés, así que se fija español de
+        # forma explícita para que las aserciones no dependan del entorno.
+        self._idioma_previo = obtener_idioma_actual()
+        establecer_idioma("es")
+
+    def tearDown(self) -> None:
+        establecer_idioma(self._idioma_previo)
+
     def test_formato_gregoriano(self):
         dt = datetime(2026, 8, 25, 18, 0, 0)
         legible = FechaHelper.fecha_gregoriana_legible(dt)
