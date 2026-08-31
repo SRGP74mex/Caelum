@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Descargar código fuente
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Python 3.12
         uses: actions/setup-python@v5
@@ -51,7 +51,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Descargar código fuente
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Configurar Python 3.12
         uses: actions/setup-python@v5
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar código fuente
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Descargar todos los binarios compilados
         uses: actions/download-artifact@v4
