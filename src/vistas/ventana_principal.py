@@ -627,14 +627,14 @@ class VentanaPrincipal(QMainWindow):
         self.cabecera.lbl_ciudad.setText(ubicacion.ciudad)
         region_str = f"{ubicacion.admin1}, " if ubicacion.admin1 and ubicacion.admin1 != ubicacion.ciudad else ""
         self.cabecera.lbl_pais.setText(f"{region_str}{ubicacion.pais}")
-        self.cabecera.lbl_condicion.setText("Cargando pronóstico meteorológico...")
+        self.cabecera.lbl_condicion.setText(t("pronostico.cargando"))
         self.lbl_detalle_hora.setText(t("pronostico.consultando", ciudad=ubicacion.ciudad))
 
         self._consultar_clima(ubicacion)
 
     def refrescar_clima(self) -> None:
         if self.ubicacion_actual:
-            self.cabecera.lbl_condicion.setText("Actualizando datos en vivo...")
+            self.cabecera.lbl_condicion.setText(t("pronostico.actualizando"))
             self._consultar_clima(self.ubicacion_actual, ignorar_cache=True)
 
     def _consultar_clima(self, ubicacion: Ubicacion, ignorar_cache: bool = False) -> None:

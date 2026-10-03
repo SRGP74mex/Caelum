@@ -129,6 +129,8 @@
     "ayuda_click": "Fai clic su un'ora o un giorno per vedere le previsioni dettagliate",
     "mostrando_dia": "Previsioni per {dia} ({condicion})",
     "consultando": "Recupero dati per {ciudad}...",
+    "cargando": "Caricamento previsioni meteo...",
+    "actualizando": "Aggiornamento dati in tempo reale...",
     "reintentar": "{error} — premi 🔄 per riprovare",
     "error_actualizar": "⚠️ Aggiornamento non riuscito",
     "error_visual": "⚠️ Errore di visualizzazione: {error}"

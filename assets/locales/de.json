@@ -129,6 +129,8 @@
     "ayuda_click": "Klicke auf eine Stunde oder einen Tag für detaillierte Vorhersagen",
     "mostrando_dia": "Vorhersage für {dia} ({condicion})",
     "consultando": "Daten für {ciudad} werden abgerufen...",
+    "cargando": "Wettervorhersage wird geladen...",
+    "actualizando": "Live-Daten werden aktualisiert...",
     "reintentar": "{error} — 🔄 drücken, um es erneut zu versuchen",
     "error_actualizar": "⚠️ Aktualisierung fehlgeschlagen",
     "error_visual": "⚠️ Anzeigefehler: {error}"

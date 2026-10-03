@@ -129,6 +129,8 @@
     "ayuda_click": "Haz clic sobre cualquier hora o día para ver el pronóstico detallado",
     "mostrando_dia": "Mostrando pronóstico para {dia} ({condicion})",
     "consultando": "Consultando datos para {ciudad}...",
+    "cargando": "Cargando pronóstico meteorológico...",
+    "actualizando": "Actualizando datos en vivo...",
     "reintentar": "{error} — pulsa 🔄 para reintentar",
     "error_actualizar": "⚠️ Error al actualizar",
     "error_visual": "⚠️ Error visual: {error}"

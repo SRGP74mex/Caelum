@@ -129,6 +129,8 @@
     "ayuda_click": "Click on any hour or day to view detailed forecast",
     "mostrando_dia": "Showing forecast for {dia} ({condicion})",
     "consultando": "Fetching data for {ciudad}...",
+    "cargando": "Loading weather forecast...",
+    "actualizando": "Updating live data...",
     "reintentar": "{error} — press 🔄 to retry",
     "error_actualizar": "⚠️ Update failed",
     "error_visual": "⚠️ Display error: {error}"

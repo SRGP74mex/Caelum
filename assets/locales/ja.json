@@ -129,6 +129,8 @@
     "ayuda_click": "時間または日をクリックすると詳細な予報が表示されます",
     "mostrando_dia": "{dia}の予報（{condicion}）",
     "consultando": "{ciudad}のデータを取得中...",
+    "cargando": "天気予報を読み込み中...",
+    "actualizando": "最新データを更新中...",
     "reintentar": "{error} — 🔄 を押して再試行",
     "error_actualizar": "⚠️ 更新に失敗しました",
     "error_visual": "⚠️ 表示エラー: {error}"
