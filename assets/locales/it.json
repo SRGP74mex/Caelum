@@ -224,7 +224,7 @@
     "inundacion_titulo": "🌊 Allerta Alluvione / Pioggia Torrenziale",
     "inundacion_desc": "Previste precipitazioni estreme di {mm} mm. Elevato rischio di allagamenti locali.",
     "calor_titulo": "🔥 Allerta Ondata di Caldo Estremo",
-    "calor_desc": "Temperature pericolose fino a {temp}°C (Percepita: {sens}°C). Idratati e resta all'ombra.",
+    "calor_desc": "Temperature pericolose fino a {temp} (Percepita: {sens}). Idratati e resta all'ombra.",
     "tormenta_titulo": "⛈️ Allerta Temporale Severo e Grandine",
     "tormenta_desc": "Forte attività elettrica e rischio grandine. Cerca subito un riparo sicuro.",
     "viento_titulo": "💨 Allerta Vento Violento / Burrasca",

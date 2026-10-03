@@ -224,7 +224,7 @@
     "inundacion_titulo": "🌊 Flash Flood / Torrential Rain Alert",
     "inundacion_desc": "Extreme rainfall expected: {mm} mm. High risk of local flooding and hazardous roads.",
     "calor_titulo": "🔥 Extreme Heatwave Alert",
-    "calor_desc": "Dangerous temperatures up to {temp}°C (Feels like: {sens}°C). Stay hydrated and in shade.",
+    "calor_desc": "Dangerous temperatures up to {temp} (Feels like: {sens}). Stay hydrated and in shade.",
     "tormenta_titulo": "⛈️ Severe Thunderstorm & Hail Alert",
     "tormenta_desc": "Intense lightning and potential hail. Seek sturdy indoor shelter immediately.",
     "viento_titulo": "💨 Violent Wind Gale Alert",

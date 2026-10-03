@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 
 from src.modelos.clima_datos import ReporteClimaCompleto
 from src.servicios.i18n import t
+from src.utils.unidades import convertir_temperatura, convertir_viento, sufijo_temperatura, sufijo_viento
 
 
 @dataclass
@@ -99,13 +100,18 @@ class BannerAlertaWidget(QWidget):
 
         # 2. Alerta de Ola de Calor Extremo
         temp_max_hoy = reporte.dias_7d[0].temp_max if reporte.dias_7d else act.temp_max_hoy
-        if temp_max_hoy >= 38.0 or act.sensacion_termica >= 40.0:
+        # Los valores ya vienen convertidos a la unidad del usuario: convertir también los umbrales (°C)
+        if temp_max_hoy >= convertir_temperatura(38.0) or act.sensacion_termica >= convertir_temperatura(40.0):
             return AlertaClimaInfo(
                 tipo="calor_extremo",
                 nivel="critica",
                 icono="🔥",
                 titulo=t("alertas.calor_titulo"),
-                descripcion=t("alertas.calor_desc", temp=round(temp_max_hoy), sens=round(act.sensacion_termica)),
+                descripcion=t(
+                    "alertas.calor_desc",
+                    temp=f"{round(temp_max_hoy)}{sufijo_temperatura()}",
+                    sens=f"{round(act.sensacion_termica)}{sufijo_temperatura()}",
+                ),
                 color_fondo="rgba(234, 88, 12, 0.28)",
                 color_borde="rgba(249, 115, 22, 0.65)",
                 color_texto="#fed7aa"
@@ -125,13 +131,13 @@ class BannerAlertaWidget(QWidget):
             )
 
         # 4. Alerta de Vendaval / Viento Violento
-        if act.viento_rafagas and act.viento_rafagas >= 70.0:
+        if act.viento_rafagas and act.viento_rafagas >= convertir_viento(70.0):
             return AlertaClimaInfo(
                 tipo="viento_fuerte",
                 nivel="advertencia",
                 icono="💨",
                 titulo=t("alertas.viento_titulo"),
-                descripcion=t("alertas.viento_desc", vel=f"{round(act.viento_rafagas)} km/h"),
+                descripcion=t("alertas.viento_desc", vel=f"{round(act.viento_rafagas)} {sufijo_viento()}"),
                 color_fondo="rgba(217, 119, 6, 0.26)",
                 color_borde="rgba(245, 158, 11, 0.60)",
                 color_texto="#fef3c7"

@@ -224,7 +224,7 @@
     "inundacion_titulo": "🌊 Alerta de Inundación / Lluvia Torrencial",
     "inundacion_desc": "Se esperan acumulados de hasta {mm} mm hoy. Precaución por encharcamientos y riesgo de desbordamientos.",
     "calor_titulo": "🔥 Alerta de Calor Extremo",
-    "calor_desc": "Temperatura máxima pronosticada de {temp}°C (Sensación {sens}°C). Mantén hidratación constante y evita la exposición solar.",
+    "calor_desc": "Temperatura máxima pronosticada de {temp} (Sensación {sens}). Mantén hidratación constante y evita la exposición solar.",
     "tormenta_titulo": "⛈️ Alerta de Tormenta Eléctrica con Granizo",
     "tormenta_desc": "Condiciones propicias para caída de granizo y descargas eléctricas frecuentes. Resguárdate bajo techo seguro.",
     "viento_titulo": "💨 Alerta de Ráfagas de Viento Violentas",

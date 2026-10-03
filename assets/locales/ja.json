@@ -224,7 +224,7 @@
     "inundacion_titulo": "🌊 洪水・豪雨警報",
     "inundacion_desc": "{mm} mm の猛烈な降水が予想されます。道路冠水や土砂災害に厳重警戒してください。",
     "calor_titulo": "🔥 熱中症・極度高温警報",
-    "calor_desc": "最高気温 {temp}°C（体感: {sens}°C）に達する見込みです。十分な水分補給を行ってください。",
+    "calor_desc": "最高気温 {temp}（体感: {sens}）に達する見込みです。十分な水分補給を行ってください。",
     "tormenta_titulo": "⛈️ 激しい雷雨・降雹警報",
     "tormenta_desc": "激しい落雷と突風、降雹のおそれがあります。頑丈な建物内に避難してください。",
     "viento_titulo": "💨 暴風・強風警報",

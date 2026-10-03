@@ -224,7 +224,7 @@
     "inundacion_titulo": "🌊 Alerte Inondation / Pluie Torrentielle",
     "inundacion_desc": "Précipitations extrêmes prévues: {mm} mm. Risque important d'inondations locales.",
     "calor_titulo": "🔥 Alerte Canicule Extrême",
-    "calor_desc": "Températures dangereuses jusqu'à {temp}°C (Ressenti: {sens}°C). Hydratez-vous.",
+    "calor_desc": "Températures dangereuses jusqu'à {temp} (Ressenti: {sens}). Hydratez-vous.",
     "tormenta_titulo": "⛈️ Alerte Orages Violents et Grêle",
     "tormenta_desc": "Activité électrique intense et risque de grêle. Mettez-vous à l'abri.",
     "viento_titulo": "💨 Alerte Vents Violents / Coup de Vent",

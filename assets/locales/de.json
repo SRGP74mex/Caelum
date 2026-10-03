@@ -224,7 +224,7 @@
     "inundacion_titulo": "🌊 Sturmregen- / Überschwemmungswarnung",
     "inundacion_desc": "Extremer Niederschlag von {mm} mm erwartet. Hohe Gefahr von lokalen Überflutungen.",
     "calor_titulo": "🔥 Extreme Hitzewarnung",
-    "calor_desc": "Gefährliche Temperaturen bis zu {temp}°C (Gefühlt: {sens}°C). Viel trinken und Schatten suchen.",
+    "calor_desc": "Gefährliche Temperaturen bis zu {temp} (Gefühlt: {sens}). Viel trinken und Schatten suchen.",
     "tormenta_titulo": "⛈️ Schwere Gewitter- und Hagelwarnung",
     "tormenta_desc": "Starke Blitzaktivität und Hagel möglich. Unverzüglich Schutz suchen.",
     "viento_titulo": "💨 Sturmwarnung / Orkanartige Böen",

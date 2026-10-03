@@ -241,6 +241,38 @@ class TestNuevasFuncionalidades(unittest.TestCase):
         self.assertIn("Calor Extremo", banner.lbl_titulo.text())
         self.assertIn("42°C", banner.lbl_desc.text())
 
+    def test_banner_umbrales_respetan_unidad_fahrenheit(self):
+        from src.componentes.banner_alerta import BannerAlertaWidget
+        from src.utils import unidades
+        unidades.establecer_preferencias_unidades({"temperatura": "fahrenheit", "viento": "mph"})
+        self.addCleanup(unidades.establecer_preferencias_unidades, {"temperatura": "celsius", "viento": "kmh"})
+
+        def reporte_con_max(temp_max_c: float) -> ReporteClimaCompleto:
+            dia = PronosticoDia(
+                fecha_iso="2026-08-26",
+                nombre_dia="Hoy",
+                temp_min=5.0,
+                temp_max=temp_max_c,
+                probabilidad_lluvia=0,
+                precipitacion_total_mm=0.0,
+                amanecer_iso="2026-08-26T07:00:00",
+                ocaso_iso="2026-08-26T21:00:00",
+                indice_uv_max=3.0,
+                condicion=self.condicion
+            )
+            base = ReporteClimaCompleto(ubicacion=self.ubicacion, actual=self.actual, horas_24h=[], dias_7d=[dia])
+            return unidades.aplicar_preferencias_unidades(base)
+
+        banner = BannerAlertaWidget()
+        # 10 °C = 50 °F: antes superaba el umbral "38" y disparaba una falsa alerta de calor
+        self.assertIsNone(banner.evaluar_alertas(reporte_con_max(10.0)))
+
+        # 41.5 °C ≈ 107 °F: sí debe alertar, mostrando la unidad del usuario
+        alerta = banner.evaluar_alertas(reporte_con_max(41.5))
+        self.assertIsNotNone(alerta)
+        self.assertEqual(alerta.tipo, "calor_extremo")
+        self.assertIn("107°F", alerta.descripcion)
+
     def test_pronostico_semanal_milimetros(self):
         from src.componentes.pronostico_semanal import PronosticoSemanalWidget
         semanal = PronosticoSemanalWidget()

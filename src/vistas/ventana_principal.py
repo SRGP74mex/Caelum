@@ -53,6 +53,8 @@ from src.servicios.worker import ejecutar_en_segundo_plano
 from src.utils.fecha_utils import FechaHelper
 from src.utils.unidades import (
     aplicar_preferencias_unidades,
+    convertir_temperatura,
+    convertir_viento,
     establecer_preferencias_unidades,
     sufijo_temperatura,
     sufijo_viento,
@@ -734,7 +736,9 @@ class VentanaPrincipal(QMainWindow):
 
         # 2. Alerta de Ola de Calor Extremo
         temp_max_hoy = reporte.dias_7d[0].temp_max if reporte.dias_7d else act.temp_max_hoy
-        if notif_cfg.get("alerta_tormenta", True) and (temp_max_hoy >= 38.0 or act.sensacion_termica >= 40.0):
+        if notif_cfg.get("alerta_tormenta", True) and (
+            temp_max_hoy >= convertir_temperatura(38.0) or act.sensacion_termica >= convertir_temperatura(40.0)
+        ):
             ult_calor = self._ultimas_notificaciones.get("calor", 0)
             if ahora_ts - ult_calor > 21600:  # Cooldown 6 horas
                 self.bandeja.mostrar_alerta(
@@ -781,7 +785,7 @@ class VentanaPrincipal(QMainWindow):
                         icon_tipo="warning"
                     )
                     self._ultimas_notificaciones["severo"] = ahora_ts
-                elif act.viento_rafagas and act.viento_rafagas >= 60.0:
+                elif act.viento_rafagas and act.viento_rafagas >= convertir_viento(60.0):
                     self.bandeja.mostrar_alerta(
                         t("notificaciones.viento_titulo"),
                         t(
