@@ -10,6 +10,12 @@ from src.modelos.clima_datos import PronosticoDia
 from src.servicios.i18n import t
 
 
+def _ancho_texto(label: QLabel, texto: str, margen: int = 6) -> int:
+    """Ancho en píxeles que necesita `texto` con la fuente final (QSS incluido) de `label`."""
+    label.ensurePolished()
+    return label.fontMetrics().horizontalAdvance(texto) + margen
+
+
 class BarraRangoTermico(QWidget):
     """
     Barra horizontal de rango térmico (mínima a máxima) con cápsula degradada
@@ -104,8 +110,9 @@ class FilaDiaSemanal(QWidget):
 
         # 1. Nombre del Día ("Hoy", "Mar", etc.)
         self.lbl_nombre = QLabel(dia.nombre_dia, self)
-        self.lbl_nombre.setFixedWidth(46)
         self.lbl_nombre.setStyleSheet("font-size: 14px; font-weight: 600; color: #ffffff;")
+        # "Hoy" es el nombre más largo en varios idiomas (p. ej. "Aujourd'hui")
+        self.lbl_nombre.setFixedWidth(max(46, _ancho_texto(self.lbl_nombre, t("dias_cortos.hoy"))))
         layout.addWidget(self.lbl_nombre)
 
         # 2. Icono Meteorológico
@@ -126,8 +133,9 @@ class FilaDiaSemanal(QWidget):
             prob_texto = ""
 
         self.lbl_lluvia = QLabel(prob_texto, self)
-        self.lbl_lluvia.setFixedWidth(84)
         self.lbl_lluvia.setStyleSheet("font-size: 11px; font-weight: 700; color: rgb(100, 210, 255);")
+        # Ancho del caso más largo posible, para que todas las filas queden alineadas
+        self.lbl_lluvia.setFixedWidth(_ancho_texto(self.lbl_lluvia, "🌧️ 100% (99.9mm)"))
         layout.addWidget(self.lbl_lluvia)
 
         # 4. Temperatura Mínima
