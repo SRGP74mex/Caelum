@@ -262,11 +262,11 @@ class TarjetaViento(TarjetaBento):
         self.lbl_velocidad.setStyleSheet("font-size: 24px; font-weight: 600; color: #ffffff;")
         info_v.addWidget(self.lbl_velocidad)
 
-        self.lbl_direccion = QLabel("Dirección: --", self)
+        self.lbl_direccion = QLabel(t("viento.direccion", dir="--"), self)
         self.lbl_direccion.setStyleSheet("font-size: 13px; color: rgba(255, 255, 255, 0.9);")
         info_v.addWidget(self.lbl_direccion)
 
-        self.lbl_rafagas = QLabel("Ráfagas: --", self)
+        self.lbl_rafagas = QLabel(t("viento.rafagas", vel="--"), self)
         self.lbl_rafagas.setStyleSheet("font-size: 11px; color: rgba(255, 255, 255, 0.7);")
         info_v.addWidget(self.lbl_rafagas)
 
@@ -405,15 +405,15 @@ class TarjetaFaseLunar(TarjetaBento):
         self.lbl_fase.setStyleSheet("font-size: 20px; font-weight: 700; color: #ffffff;")
         info_v.addWidget(self.lbl_fase)
 
-        self.lbl_iluminacion = QLabel("Iluminación: --%", self)
+        self.lbl_iluminacion = QLabel(t("luna.iluminacion", pct="--", dias="--"), self)
         self.lbl_iluminacion.setStyleSheet("font-size: 13px; font-weight: 500; color: rgba(255, 255, 255, 0.95);")
         info_v.addWidget(self.lbl_iluminacion)
 
-        self.lbl_horarios = QLabel("Salida: --:-- • Puesta: --:--", self)
+        self.lbl_horarios = QLabel(t("luna.salida_puesta", salida="--:--", puesta="--:--"), self)
         self.lbl_horarios.setStyleSheet("font-size: 11px; color: rgba(255, 255, 255, 0.78);")
         info_v.addWidget(self.lbl_horarios)
 
-        self.lbl_proxima = QLabel("Próx. luna llena: --", self)
+        self.lbl_proxima = QLabel(t("luna.prox_llena", fecha="--"), self)
         self.lbl_proxima.setStyleSheet("font-size: 11px; font-weight: 600; color: #60a5fa;")
         info_v.addWidget(self.lbl_proxima)
 

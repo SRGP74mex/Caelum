@@ -126,7 +126,12 @@
   "pronostico": {
     "titulo_horas": "STUNDENVORHERSAGE",
     "titulo_semanal": "7-TAGE-VORHERSAGE",
-    "ayuda_click": "Klicke auf eine Stunde oder einen Tag für detaillierte Vorhersagen"
+    "ayuda_click": "Klicke auf eine Stunde oder einen Tag für detaillierte Vorhersagen",
+    "mostrando_dia": "Vorhersage für {dia} ({condicion})",
+    "consultando": "Daten für {ciudad} werden abgerufen...",
+    "reintentar": "{error} — 🔄 drücken, um es erneut zu versuchen",
+    "error_actualizar": "⚠️ Aktualisierung fehlgeschlagen",
+    "error_visual": "⚠️ Anzeigefehler: {error}"
   },
   "bento": {
     "indice_uv": "UV-INDEX",
@@ -148,19 +153,29 @@
     "desc_moderado": "Sonnenbrille und Sonnenschutz verwenden.",
     "desc_alto": "Sonnenschutz zwischen 10:00 und 16:00 erforderlich.",
     "desc_muy_alto": "Zusätzlicher Schutz nötig. Schatten suchen.",
-    "desc_extremo": "Höchste Vorsicht. Direkte Sonne meiden."
+    "desc_extremo": "Höchste Vorsicht. Direkte Sonne meiden.",
+    "hora_bajo": "Unbedenklich um {hora}.",
+    "hora_moderado": "Sonnenschutz empfohlen um {hora}.",
+    "hora_alto": "Sonnenschutz erforderlich um {hora}.",
+    "hora_extremo": "Sonne meiden um {hora}.",
+    "max_dia": "Maximaler UV-Index für {dia} vorhergesagt."
   },
   "viento": {
     "direccion": "Richtung: {dir}",
     "rafagas": "Böen: {vel}",
-    "constante": "Gleichmäßiger Wind"
+    "constante": "Gleichmäßiger Wind",
+    "pronostico_hora": "Vorhersage für {hora}",
+    "estimado_dia": "Geschätzter Wind für {dia}",
+    "cardinales": "N,NNO,NO,ONO,O,OSO,SO,SSO,S,SSW,SW,WSW,W,WNW,NW,NNW"
   },
   "sol": {
     "ocaso_hoy": "Untergang: {hora}",
     "amanecer_fue": "Sonnenaufgang heute war um {hora}",
     "amanecer_hoy": "Aufgang: {hora}",
     "ocaso_fue": "Sonnenuntergang war um {hora}",
-    "puesta": "Sonnenuntergang: {hora}"
+    "puesta": "Sonnenuntergang: {hora}",
+    "posicion_hora": "☀️ Position um {hora}",
+    "noche_hora": "🌙 Nacht um {hora}"
   },
   "luna": {
     "nueva": "Neumond",
@@ -191,7 +206,9 @@
     "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
   },
   "humedad": {
-    "rocio_desc": "Der Taupunkt liegt derzeit bei {rocio}."
+    "rocio_desc": "Der Taupunkt liegt derzeit bei {rocio}.",
+    "rocio_hora": "Taupunkt: {rocio} um {hora}.",
+    "media_dia": "Geschätzte mittlere Luftfeuchtigkeit für {dia}."
   },
   "visibilidad": {
     "excelente": "Hervorragende, glasklare Sicht.",
@@ -213,7 +230,8 @@
     "viento_titulo": "💨 Sturmwarnung / Orkanartige Böen",
     "viento_desc": "Sturmböen bis zu {vel}. Lose Gegenstände im Freien sichern.",
     "uv_titulo": "☀️ Extreme UV-Strahlungswarnung",
-    "uv_desc": "UV-Index von {uv} (Extrem). Direkte Sonnenexposition meiden."
+    "uv_desc": "UV-Index von {uv} (Extrem). Direkte Sonnenexposition meiden.",
+    "banner_titulo": "Wetterwarnung"
   },
   "busqueda": {
     "placeholder": "Stadt, Gemeinde oder Ort suchen...",
@@ -256,6 +274,20 @@
     "refrescar": "Jetzt aktualisieren",
     "ajustes": "Einstellungen...",
     "salir": "Beenden"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 Starkregen- / Hochwasserwarnung",
+    "inundacion_desc": "Bis zu {mm} mm in {ciudad} vorhergesagt. Überschwemmungsgefahr und stehendes Wasser.",
+    "calor_titulo": "🔥 Warnung vor extremer Hitze",
+    "calor_desc": "Die Höchsttemperatur erreicht {temp} (gefühlt {sens}) in {ciudad}. Viel trinken.",
+    "lluvia_titulo": "🌧️ Bald Regen erwartet",
+    "lluvia_desc": "Regen um {hora} vorhergesagt ({prob}% Wahrsch.{mm}) in {ciudad}.",
+    "tormenta_titulo": "⚡ Gewitterwarnung",
+    "tormenta_desc": "Gewitteraktivität in {ciudad} gemeldet.",
+    "tormenta_granizo_desc": "Gewitteraktivität mit möglichem Hagel in {ciudad} gemeldet.",
+    "viento_titulo": "💨 Starker Wind",
+    "viento_desc": "Windböen von {vel} in {ciudad}.",
+    "atardecer_titulo": "🌅 Sonnenuntergang",
+    "atardecer_desc": "Die Sonne geht um {hora} in {ciudad} unter."
   }
 }
-

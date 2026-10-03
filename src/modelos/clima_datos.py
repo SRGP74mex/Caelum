@@ -2,6 +2,19 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Optional
 
+_CARDINALES_ES = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+                  "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
+
+
+def cardinal_desde_grados(grados: float) -> str:
+    """Convierte grados (0-360) al punto cardinal de 16 rumbos en el idioma activo."""
+    from src.servicios.i18n import t
+
+    direcciones = t("viento.cardinales").split(",")
+    if len(direcciones) != 16:
+        direcciones = _CARDINALES_ES
+    return direcciones[int((grados + 11.25) / 22.5) % 16]
+
 
 @dataclass
 class Ubicacion:
@@ -97,10 +110,7 @@ class ClimaActual:
 
     @property
     def viento_direccion_cardinal(self) -> str:
-        direcciones = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-                       "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
-        idx = int((self.viento_direccion + 11.25) / 22.5) % 16
-        return direcciones[idx]
+        return cardinal_desde_grados(self.viento_direccion)
 
 
 @dataclass

@@ -125,7 +125,13 @@
   },
   "pronostico": {
     "titulo_horas": "PREVISIONI ORARIE",
-    "titulo_semanal": "PREVISIONI A 7 GIORNI"
+    "titulo_semanal": "PREVISIONI A 7 GIORNI",
+    "ayuda_click": "Fai clic su un'ora o un giorno per vedere le previsioni dettagliate",
+    "mostrando_dia": "Previsioni per {dia} ({condicion})",
+    "consultando": "Recupero dati per {ciudad}...",
+    "reintentar": "{error} — premi 🔄 per riprovare",
+    "error_actualizar": "⚠️ Aggiornamento non riuscito",
+    "error_visual": "⚠️ Errore di visualizzazione: {error}"
   },
   "bento": {
     "indice_uv": "INDICE UV",
@@ -147,19 +153,29 @@
     "desc_moderado": "Usa occhiali da sole e crema solare.",
     "desc_alto": "Protezione solare necessaria tra le 10:00 e le 16:00.",
     "desc_muy_alto": "Protezione extra necessaria. Cerca l'ombra.",
-    "desc_extremo": "Massima prudenza. Evita l'esposizione diretta."
+    "desc_extremo": "Massima prudenza. Evita l'esposizione diretta.",
+    "hora_bajo": "Livello sicuro alle {hora}.",
+    "hora_moderado": "Protezione solare consigliata alle {hora}.",
+    "hora_alto": "Protezione solare necessaria alle {hora}.",
+    "hora_extremo": "Evita l'esposizione al sole alle {hora}.",
+    "max_dia": "Indice UV massimo previsto per {dia}."
   },
   "viento": {
     "direccion": "Direzione: {dir}",
     "rafagas": "Raffiche: {vel}",
-    "constante": "Vento costante"
+    "constante": "Vento costante",
+    "pronostico_hora": "Previsione per le {hora}",
+    "estimado_dia": "Vento stimato per {dia}",
+    "cardinales": "N,NNE,NE,ENE,E,ESE,SE,SSE,S,SSO,SO,OSO,O,ONO,NO,NNO"
   },
   "sol": {
     "ocaso_hoy": "Tramonto: {hora}",
     "amanecer_fue": "L'alba oggi è stata alle {hora}",
     "amanecer_hoy": "Alba: {hora}",
     "ocaso_fue": "Il tramonto è stato alle {hora}",
-    "puesta": "Tramonto: {hora}"
+    "puesta": "Tramonto: {hora}",
+    "posicion_hora": "☀️ Posizione alle {hora}",
+    "noche_hora": "🌙 Notte alle {hora}"
   },
   "luna": {
     "nueva": "Luna Nuova",
@@ -190,7 +206,9 @@
     "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
   },
   "humedad": {
-    "rocio_desc": "Il punto di rugiada è di {rocio} in questo momento."
+    "rocio_desc": "Il punto di rugiada è di {rocio} in questo momento.",
+    "rocio_hora": "Punto di rugiada: {rocio} alle {hora}.",
+    "media_dia": "Umidità media stimata per {dia}."
   },
   "visibilidad": {
     "excelente": "Visibilità perfettamente limpida.",
@@ -212,7 +230,8 @@
     "viento_titulo": "💨 Allerta Vento Violento / Burrasca",
     "viento_desc": "Raffiche burrascose fino a {vel}. Metti al sicuro oggetti esterni.",
     "uv_titulo": "☀️ Allerta Radiazione UV Estrema",
-    "uv_desc": "Indice UV fino a {uv} (Estremo). Evita l'esposizione diretta al sole."
+    "uv_desc": "Indice UV fino a {uv} (Estremo). Evita l'esposizione diretta al sole.",
+    "banner_titulo": "Allerta meteo"
   },
   "busqueda": {
     "placeholder": "Cerca città, comune o località...",
@@ -255,6 +274,20 @@
     "refrescar": "Aggiorna ora",
     "ajustes": "Impostazioni...",
     "salir": "Esci"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 Allerta pioggia torrenziale / alluvione",
+    "inundacion_desc": "Previsti fino a {mm} mm a {ciudad}. Rischio di allagamenti e ristagni d'acqua.",
+    "calor_titulo": "🔥 Allerta caldo estremo",
+    "calor_desc": "La temperatura massima raggiungerà {temp} (percepita {sens}) a {ciudad}. Idratati bene.",
+    "lluvia_titulo": "🌧️ Pioggia in arrivo",
+    "lluvia_desc": "Pioggia prevista alle {hora} ({prob}% prob.{mm}) a {ciudad}.",
+    "tormenta_titulo": "⚡ Allerta temporale",
+    "tormenta_desc": "Attività temporalesca registrata a {ciudad}.",
+    "tormenta_granizo_desc": "Attività temporalesca con possibile grandine registrata a {ciudad}.",
+    "viento_titulo": "💨 Vento forte",
+    "viento_desc": "Raffiche di vento di {vel} a {ciudad}.",
+    "atardecer_titulo": "🌅 Tramonto in corso",
+    "atardecer_desc": "Il sole tramonterà alle {hora} a {ciudad}."
   }
 }
-

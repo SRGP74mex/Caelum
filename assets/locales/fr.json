@@ -125,7 +125,13 @@
   },
   "pronostico": {
     "titulo_horas": "PRÉVISIONS PAR HEURE",
-    "titulo_semanal": "PRÉVISIONS SUR 7 JOURS"
+    "titulo_semanal": "PRÉVISIONS SUR 7 JOURS",
+    "ayuda_click": "Cliquez sur une heure ou un jour pour voir les prévisions détaillées",
+    "mostrando_dia": "Prévisions pour {dia} ({condicion})",
+    "consultando": "Récupération des données pour {ciudad}...",
+    "reintentar": "{error} — appuyez sur 🔄 pour réessayer",
+    "error_actualizar": "⚠️ Échec de la mise à jour",
+    "error_visual": "⚠️ Erreur d'affichage : {error}"
   },
   "bento": {
     "indice_uv": "INDICE UV",
@@ -147,19 +153,29 @@
     "desc_moderado": "Portez lunettes de soleil et crème.",
     "desc_alto": "Protection nécessaire entre 10h et 16h.",
     "desc_muy_alto": "Protection renforcée. Cherchez l'ombre.",
-    "desc_extremo": "Vigilance extrême. Évitez l'exposition."
+    "desc_extremo": "Vigilance extrême. Évitez l'exposition.",
+    "hora_bajo": "Niveau sûr à {hora}.",
+    "hora_moderado": "Protection solaire recommandée à {hora}.",
+    "hora_alto": "Protection solaire nécessaire à {hora}.",
+    "hora_extremo": "Évitez l'exposition au soleil à {hora}.",
+    "max_dia": "Indice UV maximal prévu pour {dia}."
   },
   "viento": {
     "direccion": "Direction: {dir}",
     "rafagas": "Rafales: {vel}",
-    "constante": "Vent régulier"
+    "constante": "Vent régulier",
+    "pronostico_hora": "Prévision pour {hora}",
+    "estimado_dia": "Vent estimé pour {dia}",
+    "cardinales": "N,NNE,NE,ENE,E,ESE,SE,SSE,S,SSO,SO,OSO,O,ONO,NO,NNO"
   },
   "sol": {
     "ocaso_hoy": "Coucher: {hora}",
     "amanecer_fue": "Le lever du soleil a eu lieu à {hora}",
     "amanecer_hoy": "Lever: {hora}",
     "ocaso_fue": "Le coucher du soleil a eu lieu à {hora}",
-    "puesta": "Coucher du soleil: {hora}"
+    "puesta": "Coucher du soleil: {hora}",
+    "posicion_hora": "☀️ Position à {hora}",
+    "noche_hora": "🌙 Nuit à {hora}"
   },
   "luna": {
     "nueva": "Nouvelle Lune",
@@ -190,7 +206,9 @@
     "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
   },
   "humedad": {
-    "rocio_desc": "Le point de rosée est de {rocio} actuellement."
+    "rocio_desc": "Le point de rosée est de {rocio} actuellement.",
+    "rocio_hora": "Point de rosée : {rocio} à {hora}.",
+    "media_dia": "Humidité moyenne estimée pour {dia}."
   },
   "visibilidad": {
     "excelente": "Visibilité parfaitement claire.",
@@ -212,7 +230,8 @@
     "viento_titulo": "💨 Alerte Vents Violents / Coup de Vent",
     "viento_desc": "Rafales destructrices jusqu'à {vel}. Sécurisez les objets extérieurs.",
     "uv_titulo": "☀️ Alerte Rayonnement UV Extrême",
-    "uv_desc": "Indice UV atteignant {uv} (Extrême). Évitez toute exposition directe."
+    "uv_desc": "Indice UV atteignant {uv} (Extrême). Évitez toute exposition directe.",
+    "banner_titulo": "Alerte météo"
   },
   "busqueda": {
     "placeholder": "Rechercher une ville ou localité...",
@@ -255,6 +274,20 @@
     "refrescar": "Actualiser maintenant",
     "ajustes": "Paramètres...",
     "salir": "Quitter"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 Alerte pluies torrentielles / inondation",
+    "inundacion_desc": "Jusqu'à {mm} mm prévus à {ciudad}. Risque d'inondation et d'accumulation d'eau.",
+    "calor_titulo": "🔥 Alerte chaleur extrême",
+    "calor_desc": "La température maximale atteindra {temp} (ressenti {sens}) à {ciudad}. Hydratez-vous bien.",
+    "lluvia_titulo": "🌧️ Pluie attendue bientôt",
+    "lluvia_desc": "Pluie prévue à {hora} ({prob}% de prob.{mm}) à {ciudad}.",
+    "tormenta_titulo": "⚡ Alerte orage",
+    "tormenta_desc": "Activité orageuse signalée à {ciudad}.",
+    "tormenta_granizo_desc": "Activité orageuse avec risque de grêle signalée à {ciudad}.",
+    "viento_titulo": "💨 Vent fort",
+    "viento_desc": "Rafales de vent de {vel} à {ciudad}.",
+    "atardecer_titulo": "🌅 Coucher de soleil imminent",
+    "atardecer_desc": "Le soleil se couchera à {hora} à {ciudad}."
   }
 }
-

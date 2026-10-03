@@ -12,7 +12,7 @@ from src.componentes.tarjetas_metricas import (
     TarjetaViento,
     TarjetaVisibilidad,
 )
-from src.modelos.clima_datos import ClimaActual, PronosticoDia, PronosticoHora
+from src.modelos.clima_datos import ClimaActual, PronosticoDia, PronosticoHora, cardinal_desde_grados
 from src.servicios.i18n import t
 from src.utils.fecha_utils import FechaHelper
 from src.utils.unidades import celsius_desde, convertir_temperatura, sufijo_temperatura, sufijo_viento
@@ -74,28 +74,25 @@ class BentoGridWidget(QWidget):
         # 1. UV
         self.card_uv.lbl_valor.setText(f"{hora.indice_uv:.0f}")
         if hora.indice_uv <= 2:
-            cat = "Bajo"
-            desc = f"Nivel seguro a las {hora.hora_etiqueta}."
+            cat = t("uv.bajo")
+            desc = t("uv.hora_bajo", hora=hora.hora_etiqueta)
         elif hora.indice_uv <= 5:
-            cat = "Moderado"
-            desc = f"Protección solar recomendada a las {hora.hora_etiqueta}."
+            cat = t("uv.moderado")
+            desc = t("uv.hora_moderado", hora=hora.hora_etiqueta)
         elif hora.indice_uv <= 7:
-            cat = "Alto"
-            desc = f"Protección solar necesaria a las {hora.hora_etiqueta}."
+            cat = t("uv.alto")
+            desc = t("uv.hora_alto", hora=hora.hora_etiqueta)
         else:
-            cat = "Extremo"
-            desc = f"Evita exposición al sol a las {hora.hora_etiqueta}."
+            cat = t("uv.extremo")
+            desc = t("uv.hora_extremo", hora=hora.hora_etiqueta)
         self.card_uv.lbl_categoria.setText(cat)
         self.card_uv.lbl_desc.setText(desc)
 
         # 2. Viento
         self.card_viento.lbl_velocidad.setText(f"{round(hora.viento_velocidad)} {sufijo_viento()}")
-        direcciones = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-                       "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
-        idx = int((hora.viento_direccion + 11.25) / 22.5) % 16
-        cardinal = direcciones[idx]
+        cardinal = cardinal_desde_grados(hora.viento_direccion)
         self.card_viento.lbl_direccion.setText(f"{cardinal} ({hora.viento_direccion}°)")
-        self.card_viento.lbl_rafagas.setText(f"Pronóstico para {hora.hora_etiqueta}")
+        self.card_viento.lbl_rafagas.setText(t("viento.pronostico_hora", hora=hora.hora_etiqueta))
         self.card_viento.brujula.set_direccion(hora.viento_direccion)
 
         # 3. Sol
@@ -105,16 +102,16 @@ class BentoGridWidget(QWidget):
             oc_str = FechaHelper.formato_hora_corta(ocaso_iso)
             if self.card_sol.arco.es_de_dia:
                 self.card_sol.lbl_principal.setText(t("sol.ocaso_hoy", hora=oc_str))
-                self.card_sol.lbl_secundario.setText(f"☀️ Posición a las {hora.hora_etiqueta}")
+                self.card_sol.lbl_secundario.setText(t("sol.posicion_hora", hora=hora.hora_etiqueta))
             else:
                 self.card_sol.lbl_principal.setText(t("sol.amanecer_hoy", hora=am_str))
-                self.card_sol.lbl_secundario.setText(f"🌙 Noche a las {hora.hora_etiqueta}")
+                self.card_sol.lbl_secundario.setText(t("sol.noche_hora", hora=hora.hora_etiqueta))
 
         # 4. Humedad y Punto de Rocío
         self.card_humedad.lbl_valor.setText(f"{hora.humedad_relativa}%")
         rocio_c = celsius_desde(hora.temperatura) - ((100 - hora.humedad_relativa) / 5.0)
         rocio = round(convertir_temperatura(rocio_c), 1)
-        self.card_humedad.lbl_punto_rocio.setText(f"Punto de rocío: {rocio}{sufijo_temperatura()} a las {hora.hora_etiqueta}.")
+        self.card_humedad.lbl_punto_rocio.setText(t("humedad.rocio_hora", rocio=f"{rocio}{sufijo_temperatura()}", hora=hora.hora_etiqueta))
 
         # 5. Presión y Visibilidad
         self.card_presion.lbl_valor.setText(f"{hora.presion_hpa:.0f} hPa")
@@ -125,21 +122,21 @@ class BentoGridWidget(QWidget):
         # 1. UV Máximo
         self.card_uv.lbl_valor.setText(f"{dia.indice_uv_max:.0f}")
         if dia.indice_uv_max <= 2:
-            self.card_uv.lbl_categoria.setText("Bajo")
+            self.card_uv.lbl_categoria.setText(t("uv.bajo"))
         elif dia.indice_uv_max <= 5:
-            self.card_uv.lbl_categoria.setText("Moderado")
+            self.card_uv.lbl_categoria.setText(t("uv.moderado"))
         elif dia.indice_uv_max <= 7:
-            self.card_uv.lbl_categoria.setText("Alto")
+            self.card_uv.lbl_categoria.setText(t("uv.alto"))
         else:
-            self.card_uv.lbl_categoria.setText("Extremo")
-        self.card_uv.lbl_desc.setText(f"Índice UV máximo pronosticado para {dia.nombre_dia}.")
+            self.card_uv.lbl_categoria.setText(t("uv.extremo"))
+        self.card_uv.lbl_desc.setText(t("uv.max_dia", dia=dia.nombre_dia))
 
         # 2. Sol
         if dia.amanecer_iso and dia.ocaso_iso:
             am_str = FechaHelper.formato_hora_corta(dia.amanecer_iso)
             oc_str = FechaHelper.formato_hora_corta(dia.ocaso_iso)
-            self.card_sol.lbl_principal.setText(f"Ocaso: {oc_str}")
-            self.card_sol.lbl_secundario.setText(f"Amanecer: {am_str}")
+            self.card_sol.lbl_principal.setText(t("sol.ocaso_hoy", hora=oc_str))
+            self.card_sol.lbl_secundario.setText(t("sol.amanecer_hoy", hora=am_str))
             self.card_sol.arco.set_tiempos(dia.amanecer_iso, dia.ocaso_iso)
 
         # 3. Métricas medias del día
@@ -151,14 +148,11 @@ class BentoGridWidget(QWidget):
             viento_dir = dia.horas[12].viento_direccion if len(dia.horas) > 12 else dia.horas[0].viento_direccion
 
             self.card_humedad.lbl_valor.setText(f"{hum_prom}%")
-            self.card_humedad.lbl_punto_rocio.setText(f"Humedad media estimada para {dia.nombre_dia}.")
+            self.card_humedad.lbl_punto_rocio.setText(t("humedad.media_dia", dia=dia.nombre_dia))
 
-            self.card_viento.lbl_velocidad.setText(f"{round(viento_prom)} km/h")
-            direcciones = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-                           "S", "SSO", "SO", "OSO", "O", "ONO", "NO", "NNO"]
-            idx = int((viento_dir + 11.25) / 22.5) % 16
-            self.card_viento.lbl_direccion.setText(f"{direcciones[idx]} ({viento_dir}°)")
-            self.card_viento.lbl_rafagas.setText(f"Viento estimado para {dia.nombre_dia}")
+            self.card_viento.lbl_velocidad.setText(f"{round(viento_prom)} {sufijo_viento()}")
+            self.card_viento.lbl_direccion.setText(f"{cardinal_desde_grados(viento_dir)} ({viento_dir}°)")
+            self.card_viento.lbl_rafagas.setText(t("viento.estimado_dia", dia=dia.nombre_dia))
             self.card_viento.brujula.set_direccion(viento_dir)
 
             self.card_presion.lbl_valor.setText(f"{presion_prom:.0f} hPa")

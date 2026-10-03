@@ -15,6 +15,7 @@ from src.modelos.clima_datos import (
 from src.servicios.base_provider import IWeatherProvider
 from src.servicios.calidad_aire_service import CalidadAireService
 from src.servicios.http_session import sesion_http
+from src.servicios.i18n import t
 from src.utils.fecha_utils import FechaHelper
 from src.utils.icon_mapper import IconMapper
 
@@ -188,7 +189,7 @@ class OpenMeteoService(IWeatherProvider):
         for count, i in enumerate(range(start_idx, min(len(todas_las_horas), start_idx + 24))):
             h_obj = todas_las_horas[i]
             # Clonar con etiqueta "Ahora" en la primera posición
-            etiqueta = "Ahora" if count == 0 else h_obj.hora_etiqueta
+            etiqueta = t("comun.ahora") if count == 0 else h_obj.hora_etiqueta
             horas_24h_proximas.append(PronosticoHora(
                 fecha_hora_iso=h_obj.fecha_hora_iso,
                 hora_etiqueta=etiqueta,

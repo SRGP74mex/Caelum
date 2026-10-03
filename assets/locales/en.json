@@ -126,7 +126,12 @@
   "pronostico": {
     "titulo_horas": "HOURLY FORECAST",
     "titulo_semanal": "7-DAY FORECAST",
-    "ayuda_click": "Click on any hour or day to view detailed forecast"
+    "ayuda_click": "Click on any hour or day to view detailed forecast",
+    "mostrando_dia": "Showing forecast for {dia} ({condicion})",
+    "consultando": "Fetching data for {ciudad}...",
+    "reintentar": "{error} — press 🔄 to retry",
+    "error_actualizar": "⚠️ Update failed",
+    "error_visual": "⚠️ Display error: {error}"
   },
   "bento": {
     "indice_uv": "UV INDEX",
@@ -148,19 +153,29 @@
     "desc_moderado": "Wear sunglasses and sunscreen.",
     "desc_alto": "Sun protection needed between 10:00 and 16:00.",
     "desc_muy_alto": "Extra protection needed. Seek shade.",
-    "desc_extremo": "Take full precautions. Avoid midday sun."
+    "desc_extremo": "Take full precautions. Avoid midday sun.",
+    "hora_bajo": "Safe level at {hora}.",
+    "hora_moderado": "Sun protection recommended at {hora}.",
+    "hora_alto": "Sun protection required at {hora}.",
+    "hora_extremo": "Avoid sun exposure at {hora}.",
+    "max_dia": "Maximum UV index forecast for {dia}."
   },
   "viento": {
     "direccion": "Direction: {dir}",
     "rafagas": "Gusts: {vel}",
-    "constante": "Steady wind"
+    "constante": "Steady wind",
+    "pronostico_hora": "Forecast for {hora}",
+    "estimado_dia": "Estimated wind for {dia}",
+    "cardinales": "N,NNE,NE,ENE,E,ESE,SE,SSE,S,SSW,SW,WSW,W,WNW,NW,NNW"
   },
   "sol": {
     "ocaso_hoy": "Sunset: {hora}",
     "amanecer_fue": "Sunrise today was at {hora}",
     "amanecer_hoy": "Sunrise: {hora}",
     "ocaso_fue": "Sunset was at {hora}",
-    "puesta": "Sunset: {hora}"
+    "puesta": "Sunset: {hora}",
+    "posicion_hora": "☀️ Position at {hora}",
+    "noche_hora": "🌙 Night at {hora}"
   },
   "luna": {
     "nueva": "New Moon",
@@ -191,7 +206,9 @@
     "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
   },
   "humedad": {
-    "rocio_desc": "The dew point is {rocio} right now."
+    "rocio_desc": "The dew point is {rocio} right now.",
+    "rocio_hora": "Dew point: {rocio} at {hora}.",
+    "media_dia": "Estimated average humidity for {dia}."
   },
   "visibilidad": {
     "excelente": "Perfect, crystal-clear visibility.",
@@ -213,7 +230,8 @@
     "viento_titulo": "💨 Violent Wind Gale Alert",
     "viento_desc": "Damaging wind gusts up to {vel}. Secure loose outdoor items.",
     "uv_titulo": "☀️ Extreme UV Radiation Alert",
-    "uv_desc": "UV Index reaching {uv} (Extreme). Avoid direct unprotected sun exposure."
+    "uv_desc": "UV Index reaching {uv} (Extreme). Avoid direct unprotected sun exposure.",
+    "banner_titulo": "Weather Alert"
   },
   "busqueda": {
     "placeholder": "Search city, municipality or location...",
@@ -256,6 +274,20 @@
     "refrescar": "Refresh now",
     "ajustes": "Settings...",
     "salir": "Quit"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 Heavy Rain / Flood Alert",
+    "inundacion_desc": "Up to {mm} mm forecast in {ciudad}. Risk of flooding and standing water.",
+    "calor_titulo": "🔥 Extreme Heat Alert",
+    "calor_desc": "Maximum temperature will reach {temp} (feels like {sens}) in {ciudad}. Stay hydrated.",
+    "lluvia_titulo": "🌧️ Rain expected soon",
+    "lluvia_desc": "Rain forecast at {hora} ({prob}% chance{mm}) in {ciudad}.",
+    "tormenta_titulo": "⚡ Storm Alert",
+    "tormenta_desc": "Thunderstorm activity reported in {ciudad}.",
+    "tormenta_granizo_desc": "Thunderstorm activity with possible hail reported in {ciudad}.",
+    "viento_titulo": "💨 Strong Wind",
+    "viento_desc": "Wind gusts of {vel} in {ciudad}.",
+    "atardecer_titulo": "🌅 Sunset in progress",
+    "atardecer_desc": "The sun will set at {hora} in {ciudad}."
   }
 }
-

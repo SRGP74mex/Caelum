@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
 from src.modelos.clima_datos import Ubicacion
 from src.servicios.config_manager import ConfigManager
 from src.servicios.geocoding_service import GeocodingService
+from src.servicios.i18n import t
 from src.servicios.worker import ejecutar_en_segundo_plano
 
 
@@ -96,7 +97,7 @@ class BarraBusqueda(QWidget):
         # Input de texto con interceptor de teclas y foco
         self.input_busqueda = InputBusqueda(self.contenedor)
         self.input_busqueda.setObjectName("inputBusqueda")
-        self.input_busqueda.setPlaceholderText("Buscar ciudad, municipio o localidad...")
+        self.input_busqueda.setPlaceholderText(t("busqueda.placeholder"))
         self.input_busqueda.textChanged.connect(self._on_text_changed)
         self.input_busqueda.returnPressed.connect(self._on_enter_pressed)
         self.input_busqueda.flecha_abajo_presionada.connect(self._on_flecha_abajo)

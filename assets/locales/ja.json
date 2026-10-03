@@ -125,7 +125,13 @@
   },
   "pronostico": {
     "titulo_horas": "1時間ごとの予報",
-    "titulo_semanal": "7日間の天気予報"
+    "titulo_semanal": "7日間の天気予報",
+    "ayuda_click": "時間または日をクリックすると詳細な予報が表示されます",
+    "mostrando_dia": "{dia}の予報（{condicion}）",
+    "consultando": "{ciudad}のデータを取得中...",
+    "reintentar": "{error} — 🔄 を押して再試行",
+    "error_actualizar": "⚠️ 更新に失敗しました",
+    "error_visual": "⚠️ 表示エラー: {error}"
   },
   "bento": {
     "indice_uv": "UVインデックス",
@@ -147,19 +153,29 @@
     "desc_moderado": "日焼け止めとサングラスの着用をおすすめします。",
     "desc_alto": "10:00〜16:00の間は日よけが必要です。",
     "desc_muy_alto": "日陰に入り、長袖の着用をおすすめします。",
-    "desc_extremo": "極めて危険です。日中の外出をできるだけ避けてください。"
+    "desc_extremo": "極めて危険です。日中の外出をできるだけ避けてください。",
+    "hora_bajo": "{hora}は安全なレベルです。",
+    "hora_moderado": "{hora}は日焼け止めをおすすめします。",
+    "hora_alto": "{hora}は日焼け対策が必要です。",
+    "hora_extremo": "{hora}は日差しを避けてください。",
+    "max_dia": "{dia}の最大UV指数予報。"
   },
   "viento": {
     "direccion": "風向: {dir}",
     "rafagas": "突風: {vel}",
-    "constante": "定常風"
+    "constante": "定常風",
+    "pronostico_hora": "{hora}の予報",
+    "estimado_dia": "{dia}の推定風速",
+    "cardinales": "北,北北東,北東,東北東,東,東南東,南東,南南東,南,南南西,南西,西南西,西,西北西,北西,北北西"
   },
   "sol": {
     "ocaso_hoy": "日の入り: {hora}",
     "amanecer_fue": "本日の日の出時刻は {hora} でした",
     "amanecer_hoy": "日の出: {hora}",
     "ocaso_fue": "日の入り時刻は {hora} でした",
-    "puesta": "日の入り: {hora}"
+    "puesta": "日の入り: {hora}",
+    "posicion_hora": "☀️ {hora}の位置",
+    "noche_hora": "🌙 {hora}は夜間"
   },
   "luna": {
     "nueva": "新月",
@@ -190,7 +206,9 @@
     "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
   },
   "humedad": {
-    "rocio_desc": "現在の露点温度は {rocio} です。"
+    "rocio_desc": "現在の露点温度は {rocio} です。",
+    "rocio_hora": "露点: {hora}に{rocio}。",
+    "media_dia": "{dia}の推定平均湿度。"
   },
   "visibilidad": {
     "excelente": "視界は極めて明瞭です。",
@@ -212,7 +230,8 @@
     "viento_titulo": "💨 暴風・強風警報",
     "viento_desc": "最大 {vel} の猛烈な突風が予想されます。飛来物に警戒してください。",
     "uv_titulo": "☀️ 極端紫外線（UV）警報",
-    "uv_desc": "UVインデックスが {uv}（極度）に達します。直射日光を避けてください。"
+    "uv_desc": "UVインデックスが {uv}（極度）に達します。直射日光を避けてください。",
+    "banner_titulo": "気象警報"
   },
   "busqueda": {
     "placeholder": "都市・自治体・地域を検索...",
@@ -255,6 +274,20 @@
     "refrescar": "今すぐ更新",
     "ajustes": "設定...",
     "salir": "終了"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 大雨・洪水警報",
+    "inundacion_desc": "{ciudad}で最大{mm} mmの降水が予想されます。浸水や冠水に注意してください。",
+    "calor_titulo": "🔥 猛暑警報",
+    "calor_desc": "{ciudad}の最高気温は{temp}（体感{sens}）に達します。こまめに水分補給をしてください。",
+    "lluvia_titulo": "🌧️ まもなく雨",
+    "lluvia_desc": "{ciudad}で{hora}に雨の予報（確率{prob}%{mm}）。",
+    "tormenta_titulo": "⚡ 雷雨警報",
+    "tormenta_desc": "{ciudad}で雷雨が観測されています。",
+    "tormenta_granizo_desc": "{ciudad}で雷雨が観測されています。ひょうの恐れがあります。",
+    "viento_titulo": "💨 強風",
+    "viento_desc": "{ciudad}で{vel}の突風。",
+    "atardecer_titulo": "🌅 まもなく日没",
+    "atardecer_desc": "{ciudad}では{hora}に日が沈みます。"
   }
 }
-

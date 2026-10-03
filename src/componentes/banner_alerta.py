@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from src.modelos.clima_datos import ReporteClimaCompleto
+from src.servicios.i18n import t
 
 
 @dataclass
@@ -46,7 +47,7 @@ class BannerAlertaWidget(QWidget):
         v_texto.setContentsMargins(0, 0, 0, 0)
         v_texto.setSpacing(2)
 
-        self.lbl_titulo = QLabel("Alerta Meteorológica", self)
+        self.lbl_titulo = QLabel(t("alertas.banner_titulo"), self)
         self.lbl_titulo.setStyleSheet("font-size: 14px; font-weight: 700; color: #ffffff;")
         v_texto.addWidget(self.lbl_titulo)
 
@@ -79,8 +80,6 @@ class BannerAlertaWidget(QWidget):
     def evaluar_alertas(self, reporte: ReporteClimaCompleto) -> Optional[AlertaClimaInfo]:
         """Analiza el reporte actual y pronóstico 24h/7d para detectar riesgos climáticos."""
         act = reporte.actual
-
-        from src.servicios.i18n import t
 
         # 1. Alerta de Lluvia Torrencial / Riesgo de Inundación
         precip_hoy = reporte.dias_7d[0].precipitacion_total_mm if reporte.dias_7d else act.precipitacion_mm

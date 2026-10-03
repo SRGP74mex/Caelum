@@ -126,7 +126,12 @@
   "pronostico": {
     "titulo_horas": "PRONÓSTICO POR HORAS",
     "titulo_semanal": "PRONÓSTICO DE 7 DÍAS",
-    "ayuda_click": "Haz clic sobre cualquier hora o día para ver el pronóstico detallado"
+    "ayuda_click": "Haz clic sobre cualquier hora o día para ver el pronóstico detallado",
+    "mostrando_dia": "Mostrando pronóstico para {dia} ({condicion})",
+    "consultando": "Consultando datos para {ciudad}...",
+    "reintentar": "{error} — pulsa 🔄 para reintentar",
+    "error_actualizar": "⚠️ Error al actualizar",
+    "error_visual": "⚠️ Error visual: {error}"
   },
   "bento": {
     "indice_uv": "ÍNDICE UV",
@@ -148,19 +153,29 @@
     "desc_moderado": "Usa gafas de sol y protector solar.",
     "desc_alto": "Protección solar necesaria entre 10:00 y 16:00.",
     "desc_muy_alto": "Protección extra necesaria. Busca la sombra.",
-    "desc_extremo": "Extrema precaución. Evita la exposición solar."
+    "desc_extremo": "Extrema precaución. Evita la exposición solar.",
+    "hora_bajo": "Nivel seguro a las {hora}.",
+    "hora_moderado": "Protección solar recomendada a las {hora}.",
+    "hora_alto": "Protección solar necesaria a las {hora}.",
+    "hora_extremo": "Evita exposición al sol a las {hora}.",
+    "max_dia": "Índice UV máximo pronosticado para {dia}."
   },
   "viento": {
     "direccion": "Dirección: {dir}",
     "rafagas": "Ráfagas: {vel}",
-    "constante": "Viento constante"
+    "constante": "Viento constante",
+    "pronostico_hora": "Pronóstico para {hora}",
+    "estimado_dia": "Viento estimado para {dia}",
+    "cardinales": "N,NNE,NE,ENE,E,ESE,SE,SSE,S,SSO,SO,OSO,O,ONO,NO,NNO"
   },
   "sol": {
     "ocaso_hoy": "Ocaso: {hora}",
     "amanecer_fue": "Amanecer hoy fue a las {hora}",
     "amanecer_hoy": "Amanecer: {hora}",
     "ocaso_fue": "Ocaso fue a las {hora}",
-    "puesta": "Puesta de sol: {hora}"
+    "puesta": "Puesta de sol: {hora}",
+    "posicion_hora": "☀️ Posición a las {hora}",
+    "noche_hora": "🌙 Noche a las {hora}"
   },
   "luna": {
     "nueva": "Luna Nueva",
@@ -191,7 +206,9 @@
     "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
   },
   "humedad": {
-    "rocio_desc": "El punto de rocío es de {rocio} en este momento."
+    "rocio_desc": "El punto de rocío es de {rocio} en este momento.",
+    "rocio_hora": "Punto de rocío: {rocio} a las {hora}.",
+    "media_dia": "Humedad media estimada para {dia}."
   },
   "visibilidad": {
     "excelente": "Visibilidad perfectamente clara.",
@@ -213,7 +230,8 @@
     "viento_titulo": "💨 Alerta de Ráfagas de Viento Violentas",
     "viento_desc": "Ráfagas registradas de {vel}. Riesgo de caída de ramas y objetos sueltos.",
     "uv_titulo": "☀️ Alerta de Radiación UV Extrema",
-    "uv_desc": "Índice UV de {uv}. Nivel extremo de radiación: el daño cutáneo ocurre en menos de 10 minutos."
+    "uv_desc": "Índice UV de {uv}. Nivel extremo de radiación: el daño cutáneo ocurre en menos de 10 minutos.",
+    "banner_titulo": "Alerta Meteorológica"
   },
   "busqueda": {
     "placeholder": "Buscar ciudad, municipio o localidad...",
@@ -256,6 +274,20 @@
     "refrescar": "Refrescar ahora",
     "ajustes": "Ajustes...",
     "salir": "Salir"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 Alerta de Lluvia Torrencial / Inundación",
+    "inundacion_desc": "Se pronostican hasta {mm} mm en {ciudad}. Riesgo de inundación y acumulación de agua.",
+    "calor_titulo": "🔥 Alerta de Calor Extremo",
+    "calor_desc": "Temperatura máxima alcanzará los {temp} (Sensación {sens}) en {ciudad}. Hidrátate bien.",
+    "lluvia_titulo": "🌧️ Se espera lluvia pronto",
+    "lluvia_desc": "Se pronostica lluvia a las {hora} ({prob}% prob.{mm}) en {ciudad}.",
+    "tormenta_titulo": "⚡ Alerta de Tormenta",
+    "tormenta_desc": "Actividad de tormenta eléctrica registrada en {ciudad}.",
+    "tormenta_granizo_desc": "Actividad de tormenta eléctrica con posible granizo registrada en {ciudad}.",
+    "viento_titulo": "💨 Viento Fuerte",
+    "viento_desc": "Ráfagas de viento de {vel} en {ciudad}.",
+    "atardecer_titulo": "🌅 Atardecer en curso",
+    "atardecer_desc": "El sol se ocultará a las {hora} en {ciudad}."
   }
 }
-

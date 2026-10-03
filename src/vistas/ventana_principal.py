@@ -51,7 +51,12 @@ from src.servicios.i18n import establecer_idioma, t
 from src.servicios.open_meteo_service import OpenMeteoService
 from src.servicios.worker import ejecutar_en_segundo_plano
 from src.utils.fecha_utils import FechaHelper
-from src.utils.unidades import aplicar_preferencias_unidades, establecer_preferencias_unidades, sufijo_temperatura
+from src.utils.unidades import (
+    aplicar_preferencias_unidades,
+    establecer_preferencias_unidades,
+    sufijo_temperatura,
+    sufijo_viento,
+)
 from src.vistas.vista_ajustes import VistaAjustes
 
 logger = logging.getLogger(__name__)
@@ -465,7 +470,7 @@ class VentanaPrincipal(QMainWindow):
             return
 
         self.dia_activo = dia
-        es_hoy = (dia.nombre_dia == "Hoy")
+        es_hoy = bool(self.reporte_actual.dias_7d) and dia.fecha_iso == self.reporte_actual.dias_7d[0].fecha_iso
 
         if dia.horas:
             self.curva_horaria.set_datos(dia.horas)
@@ -490,7 +495,7 @@ class VentanaPrincipal(QMainWindow):
             self.cabecera.lbl_pais.setText(f"{region_str}{self.ubicacion_actual.pais}")
             self.cabecera.lbl_temperatura.setText(f"{round(dia.temp_max)}°")
             self.cabecera.lbl_condicion.setText(f"{dia.condicion.descripcion} • {dia.nombre_dia}")
-            self.cabecera.lbl_rango_hoy.setText(f"Máx: {round(dia.temp_max)}°  •  Mín: {round(dia.temp_min)}°")
+            self.cabecera.lbl_rango_hoy.setText(t("cabecera.hoy_rango", max=round(dia.temp_max), min=round(dia.temp_min)))
 
             try:
                 dt = FechaHelper.parse_iso(dia.fecha_iso)
@@ -508,8 +513,8 @@ class VentanaPrincipal(QMainWindow):
                 ocaso_iso=dia.ocaso_iso
             )
 
-        precip_info = f" • 🌧️ {dia.precipitacion_total_mm:.1f} mm esperados" if dia.precipitacion_total_mm > 0 else ""
-        self.lbl_detalle_hora.setText(f"Mostrando pronóstico para {dia.nombre_dia} ({dia.condicion.descripcion}){precip_info}")
+        precip_info = f" • 🌧️ {t('cabecera.esperados', mm=f'{dia.precipitacion_total_mm:.1f}')}" if dia.precipitacion_total_mm > 0 else ""
+        self.lbl_detalle_hora.setText(t("pronostico.mostrando_dia", dia=dia.nombre_dia, condicion=dia.condicion.descripcion) + precip_info)
         self.update()
 
     def _on_hora_seleccionada(self, hora_obj: Optional[PronosticoHora]) -> None:
@@ -524,11 +529,11 @@ class VentanaPrincipal(QMainWindow):
 
         uv_str = f" • UV: {hora_obj.indice_uv:.0f}" if hora_obj.indice_uv > 0 else ""
         self.lbl_detalle_hora.setText(
-            f"🕒 {hora_obj.hora_etiqueta}: {hora_obj.condicion.descripcion} • Sensación: {hora_obj.sensacion:.1f}{sufijo_temperatura()}{prob_str}{uv_str}"
+            f"🕒 {hora_obj.hora_etiqueta}: {hora_obj.condicion.descripcion} • {t('cabecera.sensacion')}: {hora_obj.sensacion:.1f}{sufijo_temperatura()}{prob_str}{uv_str}"
         )
 
         self.cabecera.lbl_temperatura.setText(f"{round(hora_obj.temperatura)}°")
-        dia_ref = f" • {self.dia_activo.nombre_dia}" if self.dia_activo and self.dia_activo.nombre_dia != "Hoy" else ""
+        dia_ref = f" • {self.dia_activo.nombre_dia}" if self.dia_activo and self.reporte_actual.dias_7d and self.dia_activo.fecha_iso != self.reporte_actual.dias_7d[0].fecha_iso else ""
         self.cabecera.lbl_condicion.setText(f"{hora_obj.condicion.descripcion} ({hora_obj.hora_etiqueta}{dia_ref})")
 
         am_iso = self.reporte_actual.actual.amanecer_iso
@@ -569,7 +574,7 @@ class VentanaPrincipal(QMainWindow):
         region_str = f"{ubicacion.admin1}, " if ubicacion.admin1 and ubicacion.admin1 != ubicacion.ciudad else ""
         self.cabecera.lbl_pais.setText(f"{region_str}{ubicacion.pais}")
         self.cabecera.lbl_condicion.setText("Cargando pronóstico meteorológico...")
-        self.lbl_detalle_hora.setText(f"Consultando datos para {ubicacion.ciudad}...")
+        self.lbl_detalle_hora.setText(t("pronostico.consultando", ciudad=ubicacion.ciudad))
 
         self._consultar_clima(ubicacion)
 
@@ -594,8 +599,8 @@ class VentanaPrincipal(QMainWindow):
 
         def _on_error(err: str):
             logger.warning("Error al consultar clima para %s: %s", ubicacion.ciudad, err)
-            self.cabecera.lbl_condicion.setText("⚠️ Error al actualizar")
-            self.lbl_detalle_hora.setText(f"{err} — pulsa 🔄 para reintentar")
+            self.cabecera.lbl_condicion.setText(t("pronostico.error_actualizar"))
+            self.lbl_detalle_hora.setText(t("pronostico.reintentar", error=err))
 
         ejecutar_en_segundo_plano(_fetch, on_result=_on_result, on_error=_on_error)
 
@@ -622,7 +627,7 @@ class VentanaPrincipal(QMainWindow):
                 amanecer_iso=reporte.actual.amanecer_iso,
                 ocaso_iso=reporte.actual.ocaso_iso
             )
-            self.lbl_detalle_hora.setText("Haz clic sobre cualquier hora o día para ver el pronóstico detallado")
+            self.lbl_detalle_hora.setText(t("pronostico.ayuda_click"))
 
             if hasattr(self, "bandeja"):
                 self.bandeja.actualizar_clima_tray(reporte)
@@ -632,7 +637,7 @@ class VentanaPrincipal(QMainWindow):
             self.update()
         except Exception as e:
             logger.error("Error visual al aplicar reporte: %s", e, exc_info=True)
-            self.cabecera.lbl_condicion.setText(f"⚠️ Error visual: {e}")
+            self.cabecera.lbl_condicion.setText(t("pronostico.error_visual", error=e))
 
     def _actualizar_paleta_cielo(
         self,
@@ -721,8 +726,8 @@ class VentanaPrincipal(QMainWindow):
             ult_inund = self._ultimas_notificaciones.get("inundacion", 0)
             if ahora_ts - ult_inund > 14400:  # Cooldown 4 horas
                 self.bandeja.mostrar_alerta(
-                    "🌊 Alerta de Lluvia Torrencial / Inundación",
-                    f"Se pronostican hasta {precip_hoy:.1f} mm en {reporte.ubicacion.ciudad}. Riesgo de inundación y acumulación de agua.",
+                    t("notificaciones.inundacion_titulo"),
+                    t("notificaciones.inundacion_desc", mm=f"{precip_hoy:.1f}", ciudad=reporte.ubicacion.ciudad),
                     icon_tipo="critical"
                 )
                 self._ultimas_notificaciones["inundacion"] = ahora_ts
@@ -733,8 +738,13 @@ class VentanaPrincipal(QMainWindow):
             ult_calor = self._ultimas_notificaciones.get("calor", 0)
             if ahora_ts - ult_calor > 21600:  # Cooldown 6 horas
                 self.bandeja.mostrar_alerta(
-                    "🔥 Alerta de Calor Extremo",
-                    f"Temperatura máxima alcanzará los {round(temp_max_hoy)}°C (Sensación {round(act.sensacion_termica)}°C) en {reporte.ubicacion.ciudad}. Hidrátate bien.",
+                    t("notificaciones.calor_titulo"),
+                    t(
+                        "notificaciones.calor_desc",
+                        temp=f"{round(temp_max_hoy)}{sufijo_temperatura()}",
+                        sens=f"{round(act.sensacion_termica)}{sufijo_temperatura()}",
+                        ciudad=reporte.ubicacion.ciudad,
+                    ),
                     icon_tipo="warning"
                 )
                 self._ultimas_notificaciones["calor"] = ahora_ts
@@ -747,8 +757,14 @@ class VentanaPrincipal(QMainWindow):
                     if (h.probabilidad_lluvia >= 60 or h.precipitacion_mm >= 0.5) and act.precipitacion_mm == 0:
                         mm_str = f" ({h.precipitacion_mm:.1f} mm)" if h.precipitacion_mm > 0 else ""
                         self.bandeja.mostrar_alerta(
-                            "🌧️ Se espera lluvia pronto",
-                            f"Se pronostica lluvia a las {h.hora_etiqueta} ({h.probabilidad_lluvia}% prob.{mm_str}) en {reporte.ubicacion.ciudad}."
+                            t("notificaciones.lluvia_titulo"),
+                            t(
+                                "notificaciones.lluvia_desc",
+                                hora=h.hora_etiqueta,
+                                prob=h.probabilidad_lluvia,
+                                mm=mm_str,
+                                ciudad=reporte.ubicacion.ciudad,
+                            )
                         )
                         self._ultimas_notificaciones["lluvia"] = ahora_ts
                         break
@@ -758,17 +774,21 @@ class VentanaPrincipal(QMainWindow):
             ult_severo = self._ultimas_notificaciones.get("severo", 0)
             if ahora_ts - ult_severo > 10800:  # Cooldown 3 horas
                 if act.condicion.wmo_code in [95, 96, 99]:
-                    granizo_str = " con posible granizo" if act.condicion.wmo_code in [96, 99] else ""
+                    clave_desc = "tormenta_granizo_desc" if act.condicion.wmo_code in [96, 99] else "tormenta_desc"
                     self.bandeja.mostrar_alerta(
-                        "⚡ Alerta de Tormenta",
-                        f"Actividad de tormenta eléctrica{granizo_str} registrada en {reporte.ubicacion.ciudad}.",
+                        t("notificaciones.tormenta_titulo"),
+                        t(f"notificaciones.{clave_desc}", ciudad=reporte.ubicacion.ciudad),
                         icon_tipo="warning"
                     )
                     self._ultimas_notificaciones["severo"] = ahora_ts
                 elif act.viento_rafagas and act.viento_rafagas >= 60.0:
                     self.bandeja.mostrar_alerta(
-                        "💨 Viento Fuerte",
-                        f"Ráfagas de viento de {round(act.viento_rafagas)} km/h en {reporte.ubicacion.ciudad}.",
+                        t("notificaciones.viento_titulo"),
+                        t(
+                            "notificaciones.viento_desc",
+                            vel=f"{round(act.viento_rafagas)} {sufijo_viento()}",
+                            ciudad=reporte.ubicacion.ciudad,
+                        ),
                         icon_tipo="warning"
                     )
                     self._ultimas_notificaciones["severo"] = ahora_ts
@@ -784,8 +804,8 @@ class VentanaPrincipal(QMainWindow):
                     if 10 <= minutos_restantes <= 25:
                         oc_str = FechaHelper.formato_hora_corta(act.ocaso_iso)
                         self.bandeja.mostrar_alerta(
-                            "🌅 Atardecer en curso",
-                            f"El sol se ocultará a las {oc_str} en {reporte.ubicacion.ciudad}."
+                            t("notificaciones.atardecer_titulo"),
+                            t("notificaciones.atardecer_desc", hora=oc_str, ciudad=reporte.ubicacion.ciudad)
                         )
                         self._ultimas_notificaciones["atardecer"] = ahora_ts
                 except Exception:

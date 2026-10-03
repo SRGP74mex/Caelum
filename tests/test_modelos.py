@@ -5,11 +5,16 @@ from src.modelos.clima_datos import (
     ReporteClimaCompleto,
     Ubicacion,
 )
+from src.servicios.i18n import establecer_idioma, obtener_idioma_actual
 from src.utils.icon_mapper import IconMapper
 
 
 class TestModelosClima(unittest.TestCase):
     def setUp(self):
+        # Fijar español: viento_direccion_cardinal depende del idioma activo.
+        self._idioma_previo = obtener_idioma_actual()
+        establecer_idioma("es")
+        self.addCleanup(establecer_idioma, self._idioma_previo)
         self.ubicacion = Ubicacion(
             ciudad="Bogotá",
             pais="Colombia",
