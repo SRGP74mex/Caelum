@@ -21,7 +21,7 @@ class TestI18nCatalogos(unittest.TestCase):
     """Pruebas de integridad de los catálogos JSON de idiomas."""
 
     def test_existencia_archivos_locales(self):
-        for codigo in ["es", "en", "fr", "it", "de", "ja"]:
+        for codigo in ["es", "en", "fr", "it", "de", "pt", "ja"]:
             archivo = LOCALES_DIR / f"{codigo}.json"
             self.assertTrue(archivo.exists(), f"El archivo {codigo}.json debe existir en {LOCALES_DIR}")
             with open(archivo, "r", encoding="utf-8") as f:
@@ -35,7 +35,7 @@ class TestI18nCatalogos(unittest.TestCase):
 
     def test_consistencia_condiciones_wmo(self):
         wmo_codes = ["0", "1", "2", "3", "45", "51", "61", "65", "71", "75", "80", "95", "96", "99"]
-        for codigo in ["es", "en", "fr", "it", "de", "ja"]:
+        for codigo in ["es", "en", "fr", "it", "de", "pt", "ja"]:
             archivo = LOCALES_DIR / f"{codigo}.json"
             with open(archivo, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -80,6 +80,12 @@ class TestI18nService(unittest.TestCase):
         self.assertEqual(self.i18n.idioma_activo, "de")
         self.assertEqual(self.i18n.t("comun.hoy"), "Heute")
         self.assertEqual(self.i18n.t("condiciones.0"), "Klarer Himmel")
+
+        # Portugués
+        self.i18n.establecer_idioma("pt")
+        self.assertEqual(self.i18n.idioma_activo, "pt")
+        self.assertEqual(self.i18n.t("comun.hoy"), "Hoje")
+        self.assertEqual(self.i18n.t("condiciones.0"), "Céu limpo")
 
         # Japonés
         self.i18n.establecer_idioma("ja")

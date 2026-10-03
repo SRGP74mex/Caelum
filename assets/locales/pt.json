@@ -1,0 +1,302 @@
+{
+  "app": {
+    "nombre": "Weather Linux",
+    "subtitulo": "Previsão do tempo"
+  },
+  "comun": {
+    "hoy": "Hoje",
+    "ayer": "Ontem",
+    "manana": "Amanhã",
+    "ahora": "Agora",
+    "cargando": "Carregando dados...",
+    "error_red": "Sem conexão com a internet",
+    "actualizado": "Atualizado"
+  },
+  "dias": {
+    "hoy": "Hoje",
+    "lun": "Segunda-feira",
+    "mar": "Terça-feira",
+    "mie": "Quarta-feira",
+    "jue": "Quinta-feira",
+    "vie": "Sexta-feira",
+    "sab": "Sábado",
+    "dom": "Domingo"
+  },
+  "dias_cortos": {
+    "hoy": "Hoje",
+    "lun": "Seg",
+    "mar": "Ter",
+    "mie": "Qua",
+    "jue": "Qui",
+    "vie": "Sex",
+    "sab": "Sáb",
+    "dom": "Dom"
+  },
+  "meses": {
+    "1": "janeiro", "2": "fevereiro", "3": "março", "4": "abril",
+    "5": "maio", "6": "junho", "7": "julho", "8": "agosto",
+    "9": "setembro", "10": "outubro", "11": "novembro", "12": "dezembro"
+  },
+  "meses_cortos": {
+    "1": "jan", "2": "fev", "3": "mar", "4": "abr",
+    "5": "mai", "6": "jun", "7": "jul", "8": "ago",
+    "9": "set", "10": "out", "11": "nov", "12": "dez"
+  },
+  "hijri": {
+    "1": "Muharram", "2": "Safar", "3": "Rabi' al-Awwal", "4": "Rabi' al-Thani",
+    "5": "Jumada al-Awwal", "6": "Jumada al-Thani", "7": "Rajab", "8": "Sha'ban",
+    "9": "Ramadã", "10": "Shawwal", "11": "Dhu al-Qi'dah", "12": "Dhu al-Hijjah",
+    "sufijo": "AH"
+  },
+  "hebreo": {
+    "1": "Nissan", "2": "Iyar", "3": "Sivan", "4": "Tamuz",
+    "5": "Av", "6": "Elul", "7": "Tishrei", "8": "Cheshvan",
+    "9": "Kislev", "10": "Tevet", "11": "Shevat", "12": "Adar", "13": "Adar II",
+    "sufijo": "AM"
+  },
+  "jalali": {
+    "1": "Farvardin", "2": "Ordibehesht", "3": "Khordad", "4": "Tir",
+    "5": "Mordad", "6": "Shahrivar", "7": "Mehr", "8": "Aban",
+    "9": "Azar", "10": "Dey", "11": "Bahman", "12": "Esfand",
+    "sufijo": "SH"
+  },
+  "budista": {
+    "sufijo": "EB"
+  },
+  "etiope": {
+    "1": "Meskerem", "2": "Tikimt", "3": "Hidar", "4": "Tahsas",
+    "5": "Tir", "6": "Yakatit", "7": "Magabit", "8": "Miyazya",
+    "9": "Ginbot", "10": "Sene", "11": "Hamle", "12": "Nehase", "13": "Pagume",
+    "sufijo": "EE"
+  },
+  "saka": {
+    "1": "Chaitra", "2": "Vaisakha", "3": "Jyeshtha", "4": "Ashadha",
+    "5": "Shravana", "6": "Bhadra", "7": "Ashwin", "8": "Kartika",
+    "9": "Agrahayana", "10": "Pausha", "11": "Magha", "12": "Phalguna",
+    "sufijo": "Saka"
+  },
+  "chino": {
+    "dia": "Dia",
+    "mes": "Mês",
+    "anio": "Ano",
+    "bisiesto": "Bissexto",
+    "zodiaco": {
+      "rata": "Rato", "buey": "Boi", "tigre": "Tigre", "conejo": "Coelho",
+      "dragon": "Dragão", "serpiente": "Serpente", "caballo": "Cavalo",
+      "cabra": "Cabra", "mono": "Macaco", "gallo": "Galo", "perro": "Cão", "cerdo": "Porco"
+    }
+  },
+  "condiciones": {
+    "0": "Céu limpo",
+    "1": "Predominantemente limpo",
+    "2": "Parcialmente nublado",
+    "3": "Nublado",
+    "45": "Neblina",
+    "48": "Neblina com geada",
+    "51": "Garoa fraca",
+    "53": "Garoa moderada",
+    "55": "Garoa intensa",
+    "56": "Garoa congelante fraca",
+    "57": "Garoa congelante intensa",
+    "61": "Chuva fraca",
+    "63": "Chuva moderada",
+    "65": "Chuva forte",
+    "66": "Chuva congelante fraca",
+    "67": "Chuva congelante forte",
+    "71": "Neve fraca",
+    "73": "Neve moderada",
+    "75": "Neve forte",
+    "77": "Grãos de neve",
+    "80": "Pancadas de chuva fracas",
+    "81": "Pancadas de chuva moderadas",
+    "82": "Pancadas de chuva violentas",
+    "85": "Pancadas de neve fracas",
+    "86": "Pancadas de neve fortes",
+    "95": "Tempestade com raios",
+    "96": "Tempestade com granizo fraco",
+    "99": "Tempestade com granizo forte"
+  },
+  "cabecera": {
+    "sensacion": "Sensação térmica",
+    "max": "Máx",
+    "min": "Mín",
+    "hoy_rango": "Máx: {max}° • Mín: {min}°",
+    "esperados": "{mm} mm previstos"
+  },
+  "pronostico": {
+    "titulo_horas": "PREVISÃO POR HORA",
+    "titulo_semanal": "PREVISÃO DE 7 DIAS",
+    "ayuda_click": "Clique em qualquer hora ou dia para ver a previsão detalhada",
+    "mostrando_dia": "Mostrando a previsão para {dia} ({condicion})",
+    "consultando": "Consultando dados para {ciudad}...",
+    "cargando": "Carregando a previsão do tempo...",
+    "actualizando": "Atualizando dados ao vivo...",
+    "reintentar": "{error} — clique em 🔄 para tentar novamente",
+    "error_actualizar": "⚠️ Falha ao atualizar",
+    "error_visual": "⚠️ Erro de exibição: {error}"
+  },
+  "bento": {
+    "indice_uv": "ÍNDICE UV",
+    "viento": "VENTO",
+    "sol": "NASCER / PÔR DO SOL",
+    "luna": "FASE DA LUA",
+    "calidad_aire": "QUALIDADE DO AR",
+    "humedad": "UMIDADE",
+    "visibilidad": "VISIBILIDADE",
+    "presion": "PRESSÃO"
+  },
+  "uv": {
+    "bajo": "Baixo",
+    "moderado": "Moderado",
+    "alto": "Alto",
+    "muy_alto": "Muito alto",
+    "extremo": "Extremo",
+    "desc_bajo": "Nível seguro. Aproveite o ar livre.",
+    "desc_moderado": "Use óculos de sol e protetor solar.",
+    "desc_alto": "Proteção solar necessária entre 10:00 e 16:00.",
+    "desc_muy_alto": "Proteção extra necessária. Procure a sombra.",
+    "desc_extremo": "Cuidado extremo. Evite a exposição ao sol.",
+    "hora_bajo": "Nível seguro às {hora}.",
+    "hora_moderado": "Proteção solar recomendada às {hora}.",
+    "hora_alto": "Proteção solar necessária às {hora}.",
+    "hora_extremo": "Evite a exposição ao sol às {hora}.",
+    "max_dia": "Índice UV máximo previsto para {dia}."
+  },
+  "viento": {
+    "direccion": "Direção: {dir}",
+    "rafagas": "Rajadas: {vel}",
+    "constante": "Vento constante",
+    "pronostico_hora": "Previsão para {hora}",
+    "estimado_dia": "Vento estimado para {dia}",
+    "cardinales": "N,NNE,NE,ENE,L,ESE,SE,SSE,S,SSO,SO,OSO,O,ONO,NO,NNO"
+  },
+  "sol": {
+    "ocaso_hoy": "Pôr do sol: {hora}",
+    "amanecer_fue": "O nascer do sol hoje foi às {hora}",
+    "amanecer_hoy": "Nascer do sol: {hora}",
+    "ocaso_fue": "O pôr do sol foi às {hora}",
+    "puesta": "Pôr do sol: {hora}",
+    "posicion_hora": "☀️ Posição às {hora}",
+    "noche_hora": "🌙 Noite às {hora}"
+  },
+  "luna": {
+    "nueva": "Lua Nova",
+    "creciente_fertil": "Crescente",
+    "cuarto_creciente": "Quarto Crescente",
+    "gibosa_creciente": "Gibosa Crescente",
+    "llena": "Lua Cheia",
+    "gibosa_menguante": "Gibosa Minguante",
+    "cuarto_menguante": "Quarto Minguante",
+    "menguante": "Minguante",
+    "iluminacion": "Iluminação: {pct}% ({dias}d)",
+    "salida_puesta": "Nascer: {salida} • Ocaso: {puesta}",
+    "prox_llena": "Próx. lua cheia: {fecha}"
+  },
+  "calidad_aire": {
+    "buena": "Excelente",
+    "moderada": "Aceitável",
+    "sensible": "Sensível",
+    "insalubre": "Prejudicial",
+    "muy_insalubre": "Muito prejudicial",
+    "peligrosa": "Perigosa",
+    "desc_buena": "Qualidade do ar ideal. Aproveite as atividades ao ar livre.",
+    "desc_moderada": "Qualidade aceitável. Pessoas muito sensíveis devem se moderar.",
+    "desc_sensible": "Grupos sensíveis podem ter sintomas respiratórios.",
+    "desc_insalubre": "Possíveis efeitos adversos para a população em geral.",
+    "desc_muy_insalubre": "Alerta de saúde: evite atividade física ao ar livre.",
+    "desc_peligrosa": "Emergência sanitária: permaneça em ambientes fechados com filtro.",
+    "particulas": "PM2.5: {pm25} • PM10: {pm10} μg/m³"
+  },
+  "humedad": {
+    "rocio_desc": "O ponto de orvalho está em {rocio} neste momento.",
+    "rocio_hora": "Ponto de orvalho: {rocio} às {hora}.",
+    "media_dia": "Umidade média estimada para {dia}."
+  },
+  "visibilidad": {
+    "excelente": "Visibilidade perfeitamente limpa.",
+    "moderada": "Leve névoa no horizonte.",
+    "reducida": "Visibilidade reduzida por neblina/precipitação."
+  },
+  "presion": {
+    "baja": "Pressão baixa • Possível nebulosidade",
+    "alta": "Pressão alta • Tempo estável",
+    "normal": "Pressão atmosférica típica"
+  },
+  "alertas": {
+    "inundacion_titulo": "🌊 Alerta de Inundação / Chuva Torrencial",
+    "inundacion_desc": "São esperados acumulados de até {mm} mm hoje. Cuidado com alagamentos e risco de transbordamentos.",
+    "calor_titulo": "🔥 Alerta de Calor Extremo",
+    "calor_desc": "Temperatura máxima prevista de {temp} (sensação {sens}). Mantenha-se hidratado e evite a exposição ao sol.",
+    "tormenta_titulo": "⛈️ Alerta de Tempestade com Raios e Granizo",
+    "tormenta_desc": "Condições favoráveis a queda de granizo e descargas elétricas frequentes. Abrigue-se em local seguro.",
+    "viento_titulo": "💨 Alerta de Rajadas de Vento Violentas",
+    "viento_desc": "Rajadas registradas de {vel}. Risco de queda de galhos e objetos soltos.",
+    "uv_titulo": "☀️ Alerta de Radiação UV Extrema",
+    "uv_desc": "Índice UV de {uv}. Nível extremo de radiação: danos à pele em menos de 10 minutos.",
+    "banner_titulo": "Alerta Meteorológico"
+  },
+  "busqueda": {
+    "placeholder": "Buscar cidade, município ou localidade...",
+    "reciente": "🕒 Recente",
+    "mi_ubicacion": "📍 Minha localização (GeoIP)",
+    "cercana": "🏙️ Próxima",
+    "no_encontrado": "⚠️ Nenhum resultado para '{query}'"
+  },
+  "ajustes": {
+    "titulo": "Configurações",
+    "pestana_general": "Geral",
+    "pestana_unidades": "Unidades",
+    "pestana_notificaciones": "Notificações",
+    "idioma": "Idioma da interface",
+    "idioma_auto": "Automático (sistema)",
+    "temperatura": "Temperatura",
+    "viento": "Velocidade do vento",
+    "presion": "Pressão atmosférica",
+    "bandeja": "Bandeja do sistema",
+    "mostrar_bandeja": "Mostrar ícone na barra de tarefas",
+    "cerrar_a_bandeja": "Minimizar para a bandeja ao fechar a janela",
+    "activar_notificaciones": "Ativar alertas e notificações na área de trabalho",
+    "alerta_lluvia": "Aviso quando começar ou parar de chover",
+    "alerta_tormenta": "Alertas meteorológicos severos",
+    "alerta_atardecer": "Aviso de pôr do sol",
+    "calendarios_titulo": "Calendários Visíveis",
+    "cal_gregoriano": "Gregoriano (Universal)",
+    "cal_hijri": "Hijri (Islâmico)",
+    "cal_hebreo": "Hebraico (Judaico)",
+    "cal_jalali": "Solar Persa (Jalali)",
+    "cal_budista": "Era Budista (EB)",
+    "cal_etiope": "Copta / Etíope (Ge'ez)",
+    "cal_saka": "Saka Samvat (Indiano)",
+    "cal_chino": "Lunissolar Chinês (Nónglì)",
+    "guardar": "Salvar",
+    "cancelar": "Cancelar"
+  },
+  "bandeja": {
+    "mostrar": "Mostrar Weather Linux",
+    "ocultar": "Ocultar",
+    "refrescar": "Atualizar agora",
+    "ajustes": "Configurações...",
+    "salir": "Sair"
+  },
+  "notificaciones": {
+    "inundacion_titulo": "🌊 Alerta de Chuva Torrencial / Inundação",
+    "inundacion_desc": "Previsão de até {mm} mm em {ciudad}. Risco de inundação e acúmulo de água.",
+    "calor_titulo": "🔥 Alerta de Calor Extremo",
+    "calor_desc": "A temperatura máxima chegará a {temp} (sensação {sens}) em {ciudad}. Hidrate-se bem.",
+    "lluvia_titulo": "🌧️ Chuva prevista em breve",
+    "lluvia_desc": "Previsão de chuva às {hora} ({prob}% de prob.{mm}) em {ciudad}.",
+    "tormenta_titulo": "⚡ Alerta de Tempestade",
+    "tormenta_desc": "Atividade de tempestade com raios registrada em {ciudad}.",
+    "tormenta_granizo_desc": "Atividade de tempestade com raios e possível granizo registrada em {ciudad}.",
+    "viento_titulo": "💨 Vento Forte",
+    "viento_desc": "Rajadas de vento de {vel} em {ciudad}.",
+    "atardecer_titulo": "🌅 Pôr do sol em andamento",
+    "atardecer_desc": "O sol se porá às {hora} em {ciudad}."
+  },
+  "ventana": {
+    "cerrar": "Fechar",
+    "minimizar": "Minimizar",
+    "maximizar": "Maximizar",
+    "restaurar": "Restaurar"
+  }
+}

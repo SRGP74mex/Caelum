@@ -24,7 +24,7 @@ class FechaHelper:
 
     @staticmethod
     def fecha_gregoriana_legible(dt: Optional[datetime] = None) -> str:
-        """Formatea fecha gregoriana adaptada al idioma activo (es, en, fr, it, de, ja)."""
+        """Formatea fecha gregoriana adaptada al idioma activo (es, en, fr, it, de, pt, ja)."""
         from src.servicios.i18n import obtener_idioma_actual, t
 
         if dt is None:

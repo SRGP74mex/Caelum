@@ -76,6 +76,7 @@ IDIOMAS_SOPORTADOS = {
     "fr": "Français",
     "it": "Italiano",
     "de": "Deutsch",
+    "pt": "Português",
     "ja": "日本語"
 }
 DEFAULT_LANGUAGE = "auto"

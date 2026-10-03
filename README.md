@@ -10,7 +10,7 @@
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL_v3.0-blue.svg?style=for-the-badge)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-67%2F67_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Data](https://img.shields.io/badge/Weather_Data-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
-[![i18n](https://img.shields.io/badge/Languages-6_Supported-informational?style=for-the-badge)](assets/locales/)
+[![i18n](https://img.shields.io/badge/Languages-7_Supported-informational?style=for-the-badge)](assets/locales/)
 [![Calendars](https://img.shields.io/badge/World_Calendars-8_Supported-purple?style=for-the-badge)](src/utils/calendarios_mundo.py)
 [![Website](https://img.shields.io/badge/Live_Website-srgp74mex.github.io%2FCaelum-0284c7?style=for-the-badge&logo=google-chrome&logoColor=white)](https://srgp74mex.github.io/Caelum/)
 
@@ -79,7 +79,7 @@ _Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day fo
 
 ### 🌍 Multi-Language & 8 World Calendars Support
 
-- **6 Built-in Languages**: English (`en`), Spanish (`es`), French (`fr`), Italian (`it`), German (`de`), and Japanese (`ja`).
+- **7 Built-in Languages**: English (`en`), Spanish (`es`), French (`fr`), Italian (`it`), German (`de`), Portuguese (`pt`), and Japanese (`ja`).
 - **Automatic System Locale Detection**: Adapts immediately to your operating system language (`auto`).
 - **8 Configurable World Calendars**: Customize visible date pills from Settings (⚙️):
   - 📅 **Gregorian** (Universal / Western)

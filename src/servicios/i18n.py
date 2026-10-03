@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class I18nService(QObject):
     """
     Servicio de Internacionalización (i18n) para WeatherApp Linux.
-    - Soporta 6 idiomas: Español (es), Inglés (en), Francés (fr), Italiano (it), Alemán (de) y Japonés (ja).
+    - Soporta 7 idiomas: Español (es), Inglés (en), Francés (fr), Italiano (it), Alemán (de), Portugués (pt) y Japonés (ja).
     - Detecta automáticamente el idioma del sistema operativo mediante QLocale.
     - Fallback inteligente en caso de claves no encontradas.
     - Interpolación de variables dinámica en plantillas {variable}.
@@ -47,13 +47,13 @@ class I18nService(QObject):
                     logger.exception("Error al leer archivo de traducción %s", archivo)
 
     def detectar_idioma_sistema(self) -> str:
-        """Determina el código de idioma (es, en, fr, it, de, ja) según el locale del sistema."""
+        """Determina el código de idioma (es, en, fr, it, de, pt, ja) según el locale del sistema."""
         try:
             locale_name = QLocale.system().name().lower()  # Ej: "es_mx", "fr_fr", "ja_jp"
         except Exception:
             locale_name = os.environ.get("LANG", "en").lower()
 
-        for lang in ["es", "en", "fr", "it", "de", "ja"]:
+        for lang in ["es", "en", "fr", "it", "de", "pt", "ja"]:
             if locale_name.startswith(lang):
                 return lang
 
