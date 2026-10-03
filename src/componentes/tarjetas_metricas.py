@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from config import LUNA_DIR
 from src.componentes.tarjeta_bento import TarjetaBento
-from src.modelos.clima_datos import ClimaActual
+from src.modelos.clima_datos import ClimaActual, cardinal_desde_grados
 from src.servicios.i18n import t
 from src.utils.astronomia_utils import AstronomiaHelper
 from src.utils.fecha_utils import FechaHelper
@@ -72,14 +72,14 @@ class BrujulaWidget(QWidget):
         painter.setBrush(QColor(255, 255, 255, 15))
         painter.drawEllipse(QPointF(cx, cy), r, r)
 
-        # Puntos cardinales principales (N, E, S, O)
+        # Puntos cardinales principales (N, E, S, O) en el idioma activo
         font_card = QFont("-apple-system, Inter, sans-serif", 7, QFont.Weight.Bold)
         painter.setFont(font_card)
         painter.setPen(QColor(255, 255, 255, 180))
-        painter.drawText(QRectF(cx - 8, cy - r + 2, 16, 10), Qt.AlignmentFlag.AlignCenter, "N")
-        painter.drawText(QRectF(cx + r - 12, cy - 5, 10, 10), Qt.AlignmentFlag.AlignCenter, "E")
-        painter.drawText(QRectF(cx - 8, cy + r - 12, 16, 10), Qt.AlignmentFlag.AlignCenter, "S")
-        painter.drawText(QRectF(cx - r + 2, cy - 5, 10, 10), Qt.AlignmentFlag.AlignCenter, "O")
+        painter.drawText(QRectF(cx - 8, cy - r + 2, 16, 10), Qt.AlignmentFlag.AlignCenter, cardinal_desde_grados(0))
+        painter.drawText(QRectF(cx + r - 12, cy - 5, 10, 10), Qt.AlignmentFlag.AlignCenter, cardinal_desde_grados(90))
+        painter.drawText(QRectF(cx - 8, cy + r - 12, 16, 10), Qt.AlignmentFlag.AlignCenter, cardinal_desde_grados(180))
+        painter.drawText(QRectF(cx - r + 2, cy - 5, 10, 10), Qt.AlignmentFlag.AlignCenter, cardinal_desde_grados(270))
 
         # Aguja de viento rotada
         rad = math.radians(self.grados - 90)  # 0 deg = Norte (arriba)
