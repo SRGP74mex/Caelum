@@ -246,6 +246,7 @@
     "pestana_unidades": "単位",
     "pestana_notificaciones": "通知",
     "idioma": "インターフェース言語",
+    "idioma_auto": "自動（システム）",
     "temperatura": "温度単位",
     "viento": "風速単位",
     "presion": "気圧単位",

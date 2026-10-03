@@ -158,7 +158,9 @@ class VistaAjustes(QDialog):
         # Selector de Idioma
         self.combo_idioma = QComboBox(self)
         for codigo, nombre in IDIOMAS_SOPORTADOS.items():
-            self.combo_idioma.addItem(nombre, codigo)
+            # Los nombres de idioma van en su propia lengua; solo "auto" se traduce
+            etiqueta = t("ajustes.idioma_auto") if codigo == "auto" else nombre
+            self.combo_idioma.addItem(etiqueta, codigo)
         form.addRow(f"{t('ajustes.idioma')}:", self.combo_idioma)
 
         # Selector de Temperatura

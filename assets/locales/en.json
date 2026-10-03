@@ -246,6 +246,7 @@
     "pestana_unidades": "Units",
     "pestana_notificaciones": "Notifications",
     "idioma": "Interface language",
+    "idioma_auto": "Automatic (system)",
     "temperatura": "Temperature",
     "viento": "Wind speed",
     "presion": "Atmospheric pressure",
