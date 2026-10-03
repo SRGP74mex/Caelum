@@ -94,8 +94,9 @@ class VentanaPrincipal(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(APP_NAME)
-        self.resize(560, 940)
+        self.resize(1330, 900)
         self.setMinimumSize(460, 700)
+        self._alto_auto_ajustado = False
 
         # Icono oficial de ventana
         icon_path = ASSETS_DIR / "icons" / "weather_app.svg"
@@ -361,6 +362,32 @@ class VentanaPrincipal(QMainWindow):
         if hasattr(self, "fondo_particulas"):
             self.fondo_particulas.setGeometry(0, 0, self.width(), self.height())
 
+    def _ajustar_alto_a_contenido(self) -> None:
+        """Amplía la altura de la ventana en su primera carga para mostrar todas
+        las tarjetas (pronóstico horario, semanal y Bento Grid) sin necesidad de
+        desplazamiento, respetando el alto disponible de la pantalla.
+        """
+        if self._alto_auto_ajustado:
+            return
+        self._alto_auto_ajustado = True
+
+        def _aplicar() -> None:
+            margenes = self.central_widget.layout().contentsMargins()
+            alto_cromo = (
+                margenes.top() + margenes.bottom()
+                + self.central_widget.layout().spacing()
+                + self.btn_ajustes.height()
+            )
+            alto_deseado = self.scroll_content.sizeHint().height() + alto_cromo
+
+            pantalla = self.screen()
+            if pantalla:
+                alto_deseado = min(alto_deseado, pantalla.availableGeometry().height() - 60)
+
+            self.resize(self.width(), max(self.minimumHeight(), alto_deseado))
+
+        QTimer.singleShot(0, _aplicar)
+
     def hideEvent(self, event: QHideEvent) -> None:
         """Pausa el motor de partículas cuando la ventana se oculta (p. ej. a la bandeja)."""
         super().hideEvent(event)
@@ -601,6 +628,7 @@ class VentanaPrincipal(QMainWindow):
                 self.bandeja.actualizar_clima_tray(reporte)
 
             self._evaluar_notificaciones(reporte)
+            self._ajustar_alto_a_contenido()
             self.update()
         except Exception as e:
             logger.error("Error visual al aplicar reporte: %s", e, exc_info=True)
