@@ -289,5 +289,11 @@
     "viento_desc": "Rafales de vent de {vel} à {ciudad}.",
     "atardecer_titulo": "🌅 Coucher de soleil imminent",
     "atardecer_desc": "Le soleil se couchera à {hora} à {ciudad}."
+  },
+  "ventana": {
+    "cerrar": "Fermer",
+    "minimizar": "Réduire",
+    "maximizar": "Agrandir",
+    "restaurar": "Restaurer"
   }
 }

@@ -289,5 +289,11 @@
     "viento_desc": "Ráfagas de viento de {vel} en {ciudad}.",
     "atardecer_titulo": "🌅 Atardecer en curso",
     "atardecer_desc": "El sol se ocultará a las {hora} en {ciudad}."
+  },
+  "ventana": {
+    "cerrar": "Cerrar",
+    "minimizar": "Minimizar",
+    "maximizar": "Maximizar",
+    "restaurar": "Restaurar"
   }
 }

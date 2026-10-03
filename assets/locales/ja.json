@@ -289,5 +289,11 @@
     "viento_desc": "{ciudad}で{vel}の突風。",
     "atardecer_titulo": "🌅 まもなく日没",
     "atardecer_desc": "{ciudad}では{hora}に日が沈みます。"
+  },
+  "ventana": {
+    "cerrar": "閉じる",
+    "minimizar": "最小化",
+    "maximizar": "最大化",
+    "restaurar": "元に戻す"
   }
 }

@@ -289,5 +289,11 @@
     "viento_desc": "Raffiche di vento di {vel} a {ciudad}.",
     "atardecer_titulo": "🌅 Tramonto in corso",
     "atardecer_desc": "Il sole tramonterà alle {hora} a {ciudad}."
+  },
+  "ventana": {
+    "cerrar": "Chiudi",
+    "minimizar": "Riduci a icona",
+    "maximizar": "Ingrandisci",
+    "restaurar": "Ripristina"
   }
 }

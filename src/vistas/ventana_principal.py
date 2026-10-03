@@ -4,7 +4,7 @@ from collections import OrderedDict
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
-from PySide6.QtCore import QEvent, Qt, QTimer
+from PySide6.QtCore import QEvent, QRectF, Qt, QTimer
 from PySide6.QtGui import (
     QCloseEvent,
     QColor,
@@ -12,8 +12,10 @@ from PySide6.QtGui import (
     QIcon,
     QLinearGradient,
     QPainter,
+    QPainterPath,
     QPaintEvent,
     QPixmap,
+    QRegion,
     QResizeEvent,
     QShowEvent,
 )
@@ -37,6 +39,7 @@ from config import (
 from src.componentes.bandeja_sistema import BandejaSistema
 from src.componentes.banner_alerta import BannerAlertaWidget
 from src.componentes.barra_busqueda import BarraBusqueda
+from src.componentes.barra_titulo import AsaRedimension, BarraTitulo
 from src.componentes.bento_grid import BentoGridWidget
 from src.componentes.cabecera_clima import CabeceraClima
 from src.componentes.curva_horaria import CurvaHorariaWidget
@@ -98,11 +101,18 @@ class VentanaPrincipal(QMainWindow):
     # Máximo de fondos panorámicos decodificados simultáneamente en RAM (~6MB c/u)
     _FONDOS_CACHE_MAX = 3
 
+    # Radio de las esquinas redondeadas de la ventana sin marco (0 al maximizar)
+    _RADIO_ESQUINAS = 12
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle(APP_NAME)
         self.resize(1330, 900)
         self.setMinimumSize(460, 700)
+        # Ventana sin marco con barra de título propia (estilo Custos); el fondo
+        # translúcido permite dibujar esquinas redondeadas en paintEvent.
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Window)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self._alto_auto_ajustado = False
 
         # Icono oficial de ventana
@@ -212,8 +222,12 @@ class VentanaPrincipal(QMainWindow):
         self.fondo_particulas.lower()
 
         root_layout = QVBoxLayout(self.central_widget)
-        root_layout.setContentsMargins(18, 18, 18, 18)
-        root_layout.setSpacing(14)
+        root_layout.setContentsMargins(18, 8, 18, 18)
+        root_layout.setSpacing(10)
+
+        # 0. Barra de título propia (ventana sin marco)
+        self.barra_titulo = BarraTitulo(self, APP_NAME, self.central_widget)
+        root_layout.addWidget(self.barra_titulo)
 
         # 1. Barra Superior
         top_bar_layout = QHBoxLayout()
@@ -296,6 +310,9 @@ class VentanaPrincipal(QMainWindow):
         self.scroll_area.setWidget(self.scroll_content)
         root_layout.addWidget(self.scroll_area)
 
+        # Asas invisibles en bordes y esquinas para redimensionar sin marco del sistema
+        self.asas_redimension = AsaRedimension.crear_todas(self)
+
     def _init_tray(self) -> None:
         self.bandeja = BandejaSistema(self)
         self.bandeja.solicitar_mostrar_ocultar.connect(self.toggle_visibilidad)
@@ -341,6 +358,7 @@ class VentanaPrincipal(QMainWindow):
         self.tarjeta_horas.lbl_titulo.setText(t("pronostico.titulo_horas"))
         self.pronostico_semanal.lbl_titulo.setText(t("pronostico.titulo_semanal"))
         self.barra_busqueda.input_busqueda.setPlaceholderText(t("busqueda.placeholder"))
+        self.barra_titulo.actualizar_textos()
 
         if self.config_manager.datos.get("mostrar_bandeja", True) and QSystemTrayIcon.isSystemTrayAvailable():
             self.bandeja.show()
@@ -368,6 +386,28 @@ class VentanaPrincipal(QMainWindow):
         super().resizeEvent(event)
         if hasattr(self, "fondo_particulas"):
             self.fondo_particulas.setGeometry(0, 0, self.width(), self.height())
+        self._actualizar_forma_ventana()
+
+    def _radio_esquinas(self) -> int:
+        return 0 if self.isMaximized() or self.isFullScreen() else self._RADIO_ESQUINAS
+
+    def _actualizar_forma_ventana(self) -> None:
+        """Recoloca las asas de redimensión y recorta las partículas a las esquinas redondeadas."""
+        maximizada = self.isMaximized() or self.isFullScreen()
+        for asa in getattr(self, "asas_redimension", []):
+            asa.setVisible(not maximizada)
+            if not maximizada:
+                asa.reposicionar()
+
+        if hasattr(self, "fondo_particulas"):
+            radio = self._radio_esquinas()
+            if radio:
+                # El relámpago rellena todo el widget: sin máscara asomaría por las esquinas
+                path = QPainterPath()
+                path.addRoundedRect(QRectF(self.rect()), radio, radio)
+                self.fondo_particulas.setMask(QRegion(path.toFillPolygon().toPolygon()))
+            else:
+                self.fondo_particulas.clearMask()
 
     def _ajustar_alto_a_contenido(self) -> None:
         """Amplía la altura de la ventana en su primera carga para mostrar todas
@@ -384,6 +424,7 @@ class VentanaPrincipal(QMainWindow):
                 margenes.top() + margenes.bottom()
                 + self.central_widget.layout().spacing()
                 + self.btn_ajustes.height()
+                + self.barra_titulo.height() + self.central_widget.layout().spacing()
             )
             alto_deseado = self.scroll_content.sizeHint().height() + alto_cromo
 
@@ -416,6 +457,10 @@ class VentanaPrincipal(QMainWindow):
         en segundo plano sin necesidad.
         """
         super().changeEvent(event)
+        if event.type() == QEvent.Type.WindowStateChange and hasattr(self, "barra_titulo"):
+            self.barra_titulo.actualizar_textos()
+            self._actualizar_forma_ventana()
+            self.update()
         if event.type() == QEvent.Type.WindowStateChange and hasattr(self, "fondo_particulas"):
             if self.isMinimized():
                 self.fondo_particulas.pausar()
@@ -429,6 +474,13 @@ class VentanaPrincipal(QMainWindow):
 
         w = self.width()
         h = self.height()
+
+        # 0. Recortar a esquinas redondeadas (el fondo de la ventana es translúcido)
+        radio = self._radio_esquinas()
+        if radio:
+            forma = QPainterPath()
+            forma.addRoundedRect(QRectF(self.rect()), radio, radio)
+            painter.setClipPath(forma)
 
         # 1. Dibujar fotografía atmosférica panorámica escalada
         pixmap = self._obtener_pixmap_fondo(self.fondo_actual_key)

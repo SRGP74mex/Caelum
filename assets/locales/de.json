@@ -289,5 +289,11 @@
     "viento_desc": "Windböen von {vel} in {ciudad}.",
     "atardecer_titulo": "🌅 Sonnenuntergang",
     "atardecer_desc": "Die Sonne geht um {hora} in {ciudad} unter."
+  },
+  "ventana": {
+    "cerrar": "Schließen",
+    "minimizar": "Minimieren",
+    "maximizar": "Maximieren",
+    "restaurar": "Wiederherstellen"
   }
 }

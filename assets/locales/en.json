@@ -289,5 +289,11 @@
     "viento_desc": "Wind gusts of {vel} in {ciudad}.",
     "atardecer_titulo": "🌅 Sunset in progress",
     "atardecer_desc": "The sun will set at {hora} in {ciudad}."
+  },
+  "ventana": {
+    "cerrar": "Close",
+    "minimizar": "Minimize",
+    "maximizar": "Maximize",
+    "restaurar": "Restore"
   }
 }
