@@ -3,7 +3,7 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.1.0/).
 Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 
-## [Sin publicar]
+## [1.6.0] - 2026-10-03
 
 ### Añadido
 
@@ -11,6 +11,14 @@ Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 - **Ventana sin marco**: barra de título propia con botones circulares de colores (cerrar, minimizar, maximizar), esquinas redondeadas, arrastre nativo en Wayland y X11, doble clic para maximizar y redimensionado desde todos los bordes.
 - **Portugués (pt-BR)** como séptimo idioma, con detección automática del sistema.
 - **Ajuste automático del alto de la ventana** al contenido en la primera carga.
+
+### Cambiado
+
+- **Adiós al nombre antiguo "Weather Linux"**: el menú de la bandeja, los catálogos de idioma, el log (`caelum.log`) y el comando del paquete (`caelum`) usan ya el nombre Caelum.
+- **Carpetas de datos renombradas a `caelum`** (`~/.config/caelum`, `~/.cache/caelum`). La primera vez que arranca, la app mueve automáticamente la carpeta antigua `weather_linux`, conservando ajustes, ciudades recientes y caché.
+- **El buscador de ciudades se identifica como Caelum** ante Nominatim, con la versión y el enlace real del proyecto, como piden sus normas de uso.
+- **Los instaladores retiran los lanzadores antiguos** (`weather-linux.desktop`, `com.weatherlinux.app.desktop`) que duplicaban la entrada en el menú, y `caelum.desktop` deja de versionarse porque contiene rutas de cada máquina.
+- La variable de depuración pasa a ser `CAELUM_DEBUG=1` (se sigue aceptando `WEATHER_LINUX_DEBUG=1`).
 
 ### Corregido
 
