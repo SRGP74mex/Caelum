@@ -8,7 +8,7 @@
 [![PySide6](https://img.shields.io/badge/PySide6-Qt_6-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://www.qt.io/)
 [![Wayland / X11](https://img.shields.io/badge/Display_Server-Wayland_%7C_X11-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://wayland.freedesktop.org/)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL_v3.0-blue.svg?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-67%2F67_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-70%2F70_Passing-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](tests/)
 [![Data](https://img.shields.io/badge/Weather_Data-Open--Meteo-FF6F00?style=for-the-badge)](https://open-meteo.com/)
 [![i18n](https://img.shields.io/badge/Languages-7_Supported-informational?style=for-the-badge)](assets/locales/)
 [![Calendars](https://img.shields.io/badge/World_Calendars-8_Supported-purple?style=for-the-badge)](src/utils/calendarios_mundo.py)
@@ -30,12 +30,20 @@ _Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day fo
 
 - **Dynamic Sky Palettes**: Background gradients seamlessly shift between golden hour, clear skies, overcast storm clouds, twilight, and starry nights according to exact solar elevation.
 - **Hardware-Accelerated Particle Engine**: Smooth falling rain, snowfall, and twinkling stars composited directly by your GPU.
+- **⚡ Animated Lightning Storms**: During thunderstorms, branching bolts strike across the sky with a layered glow and realistic 2–3 flicker "restrikes". Near strikes light up the whole window; distant ones glow faintly inside the clouds.
+- **Frameless Window with Colorful Controls**: Custom title bar with macOS-style close / minimize / maximize buttons, rounded corners, native drag (Wayland & X11), double-click to maximize, and resizing from every edge.
 - **Crisp HiDPI & Fractional Scaling**: Optimized with `PassThrough` rounding policies for crystal-clear typography and cards on 1080p, 2K, and 4K displays.
+
+<div align="center">
+  <img src="docs/screenshots/lightning_storm.jpg" alt="Animated lightning bolts during a thunderstorm" width="850" style="border-radius: 14px;" />
+  <p><em>Animated branching lightning during a live thunderstorm.</em></p>
+</div>
 
 ### 🛡️ Real-Time Disaster Prevention & Severe Weather Alerts
 
 - **Proactive Early Warning Engine**: Monitors sudden precipitation bursts ($\ge 30\text{ mm}$), flash flood risks, severe gale-force gusts, extreme heatwaves ($> 40^\circ\text{C}$), and hazardous UV levels.
 - **Non-Intrusive Desktop Notifications**: Runs quietly in the background from your system tray and sends native Linux desktop alerts during critical weather changes.
+- **Unit-Aware Thresholds**: Alerts trigger on the real physical values whether you use °C/km/h or °F/mph, and messages are shown in your preferred units.
 
 <div align="center">
   <img src="docs/screenshots/alert_toast.png" alt="Flash Flood Early Warning Notification" width="600" style="border-radius: 10px;" />
@@ -80,7 +88,8 @@ _Caelum displaying real-time daytime conditions, 24h temperature curve, 7-day fo
 ### 🌍 Multi-Language & 8 World Calendars Support
 
 - **7 Built-in Languages**: English (`en`), Spanish (`es`), French (`fr`), Italian (`it`), German (`de`), Portuguese (`pt`), and Japanese (`ja`).
-- **Automatic System Locale Detection**: Adapts immediately to your operating system language (`auto`).
+- **Automatic System Locale Detection**: Adapts to your operating system language at startup (`auto`), or pick any language manually from Settings (⚙️).
+- **Fully Localized**: Every label, alert, notification, and even the wind compass letters (e.g. `W` in English, `L` in Portuguese, `西` in Japanese) follow the active language.
 - **8 Configurable World Calendars**: Customize visible date pills from Settings (⚙️):
   - 📅 **Gregorian** (Universal / Western)
   - 🌙 **Hijri** (Islamic Lunar)
@@ -133,9 +142,19 @@ cd "Caelum"
 
 ---
 
-### Desktop Launcher Installation
+### Install as a Local App (Recommended)
 
-To add Caelum to your application launcher menu and system dock:
+Install Caelum into your user profile (no `sudo` needed), with its own virtual environment and an entry in your application menu:
+
+```bash
+./install.sh
+```
+
+This copies the app to `~/.local/share/caelum/` and registers the launcher in `~/.local/share/applications/`. Run the same script again at any time to update an existing installation from your checkout.
+
+### Desktop Launcher Only
+
+To run Caelum straight from your cloned folder but still add it to your application menu:
 
 ```bash
 ./install_desktop.sh
@@ -161,13 +180,13 @@ Caelum stores user preferences and cache according to the **XDG Base Directory S
 The project includes an extensive deterministic test suite covering unit conversions, models, mock services, i18n locales, bento metrics, 8 world calendars, and display environment detectors:
 
 ```bash
-# Run all 67 tests headlessly
+# Run all 70 tests headlessly
 QT_QPA_PLATFORM=offscreen venv/bin/python3 -m unittest discover -s tests -v
 ```
 
 ```text
-Ran 67 tests in 14.520s
-OK (skipped=3)
+Ran 70 tests in 4.893s
+OK
 ```
 
 ---
@@ -183,7 +202,7 @@ OK (skipped=3)
 │   ├── fonts/                # Inter & modern system font assets
 │   ├── icons/                # Weather vector icons & SVG assets
 │   ├── images/               # High-resolution dynamic sky backgrounds
-│   ├── locales/              # Translation catalogs (en, es, fr, it, de, ja)
+│   ├── locales/              # Translation catalogs (en, es, fr, it, de, pt, ja)
 │   └── styles/               # Glassmorphism QSS stylesheet definitions
 ├── src/
 │   ├── componentes/          # Modular UI widgets (Bento cards, Search overlay, Tray, Alert banner)
@@ -191,7 +210,7 @@ OK (skipped=3)
 │   ├── servicios/            # Open-Meteo, Air Quality, Geocoding, I18n, and Worker threads
 │   ├── utils/                # Environment detector, Astronomy math, Date helpers, IPC Manager
 │   └── vistas/               # Main application window and Settings dialog
-└── tests/                    # Unit testing suite (56 test cases)
+└── tests/                    # Unit testing suite (70 test cases)
 ```
 
 ---

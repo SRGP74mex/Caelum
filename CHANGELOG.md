@@ -3,6 +3,22 @@
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es/1.1.0/).
 Este proyecto usa [versionado semántico](https://semver.org/lang/es/).
 
+## [Sin publicar]
+
+### Añadido
+
+- **Rayos animados en tormentas**: rayos ramificados con brillo en 3 capas y parpadeo realista de 2-3 "re-golpes"; los cercanos iluminan toda la ventana y los lejanos brillan tenues dentro de las nubes.
+- **Ventana sin marco**: barra de título propia con botones circulares de colores (cerrar, minimizar, maximizar), esquinas redondeadas, arrastre nativo en Wayland y X11, doble clic para maximizar y redimensionado desde todos los bordes.
+- **Portugués (pt-BR)** como séptimo idioma, con detección automática del sistema.
+- **Ajuste automático del alto de la ventana** al contenido en la primera carga.
+
+### Corregido
+
+- Textos que seguían fijos en español al usar otro idioma: ventana principal, Bento Grid, tarjetas, banner de alertas, buscador, notificaciones, mensajes de carga, letras de la brújula y la opción "Automático" del selector de idioma.
+- La detección de "hoy" fallaba en idiomas distintos al español.
+- Los umbrales de alertas de calor y viento ignoraban la unidad del usuario: con °F, un día de 10 °C disparaba una falsa alerta de calor extremo. Los textos ahora muestran °F/mph cuando corresponde.
+- Las columnas de lluvia y día del pronóstico de 7 días cortaban textos como "100% (18.6mm)" o "Aujourd'hui".
+
 ## [1.5.0] - 2026-08-27
 
 ### Añadido
