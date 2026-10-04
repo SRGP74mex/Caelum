@@ -1,2 +1,2 @@
-"""Módulo de pruebas para WeatherApp Linux."""
+"""Módulo de pruebas para Caelum."""
 

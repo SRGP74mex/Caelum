@@ -1,6 +1,6 @@
 {
   "app": {
-    "nombre": "Weather Linux",
+    "nombre": "Caelum",
     "subtitulo": "天気予報"
   },
   "comun": {
@@ -272,7 +272,7 @@
     "cancelar": "キャンセル"
   },
   "bandeja": {
-    "mostrar": "Weather Linux を表示",
+    "mostrar": "Caelum を表示",
     "ocultar": "非表示",
     "refrescar": "今すぐ更新",
     "ajustes": "設定...",

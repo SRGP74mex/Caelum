@@ -9,6 +9,7 @@ from config import (
     DEFAULT_TIMEZONE,
     LANGUAGE,
     OPEN_METEO_GEOCODING_URL,
+    USER_AGENT,
 )
 from src.modelos.clima_datos import Ubicacion
 from src.servicios.http_session import sesion_http
@@ -138,7 +139,7 @@ class GeocodingService:
             "addressdetails": 1,
             "accept-language": LANGUAGE
         }
-        headers = {"User-Agent": "WeatherApp-Linux/1.0 (https://github.com/weatherapp-linux)"}
+        headers = {"User-Agent": USER_AGENT}
 
         try:
             response = sesion_http.get(url, params=params, headers=headers, timeout=2.5)
@@ -183,7 +184,7 @@ class GeocodingService:
             "addressdetails": 1,
             "accept-language": LANGUAGE
         }
-        headers = {"User-Agent": "WeatherApp-Linux/1.0 (https://github.com/weatherapp-linux)"}
+        headers = {"User-Agent": USER_AGENT}
 
         try:
             response = sesion_http.get(url, params=params, headers=headers, timeout=2.5)
@@ -228,7 +229,7 @@ class GeocodingService:
         3. ip-api.com
         4. Fallback por defecto (Bogotá)
         """
-        headers = {"User-Agent": "WeatherApp-Linux/1.0"}
+        headers = {"User-Agent": USER_AGENT}
 
         # Proveedor 1: ipapi.co
         try:

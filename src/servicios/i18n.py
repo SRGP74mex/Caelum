@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class I18nService(QObject):
     """
-    Servicio de Internacionalización (i18n) para WeatherApp Linux.
+    Servicio de Internacionalización (i18n) para Caelum.
     - Soporta 7 idiomas: Español (es), Inglés (en), Francés (fr), Italiano (it), Alemán (de), Portugués (pt) y Japonés (ja).
     - Detecta automáticamente el idioma del sistema operativo mediante QLocale.
     - Fallback inteligente en caso de claves no encontradas.

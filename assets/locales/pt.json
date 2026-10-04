@@ -1,6 +1,6 @@
 {
   "app": {
-    "nombre": "Weather Linux",
+    "nombre": "Caelum",
     "subtitulo": "Previsão do tempo"
   },
   "comun": {
@@ -272,7 +272,7 @@
     "cancelar": "Cancelar"
   },
   "bandeja": {
-    "mostrar": "Mostrar Weather Linux",
+    "mostrar": "Mostrar Caelum",
     "ocultar": "Ocultar",
     "refrescar": "Atualizar agora",
     "ajustes": "Configurações...",

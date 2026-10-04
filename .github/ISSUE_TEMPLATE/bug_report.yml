@@ -49,5 +49,5 @@ body:
     id: logs
     attributes:
       label: Registros (Logs de la aplicación)
-      description: Puedes pegar el contenido relevante de `~/.cache/weather_linux/weatherapp.log`
+      description: Puedes pegar el contenido relevante de `~/.cache/caelum/caelum.log`
       render: shell

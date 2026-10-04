@@ -14,7 +14,7 @@ from src.utils.fecha_utils import FechaHelper
 def main():
     ciudad_busqueda = sys.argv[1] if len(sys.argv) > 1 else "Bogotá"
     print("\n🌤️  =======================================================")
-    print("   WEATHERAPP LINUX - DEMOSTRACIÓN DEL MOTOR (SPRINT 1)")
+    print("   CAELUM - DEMOSTRACIÓN DEL MOTOR (SPRINT 1)")
     print("=======================================================\n")
 
     geo = GeocodingService()

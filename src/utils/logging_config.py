@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from config import CACHE_DIR
 
-LOG_FILE = CACHE_DIR / "weatherapp.log"
+LOG_FILE = CACHE_DIR / "caelum.log"
 
 
 def configurar_logging() -> None:
@@ -12,9 +12,10 @@ def configurar_logging() -> None:
 
     Se debe llamar una única vez, al inicio de main.py. El nivel de consola
     es WARNING por defecto para no ensuciar la terminal; se puede subir a
-    DEBUG con la variable de entorno WEATHER_LINUX_DEBUG=1.
+    DEBUG con la variable de entorno CAELUM_DEBUG=1 (o la antigua WEATHER_LINUX_DEBUG=1).
     """
-    nivel_consola = logging.DEBUG if os.environ.get("WEATHER_LINUX_DEBUG") == "1" else logging.WARNING
+    depuracion = "1" in (os.environ.get("CAELUM_DEBUG"), os.environ.get("WEATHER_LINUX_DEBUG"))
+    nivel_consola = logging.DEBUG if depuracion else logging.WARNING
     formato = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
     handler_archivo = RotatingFileHandler(LOG_FILE, maxBytes=1_000_000, backupCount=3, encoding="utf-8")

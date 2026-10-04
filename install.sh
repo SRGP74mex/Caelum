@@ -56,6 +56,14 @@ Keywords=weather;clima;astronomia;pronostico;forecast;caelum;glassmorphism;
 EOF
 chmod 644 "$DESKTOP_TARGET_FILE"
 
+# Retirar lanzadores del nombre antiguo del proyecto ("Weather Linux"), que
+# duplicaban la entrada de Caelum en el menú de aplicaciones
+for antiguo in weather-linux.desktop com.weatherlinux.app.desktop; do
+    if [ -L "$DESKTOP_TARGET_DIR/$antiguo" ] || grep -q "Name=Caelum" "$DESKTOP_TARGET_DIR/$antiguo" 2>/dev/null; then
+        rm -f "$DESKTOP_TARGET_DIR/$antiguo"
+    fi
+done
+
 if command -v update-desktop-database >/dev/null 2>&1; then
     update-desktop-database "$DESKTOP_TARGET_DIR" >/dev/null 2>&1 || true
 fi

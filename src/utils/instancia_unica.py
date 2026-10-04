@@ -6,12 +6,12 @@ from PySide6.QtNetwork import QLocalServer, QLocalSocket
 
 logger = logging.getLogger(__name__)
 
-SOCKET_NAME = "weatherapp_linux_single_instance_ipc"
+SOCKET_NAME = "caelum_single_instance_ipc"
 
 
 class GestorInstanciaUnica(QObject):
     """
-    Garantiza que solo exista una instancia en ejecución de WeatherApp Linux.
+    Garantiza que solo exista una instancia en ejecución de Caelum.
     Usa QLocalServer / QLocalSocket para comunicación entre procesos (IPC).
     Si se detecta una instancia previa, le solicita restaurar y enfocar la ventana.
     """

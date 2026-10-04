@@ -10,4 +10,6 @@ dist/
 build/
 *.egg-info/
 Impresiones_de_pantalla/
+# Lanzadores generados por install_desktop.sh con rutas de cada máquina
+caelum.desktop
 weather-linux.desktop

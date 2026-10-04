@@ -43,8 +43,8 @@ DEFAULT_CONFIG: Dict[str, Any] = {
 
 class ConfigManager:
     """
-    Gestor de configuración persistente para WeatherApp Linux.
-    Almacena preferencias, última ciudad y ciudades recientes en ~/.config/weather_linux/config.json.
+    Gestor de configuración persistente para Caelum.
+    Almacena preferencias, última ciudad y ciudades recientes en ~/.config/caelum/config.json.
     """
     def __init__(self, ruta_archivo: Path = CONFIG_FILE):
         self.ruta_archivo = ruta_archivo

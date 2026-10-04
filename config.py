@@ -19,13 +19,33 @@ BACKGROUNDS_DIR = ASSETS_DIR / "backgrounds"
 LOCALES_DIR = ASSETS_DIR / "locales"
 
 
+# Carpeta de datos de usuario actual y la del nombre antiguo del proyecto
+# ("Weather Linux"), que se migra automáticamente la primera vez.
+CARPETA_DATOS = "caelum"
+CARPETA_DATOS_ANTIGUA = "weather_linux"
+
+
 def directorio_datos_usuario(tipo: str) -> Path:
     """Resuelve el directorio de datos de usuario ("cache" o "config") según
-    la convención nativa de cada sistema operativo. El nombre de carpeta
-    "weather_linux" se conserva por compatibilidad con instalaciones previas.
+    la convención nativa de cada sistema operativo.
+
+    Si solo existe la carpeta del nombre antiguo, la renombra para conservar
+    los ajustes y la caché de instalaciones previas. Si no se puede mover
+    (permisos, otro proceso...), se sigue usando la antigua.
     """
+    nueva = _ruta_datos_usuario(tipo, CARPETA_DATOS)
+    antigua = _ruta_datos_usuario(tipo, CARPETA_DATOS_ANTIGUA)
+    if not nueva.exists() and antigua.is_dir():
+        try:
+            nueva.parent.mkdir(parents=True, exist_ok=True)
+            antigua.rename(nueva)
+        except OSError:
+            return antigua
+    return nueva
+
+
+def _ruta_datos_usuario(tipo: str, nombre_carpeta: str) -> Path:
     home = Path.home()
-    nombre_carpeta = "weather_linux"
 
     if sys.platform == "win32":
         base = Path(os.environ.get("LOCALAPPDATA", home / "AppData" / "Local"))
@@ -54,6 +74,9 @@ except OSError:
 # Configuración de Aplicación
 APP_NAME = "Caelum"
 APP_ID = "caelum"
+APP_VERSION = "1.6.0"
+# Identificación ante servicios externos (Nominatim exige un User-Agent real)
+USER_AGENT = f"{APP_NAME}/{APP_VERSION} (https://github.com/SRGP74mex/Caelum)"
 
 DEFAULT_CITY = "Bogotá"
 DEFAULT_LATITUDE = 4.6097

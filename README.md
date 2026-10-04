@@ -170,8 +170,8 @@ Caelum stores user preferences and cache according to the **XDG Base Directory S
 
 | Directory / File                      | Description                                                                                        |
 | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `~/.config/weather_linux/config.json` | Persistent user preferences (language, temperature unit, wind unit, recent cities, tray settings). |
-| `~/.cache/weather_linux/`             | In-memory & disk weather cache (15-minute TTL) and structured diagnostic logs (`weatherapp.log`).  |
+| `~/.config/caelum/config.json`        | Persistent user preferences (language, temperature unit, wind unit, recent cities, tray settings). |
+| `~/.cache/caelum/`                    | In-memory & disk weather cache (15-minute TTL) and structured diagnostic logs (`caelum.log`).      |
 
 ---
 

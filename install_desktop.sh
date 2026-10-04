@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# WEATHERAPP LINUX - INSTALADOR DE LANZADOR DE ESCRITORIO
+# CAELUM - INSTALADOR DE LANZADOR DE ESCRITORIO
 #
-# Genera weather-linux.desktop con la ruta absoluta real del proyecto en esta
+# Genera caelum.desktop con la ruta absoluta real del proyecto en esta
 # máquina (en vez de tener una ruta fija hardcodeada) y lo registra para el
 # usuario actual en ~/.local/share/applications.
 # ==============================================================================
@@ -37,9 +37,13 @@ mkdir -p "$TARGET_DIR"
 cp "$DESKTOP_FILE" "$TARGET_FILE"
 chmod 644 "$TARGET_FILE"
 
-# Enlaces por compatibilidad con nombres anteriores
-ln -sf "$TARGET_FILE" "$TARGET_DIR/weather-linux.desktop"
-ln -sf "$TARGET_FILE" "$TARGET_DIR/com.weatherlinux.app.desktop"
+# Retirar lanzadores del nombre antiguo del proyecto ("Weather Linux"), que
+# duplicaban la entrada de Caelum en el menú de aplicaciones
+for antiguo in weather-linux.desktop com.weatherlinux.app.desktop; do
+    if [ -L "$TARGET_DIR/$antiguo" ] || grep -q "Name=Caelum" "$TARGET_DIR/$antiguo" 2>/dev/null; then
+        rm -f "$TARGET_DIR/$antiguo"
+    fi
+done
 
 if command -v update-desktop-database >/dev/null 2>&1; then
     update-desktop-database "$TARGET_DIR" >/dev/null 2>&1 || true

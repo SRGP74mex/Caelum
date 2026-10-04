@@ -297,7 +297,7 @@ class TestNuevasFuncionalidades(unittest.TestCase):
 
     def test_gestor_instancia_unica(self):
         from src.utils.instancia_unica import GestorInstanciaUnica
-        nombre_test_socket = "test_weatherapp_single_instance_ipc"
+        nombre_test_socket = "test_caelum_single_instance_ipc"
         g1 = GestorInstanciaUnica(nombre_socket=nombre_test_socket)
         self.assertFalse(g1.es_otra_instancia_activa())
         self.assertTrue(g1.iniciar_servidor())

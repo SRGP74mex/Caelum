@@ -94,7 +94,7 @@ PALETAS_CIELO = {
 
 class VentanaPrincipal(QMainWindow):
     """
-    Ventana principal de WeatherApp Linux con fondos fotográficos panorámicos HD 16:9,
+    Ventana principal de Caelum con fondos fotográficos panorámicos HD 16:9,
     motor de partículas a 60 FPS superpuesto, Bento Grid de 8 métricas y notificaciones inteligentes.
     """
 
