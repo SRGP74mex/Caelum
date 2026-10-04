@@ -3,7 +3,7 @@ import random
 from typing import List, Optional
 
 from PySide6.QtCore import QPointF, Qt, QTimer
-from PySide6.QtGui import QColor, QPainter, QPaintEvent, QPen
+from PySide6.QtGui import QColor, QPainter, QPainterPath, QPaintEvent, QPen
 from PySide6.QtWidgets import QWidget
 
 
@@ -67,6 +67,92 @@ class Estrella:
         return int(self.base_alpha * (0.4 + 0.6 * factor))
 
 
+# Curva de brillo de un rayo, cuadro a cuadro (~16 ms): los rayos reales
+# "re-golpean" 2-3 veces por el mismo canal antes de apagarse.
+_PULSOS_RAYO = [1.0, 0.55, 0.95, 0.35, 0.8, 0.6, 0.45, 0.32, 0.22, 0.14, 0.08, 0.04]
+
+
+def _zigzag(inicio: QPointF, fin: QPointF, desplazamiento: float, generaciones: int) -> List[QPointF]:
+    """Polilínea quebrada entre dos puntos por desplazamiento de punto medio:
+    en cada generación cada tramo se parte en dos y su centro se desvía al azar."""
+    puntos = [inicio, fin]
+    for _ in range(generaciones):
+        nuevos = [puntos[0]]
+        for a, b in zip(puntos, puntos[1:]):
+            medio = QPointF((a.x() + b.x()) / 2 + random.uniform(-desplazamiento, desplazamiento),
+                            (a.y() + b.y()) / 2 + random.uniform(-desplazamiento, desplazamiento) * 0.3)
+            nuevos += [medio, b]
+        puntos = nuevos
+        desplazamiento /= 1.6  # < 2: conserva quiebres bruscos en los tramos cortos
+    return puntos
+
+
+class Rayo:
+    """Rayo con ramificaciones que parpadea y se desvanece en ~0.2 s.
+
+    Los cercanos son largos, gruesos y con destello fuerte; los lejanos son
+    cortos y tenues, y a veces solo iluminan la nube sin rayo visible."""
+
+    def __init__(self, w: float, h: float, cercano: bool):
+        self.cercano = cercano
+        self.cuadro = 0
+        self.visible = cercano or random.random() < 0.6  # lejanos: a veces solo destello
+        self.destello_max = random.randint(130, 190) if cercano else random.randint(35, 70)
+        self.grosor = random.uniform(2.0, 2.8) if cercano else random.uniform(1.0, 1.4)
+        self.ramas: List[List[QPointF]] = []
+
+        if not self.visible:
+            self.tronco: List[QPointF] = []
+            return
+
+        x0 = random.uniform(w * 0.1, w * 0.9)
+        inicio = QPointF(x0, random.uniform(-20, h * 0.05))
+        largo = random.uniform(0.55, 0.85) if cercano else random.uniform(0.25, 0.45)
+        fin = QPointF(x0 + random.uniform(-w * 0.15, w * 0.15), h * largo)
+        self.tronco = _zigzag(inicio, fin, desplazamiento=w * 0.07, generaciones=5)
+
+        # Ramas laterales que nacen del tronco y apuntan hacia abajo
+        for _ in range(random.randint(2, 5) if cercano else random.randint(0, 2)):
+            origen = random.choice(self.tronco[len(self.tronco) // 6: -len(self.tronco) // 4])
+            dx = random.choice((-1, 1)) * random.uniform(w * 0.05, w * 0.18)
+            destino = QPointF(origen.x() + dx, origen.y() + random.uniform(h * 0.06, h * 0.2))
+            self.ramas.append(_zigzag(origen, destino, desplazamiento=w * 0.035, generaciones=4))
+
+    @property
+    def terminado(self) -> bool:
+        return self.cuadro >= len(_PULSOS_RAYO)
+
+    @property
+    def intensidad(self) -> float:
+        """Brillo actual entre 0 y 1 según la curva de pulsos."""
+        return 0.0 if self.terminado else _PULSOS_RAYO[self.cuadro]
+
+    def update(self) -> None:
+        self.cuadro += 1
+
+    def alfa_destello(self) -> int:
+        return int(self.destello_max * self.intensidad)
+
+    def dibujar(self, painter: QPainter) -> None:
+        if not self.visible or self.terminado:
+            return
+        brillo = self.intensidad * (1.0 if self.cercano else 0.6)
+        for puntos, factor in [(self.tronco, 1.0)] + [(r, 0.55) for r in self.ramas]:
+            path = QPainterPath(puntos[0])
+            for pt in puntos[1:]:
+                path.lineTo(pt)
+            g = self.grosor * factor
+            # Halo azulado ancho -> capa media -> núcleo blanco
+            for ancho, color, alfa in ((g * 6.0, (150, 175, 255), 0.22),
+                                       (g * 2.2, (200, 215, 255), 0.45),
+                                       (g, (255, 255, 255), 1.0)):
+                pen = QPen(QColor(*color, int(255 * alfa * brillo * factor)), ancho)
+                pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+                pen.setJoinStyle(Qt.PenJoinStyle.RoundJoin)
+                painter.setPen(pen)
+                painter.drawPath(path)
+
+
 class FondoParticulasWidget(QWidget):
     """
     Widget de animación de partículas nativas a 60 FPS (lluvia, nieve, estrellas, relámpagos).
@@ -85,8 +171,8 @@ class FondoParticulasWidget(QWidget):
         self.estrellas: List[Estrella] = []
 
         # Estado para relámpagos
-        self.relampago_alfa: int = 0
-        self.cuenta_relampago: int = 0
+        self.rayos: List[Rayo] = []
+        self.cuadros_hasta_rayo: int = random.randint(90, 240)
 
         self._init_particulas(540, 840)
 
@@ -124,6 +210,8 @@ class FondoParticulasWidget(QWidget):
             self.modo_clima = "clear_night"
         else:
             self.modo_clima = "clear_day"
+        if self.modo_clima != "thunderstorm":
+            self.rayos = []
         self.update()
 
     def _on_tick(self) -> None:
@@ -145,21 +233,33 @@ class FondoParticulasWidget(QWidget):
             self.update() # Para titileo de estrellas
 
     def _update_relampago(self) -> None:
-        if self.relampago_alfa > 0:
-            self.relampago_alfa = max(0, self.relampago_alfa - 25)
-        else:
-            self.cuenta_relampago += 1
-            if self.cuenta_relampago > 240 and random.random() < 0.03:
-                self.relampago_alfa = random.randint(140, 210)
-                self.cuenta_relampago = 0
+        for rayo in self.rayos:
+            rayo.update()
+        self.rayos = [r for r in self.rayos if not r.terminado]
+
+        self.cuadros_hasta_rayo -= 1
+        if self.cuadros_hasta_rayo <= 0:
+            # ~1 de cada 3 rayos es cercano; el resto, lejanos y tenues
+            self.rayos.append(Rayo(float(self.width()), float(self.height()), cercano=random.random() < 0.35))
+            # A veces un segundo rayo casi inmediato, como en tormentas reales
+            self.cuadros_hasta_rayo = random.randint(15, 40) if random.random() < 0.25 else random.randint(150, 420)
+
+    @property
+    def relampago_alfa(self) -> int:
+        """Alfa del destello de pantalla completa (el del rayo más brillante activo)."""
+        return max((r.alfa_destello() for r in self.rayos), default=0)
 
     def paintEvent(self, event: QPaintEvent) -> None:
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        # 1. Relámpago de fondo en tormenta
-        if self.modo_clima == "thunderstorm" and self.relampago_alfa > 0:
-            painter.fillRect(self.rect(), QColor(240, 245, 255, self.relampago_alfa))
+        # 1. Relámpago de fondo en tormenta: destello + rayos (detrás de la lluvia)
+        if self.modo_clima == "thunderstorm":
+            alfa = self.relampago_alfa
+            if alfa > 0:
+                painter.fillRect(self.rect(), QColor(240, 245, 255, alfa))
+            for rayo in self.rayos:
+                rayo.dibujar(painter)
 
         # 2. Lluvia
         if self.modo_clima in ["rain", "thunderstorm"]:

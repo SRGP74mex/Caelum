@@ -186,6 +186,41 @@ class TestUIComponents(unittest.TestCase):
         self.assertEqual(fondo.modo_clima, "clear_night")
         self.assertGreater(len(fondo.estrellas), 0)
 
+    def test_rayo_geometria_y_ciclo_de_vida(self):
+        import random
+
+        from src.componentes.fondo_particulas import _PULSOS_RAYO, Rayo
+        random.seed(42)
+        rayo = Rayo(800, 600, cercano=True)
+        self.assertTrue(rayo.visible)
+        self.assertGreaterEqual(len(rayo.ramas), 2)
+        # Nace arriba y baja; 5 generaciones de zigzag = 33 puntos
+        self.assertEqual(len(rayo.tronco), 33)
+        self.assertLess(rayo.tronco[0].y(), 600 * 0.06)
+        self.assertGreater(rayo.tronco[-1].y(), rayo.tronco[0].y())
+
+        # Parpadea (re-golpes) y se apaga solo
+        self.assertGreater(rayo.alfa_destello(), 0)
+        for _ in range(len(_PULSOS_RAYO)):
+            rayo.update()
+        self.assertTrue(rayo.terminado)
+        self.assertEqual(rayo.alfa_destello(), 0)
+
+    def test_tormenta_genera_y_limpia_rayos(self):
+        fondo = FondoParticulasWidget()
+        fondo.resize(400, 600)
+        fondo.timer.stop()
+        fondo.set_modo_clima("thunderstorm")
+        fondo.cuadros_hasta_rayo = 1
+        fondo._on_tick()
+        self.assertEqual(len(fondo.rayos), 1)
+        fondo.grab()  # pintar con un rayo activo no debe fallar
+
+        # Al dejar de haber tormenta no quedan rayos "congelados"
+        fondo.set_modo_clima("rain")
+        self.assertEqual(fondo.rayos, [])
+        self.assertEqual(fondo.relampago_alfa, 0)
+
     def test_pronostico_semanal_render(self):
         semanal = PronosticoSemanalWidget()
         dias = [
