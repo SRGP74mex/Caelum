@@ -7,7 +7,6 @@ from unittest import mock
 from config import CARPETA_DATOS, CARPETA_DATOS_ANTIGUA, directorio_datos_usuario
 
 
-@unittest.skipIf(os.name == "nt", "Las rutas XDG solo aplican a Linux/Unix")
 class TestMigracionCarpetaDatos(unittest.TestCase):
     """La carpeta del nombre antiguo ("weather_linux") se migra a "caelum"
     sin perder los ajustes de instalaciones previas."""
@@ -16,9 +15,11 @@ class TestMigracionCarpetaDatos(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
         self.base = Path(self._tmp.name)
-        entorno = mock.patch.dict(os.environ, {"XDG_CONFIG_HOME": str(self.base)})
-        entorno.start()
-        self.addCleanup(entorno.stop)
+        # Simular Linux (rutas XDG) en cualquier sistema: macOS y Windows usan otras rutas
+        for parche in (mock.patch.dict(os.environ, {"XDG_CONFIG_HOME": str(self.base)}),
+                       mock.patch("config.sys.platform", "linux")):
+            parche.start()
+            self.addCleanup(parche.stop)
 
     def test_migra_carpeta_antigua_conservando_archivos(self):
         antigua = self.base / CARPETA_DATOS_ANTIGUA
